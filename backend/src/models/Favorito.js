@@ -9,6 +9,9 @@ const Favorito = sequelize.define("Favorito", {
   },
   nombre: DataTypes.STRING,
   imagen: DataTypes.STRING,
-  juegoId: DataTypes.INTEGER,
+  juegoId: {
+    type: DataTypes.INTEGER,
+    unique: true,
+  },
 });
 module.exports = Favorito;
