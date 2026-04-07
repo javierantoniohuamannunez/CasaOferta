@@ -1,5 +1,6 @@
 const rawgService = require("../services/rawgService");
 const ofertasService = require("../services/ofertasService");
+const tiendas =require('../utils/tiendas');
 
 //conbina datos de las ofertas con los juegos
 const buscarCompleto = async (query) => {
@@ -18,7 +19,7 @@ const buscarCompleto = async (query) => {
     precio: oferta.salePrice,
     precioOriginal: oferta.normalPrice,
     descuento: Math.round(oferta.savings) + "%",
-    tienda: oferta.storeID,
+    tienda:tiendas[oferta.storeID]|| "Desconocida",
   }));
   return {
     nombre: juego.name,
