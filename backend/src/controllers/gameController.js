@@ -18,5 +18,24 @@ const getGames = async (req, res, next) => {
     next(error);
   }
 };
+// Obtener detalle de juego
+const getGameById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
-module.exports = { getGames };
+    const juego = await rawgService.obtenerJuegoPorId(id);
+
+    res.json({
+      nombre: juego.name,
+      descripcion: juego.description_raw,
+      imagen: juego.background_image,
+      rating: juego.rating,
+      generos: juego.genres.map(g => g.name)
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getGames, getGameById };

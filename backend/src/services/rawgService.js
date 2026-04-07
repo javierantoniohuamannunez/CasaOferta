@@ -13,5 +13,15 @@ const buscarGames = async (query) => {
 
   return response.data.results;
 };
+const obtenerJuegoPorId = async (id) => {
+  const response = await axios.get(`https://api.rawg.io/api/games/${id}`, {
+    params: {
+      key: API_KEY,
+    },
+  });
 
-module.exports = {buscarGames};
+  return response.data;
+};
+
+module.exports = { buscarGames, obtenerJuegoPorId };
+
