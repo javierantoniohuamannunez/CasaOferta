@@ -7,6 +7,8 @@ const app = express();
 const gameRoutes = require("./routes/gameRoutes");
 const ofertasRoutes = require("./routes/ofertasRoutes");
 
+const busquedaRoutes = require("./routes/busquedaRoutes");
+
 const notFound = require("../middlewares/notFound");
 const handleErrors = require("../middlewares/handleErrors");
 
@@ -15,6 +17,8 @@ app.use(express.json());
 
 app.use("/games", gameRoutes);
 app.use("/ofertas", ofertasRoutes);
+
+app.use("/busqueda", busquedaRoutes);
 
 app.get("/", (request, response) => {
   response.send("api funcionando");
