@@ -10,8 +10,16 @@ const buscarCompleto = async (query) => {
   }
   const juego = juegos[0];
   //buscar ofertas
-  const ofertas = await ofertasService.buscarOfertas(juego.name);
+  const ofertasRaw = await ofertasService.buscarOfertas(juego.name);
 
+  // Filtrar y limpiar datos
+  const ofertas = ofertasRaw.slice(0, 5).map((oferta) => ({
+    titulo: oferta.title,
+    precio: oferta.salePrice,
+    precioOriginal: oferta.normalPrice,
+    descuento: Math.round(oferta.savings) + "%",
+    tienda: oferta.storeID,
+  }));
   return {
     nombre: juego.name,
     imagen: juego.background_image,
