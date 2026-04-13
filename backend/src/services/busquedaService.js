@@ -13,7 +13,7 @@ const buscarCompleto = async (query) => {
   //buscar ofertas
   const ofertasRaw = await ofertasService.buscarOfertas(juego.name);
 
-  // Filtrar y limpiar datos
+  // Filtros
   const ofertas = ofertasRaw.slice(0, 5).map((oferta) => ({
     titulo: oferta.title,
     precio: oferta.salePrice,

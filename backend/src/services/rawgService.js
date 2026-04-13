@@ -24,4 +24,4 @@ const obtenerJuegoPorId = async (id) => {
 };
 
 module.exports = { buscarGames, obtenerJuegoPorId };
-
+// modificar caso de uso, agregar mas modelos que me falta usuario evento, alerta, favorito, notificacion

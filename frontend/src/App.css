@@ -1,0 +1,248 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+/* 🔥 CONTENEDOR */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  width: 100%;
+}
+
+/* 🔥 HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* 🔍 INPUT */
+input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background: #1e293b;
+  color: white;
+}
+
+/* 🔥 GRID */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+/* 🔥 TARJETA */
+.card {
+  background: #1e293b;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+/* ✨ EFECTO HOVER PRO */
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* 🖼️ IMAGEN */
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+/* 🔥 CONTENIDO */
+.card-content {
+  padding: 15px;
+}
+
+/* 🎮 TITULO */
+.card-content h4 {
+  margin: 0;
+  font-size: 16px;
+}
+
+/* ⭐ RATING */
+.rating {
+  margin-top: 8px;
+  color: #facc15;
+}
+/* 🔍 CONTENEDOR DEL BUSCADOR */
+.form-buscador {
+  display: flex;
+  align-items: center;
+}
+
+/* 🔍 INPUT BONITO */
+.buscador {
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  background: #1e293b;
+  color: white;
+  font-size: 14px;
+  width: 220px;
+  transition: 0.3s;
+}
+
+/* ✨ EFECTO FOCUS */
+.buscador:focus {
+  width: 260px;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+/* 💰 BOTON */
+.boton {
+  margin-top: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.boton:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+}
+.destacados {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+
+.destacados img {
+  width: 300px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.ofertas {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  margin-bottom: 30px;
+}
+
+.oferta-card {
+  min-width: 220px;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.oferta-card img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+
+.oferta-info {
+  padding: 10px;
+}
+
+.precio {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.descuento {
+  color: #22c55e;
+  font-weight: bold;
+}
+
+.precio-final {
+  color: white;
+}
+.categorias {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.categoria-card {
+  position: relative;
+  width: 250px;
+  height: 140px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.categoria-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 🔥 overlay tipo Steam */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px;
+  background: rgba(0,0,0,0.6);
+  text-align: center;
+  font-weight: bold;
+}
+.precio {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.descuento {
+  background: #16a34a;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.precio-final {
+  font-size: 16px;
+  font-weight: bold;
+}
+h2 {
+  margin-top: 40px;
+  margin-bottom: 15px;
+  font-size: 20px;
+  padding-left: 10px;
+}
+.tienda {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 5px;
+}
+.info-extra {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.rating {
+  color: #facc15;
+}
+
+.tienda {
+  color: #94a3b8;
+}
