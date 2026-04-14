@@ -1,6 +1,6 @@
 const rawgService = require("../services/rawgService");
 const ofertasService = require("../services/ofertasService");
-const tiendas =require('../utils/tiendas');
+const tiendas = require("../utils/tiendas");
 
 //conbina datos de las ofertas con los juegos
 const buscarCompleto = async (query) => {
@@ -14,13 +14,15 @@ const buscarCompleto = async (query) => {
   const ofertasRaw = await ofertasService.buscarOfertas(juego.name);
 
   // Filtros
-  const ofertas = ofertasRaw.slice(0, 5).map((oferta) => ({
-    titulo: oferta.title,
-    precio: oferta.salePrice,
-    precioOriginal: oferta.normalPrice,
-    descuento: Math.round(oferta.savings) + "%",
-    tienda:tiendas[oferta.storeID]|| "Desconocida",
-  }));
+  const ofertas = ofertasRaw
+    .slice(0, 3)
+    .map((oferta) => ({
+      titulo: oferta.title,
+      precio: oferta.salePrice,
+      precioOriginal: oferta.normalPrice,
+      descuento: Math.round(oferta.savings) + "%",
+      tienda: tiendas[oferta.storeID] || "Desconocida",
+    }));
   return {
     nombre: juego.name,
     imagen: juego.background_image,
