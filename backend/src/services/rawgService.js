@@ -23,5 +23,33 @@ const obtenerJuegoPorId = async (id) => {
   return response.data;
 };
 
-module.exports = { buscarGames, obtenerJuegoPorId };
+const obtenerJuegosTop = async () => {
+  try {
+    const response = await axios.get("https://api.rawg.io/api/games", {
+      params: {
+        key: API_KEY,
+        page_size: 20,
+        ordering: "-metacritic",
+        metacritic: "80,100",
+        parent_platforms: "1", 
+      },
+    });
+
+    return response.data.results
+      .filter((juego) => juego.background_image) 
+      .map((juego) => ({
+        id: juego.id,
+        nombre: juego.name,
+        imagen: juego.background_image,
+        rating: juego.rating,
+        metacritic: juego.metacritic,
+      }));
+
+  } catch (error) {
+    console.log("🔥 ERROR RAWG:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+module.exports = { buscarGames, obtenerJuegoPorId, obtenerJuegosTop };
 // modificar caso de uso, agregar mas modelos que me falta usuario evento, alerta, favorito, notificacion
