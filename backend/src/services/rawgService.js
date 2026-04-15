@@ -29,6 +29,7 @@ const obtenerJuegosTop = async () => {
       params: {
         key: API_KEY,
         page_size: 20,
+        sortBy:"sevings",
         ordering: "-metacritic",
         metacritic: "80,100",
         parent_platforms: "1", 

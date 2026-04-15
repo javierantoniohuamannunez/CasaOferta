@@ -1,4 +1,5 @@
 const rawgService = require("../services/rawgService");
+const ofertasService = require("../services/ofertasService");
 
 // obtiene la lista de juegos por busqueda
 const getGames = async (req, res, next) => {
@@ -44,4 +45,55 @@ const getTopGames = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { getGames, getGameById, getTopGames };
+
+const getTopOfertas = async (req, res, next) => {
+  try {
+    const juegos = await rawgService.obtenerJuegosTop();
+
+    const resultado = [];
+
+    for (const juego of juegos.slice(0, 5)) {
+      try {
+        const ofertas = await ofertasService.buscarOfertas(juego.nombre);
+
+        let mejor = null;
+
+        if (ofertas && ofertas.length > 0) {
+          mejor = ofertas.sort(
+            (a, b) => parseFloat(a.salePrice) - parseFloat(b.salePrice)
+          )[0];
+        }
+
+        resultado.push({
+          id: juego.id,
+          nombre: juego.nombre,
+          imagen: juego.imagen,
+          metacritic: juego.metacritic,
+          precio: mejor ? mejor.salePrice : null,
+          descuento: mejor ? Math.round(parseFloat(mejor.savings)) : 0,
+          tienda: mejor ? mejor.storeID : null,
+        });
+
+      } catch (error) {
+        console.log("error precio:", error.message);
+
+        resultado.push({
+          id: juego.id,
+          nombre: juego.nombre,
+          imagen: juego.imagen,
+          metacritic: juego.metacritic,
+          precio: null,
+          descuento: 0,
+          tienda: null,
+        });
+      }
+      await new Promise(res => setTimeout(res, 500));
+    }
+
+    res.json(resultado);
+
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = { getGames, getGameById, getTopGames, getTopOfertas };

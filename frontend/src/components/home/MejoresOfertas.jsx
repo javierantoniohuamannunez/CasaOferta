@@ -1,30 +1,52 @@
+// Nota (2026-04-15): este componente consumia `/games/top-ofertas` pero mapeaba el
+// formato como si fuera CheapShark directo (dealID/title/thumb/savings). Ahora
+// usa el formato real que devuelve tu backend.
 import { useEffect, useState } from "react";
 import GridJuegos from "../juegos/GridJuegos";
+import { obtenerTopOfertas } from "../../services/api";
 
 const MejoresOfertas = () => {
   const [juegos, setJuegos] = useState([]);
   const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    fetch("http://localhost:3000/ofertas")
-      .then((res) => res.json())
-      .then((data) => {
-        const juegosFormateados = data.map((j) => ({
-          id: j.dealID,
-          nombre: j.title,
-          imagen: j.thumb,
-          precio: j.salePrice,
-          descuento: j.savings,
-          tienda: j.storeID,
-        }));
+    let cancelado = false;
+
+    const cargar = async () => {
+      try {
+        const data = await obtenerTopOfertas();
+        if (cancelado) return;
+
+        const juegosFormateados = (Array.isArray(data) ? data : [])
+          .slice(0, 12)
+          .map((j) => ({
+            id: j.id,
+            nombre: j.nombre,
+            imagen: j.imagen,
+            metacritic: j.metacritic,
+            precio: j.precio,
+            descuento: j.descuento,
+            tienda: j.tienda,
+          }));
+
         setJuegos(juegosFormateados);
-        setCargando(false);
-      })
-      .catch((err) => {
+        setError(null);
+      } catch (err) {
         console.log("Error:", err);
-        setCargando(false);
-      });
+        if (!cancelado) setError("No se pudieron cargar las ofertas.");
+      } finally {
+        if (!cancelado) setCargando(false);
+      }
+    };
+
+    cargar();
+    return () => {
+      cancelado = true;
+    };
   }, []);
   if (cargando) return <p>Cargando ofertas...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="mejores-ofertas">

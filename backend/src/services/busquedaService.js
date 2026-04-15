@@ -9,7 +9,7 @@ const buscarCompleto = async (query) => {
   if (!juegos || juegos.length === 0) {
     return [];
   }
-  const juego = juegos[0];
+  const juego = juegos[4];
   //buscar ofertas
   const ofertasRaw = await ofertasService.buscarOfertas(juego.name);
 
