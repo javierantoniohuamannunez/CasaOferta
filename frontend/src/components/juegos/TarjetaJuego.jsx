@@ -1,8 +1,7 @@
 import { obtenerNombreTienda } from "../../utils/tiendas";
 
 const TarjetaJuego = ({ juego }) => {
-  // Nota (2026-04-15): arreglado `src`/`alt` del `<img>`; antes estaban como string
-  // literal y no renderizaban la imagen ni el texto alternativo correctamente.
+ 
   return (
     <div className="card">
       <img src={juego.imagen} alt={juego.nombre} />

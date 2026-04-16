@@ -22,33 +22,29 @@ const obtenerJuegoPorId = async (id) => {
 
   return response.data;
 };
-
+// se usa en hero no tocar
 const obtenerJuegosTop = async () => {
   try {
     const response = await axios.get("https://api.rawg.io/api/games", {
       params: {
         key: API_KEY,
         page_size: 20,
-        sortBy:"sevings",
-        ordering: "-metacritic",
-        metacritic: "80,100",
-        parent_platforms: "1", 
+        ordering: "-added", //ordering: "-metacritic" mejor calificado
+        parent_platforms:"1",
       },
     });
 
-    return response.data.results
-      .filter((juego) => juego.background_image) 
-      .map((juego) => ({
-        id: juego.id,
-        nombre: juego.name,
-        imagen: juego.background_image,
-        rating: juego.rating,
-        metacritic: juego.metacritic,
-      }));
-
+    return response.data.results.map((juego) => ({
+      id: juego.id,
+      nombre: juego.name,
+      imagen: juego.background_image,
+      rating: juego.rating,
+      metacritic: juego.metacritic,
+      plataformas: juego.parent_platforms.map((p) => p.platform.name) ,
+    }));
   } catch (error) {
-    console.log("🔥 ERROR RAWG:", error.response?.data || error.message);
-    throw error;
+    console.log("Error RAWG:", error.message);
+    return [];
   }
 };
 

@@ -6,5 +6,5 @@ export const obtenerNombreTienda = (id) => {
     "13": "Ubisoft",
   };
 
-  return tiendas[id] || "Otra tienda";
+  return tiendas[id];
 };

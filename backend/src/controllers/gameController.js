@@ -52,7 +52,7 @@ const getTopOfertas = async (req, res, next) => {
 
     const resultado = [];
 
-    for (const juego of juegos.slice(0, 5)) {
+    for (const juego of juegos.slice(0, 10)) {
       try {
         const ofertas = await ofertasService.buscarOfertas(juego.nombre);
 
@@ -64,29 +64,23 @@ const getTopOfertas = async (req, res, next) => {
           )[0];
         }
 
+        if (!mejor) continue;
+
         resultado.push({
           id: juego.id,
           nombre: juego.nombre,
           imagen: juego.imagen,
           metacritic: juego.metacritic,
-          precio: mejor ? mejor.salePrice : null,
-          descuento: mejor ? Math.round(parseFloat(mejor.savings)) : 0,
-          tienda: mejor ? mejor.storeID : null,
+          precio: mejor.salePrice,
+          descuento: Math.round(parseFloat(mejor.savings)),
+          tienda: mejor.storeID,
         });
 
       } catch (error) {
         console.log("error precio:", error.message);
-
-        resultado.push({
-          id: juego.id,
-          nombre: juego.nombre,
-          imagen: juego.imagen,
-          metacritic: juego.metacritic,
-          precio: null,
-          descuento: 0,
-          tienda: null,
-        });
       }
+
+      // evitar ban
       await new Promise(res => setTimeout(res, 500));
     }
 

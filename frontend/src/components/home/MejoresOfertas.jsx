@@ -1,6 +1,4 @@
-// Nota (2026-04-15): este componente consumia `/games/top-ofertas` pero mapeaba el
-// formato como si fuera CheapShark directo (dealID/title/thumb/savings). Ahora
-// usa el formato real que devuelve tu backend.
+
 import { useEffect, useState } from "react";
 import GridJuegos from "../juegos/GridJuegos";
 import { obtenerTopOfertas } from "../../services/api";

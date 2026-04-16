@@ -5,9 +5,6 @@ const Destacados = () => {
   const [juegos, setJuegos] = useState([]);
 
   useEffect(() => {
-    // Nota (2026-04-15): el lint `react-hooks/set-state-in-effect` no permite
-    // setState "sincrono" dentro del cuerpo del effect; lo dejamos dentro del
-    // callback de la promesa.
     let cancelado = false;
 
     buscarJuegos("for")

@@ -1,10 +1,9 @@
 import MejoresOfertas from "../components/home/MejoresOfertas";
-
-// Nota (2026-04-15): quito imports no usados para evitar warnings de lint.
+import HeroJuego from "../components/home/HeroJuego";
 const Home = () => {
   return (
     <div className="container">
-      <MejoresOfertas />
+      <HeroJuego />
     </div>
   );
 };
