@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 const Buscador = ({ onBuscar }) => {
   const [texto, setTexto] = useState("");
 
@@ -20,6 +19,8 @@ const Buscador = ({ onBuscar }) => {
   // );
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (texto.trim() === "") return; //evitar que el texto vacio
+
     onBuscar(texto);
   };
 
@@ -28,7 +29,7 @@ const Buscador = ({ onBuscar }) => {
       <input
         className="buscador"
         type="text"
-        placeholder="🔍 Buscar juegos..."
+        placeholder=""
         value={texto}
         onChange={(e) => setTexto(e.target.value)}
       />

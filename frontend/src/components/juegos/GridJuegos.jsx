@@ -1,11 +1,13 @@
 import TarjetaJuego from "./TarjetaJuego";
+
 const GridJuegos = ({ juegos }) => {
   return (
-    <div className="grid">
+    <div className="grid-juegos">
       {juegos.map((juego) => (
         <TarjetaJuego key={juego.id} juego={juego} />
       ))}
     </div>
   );
 };
+
 export default GridJuegos;
