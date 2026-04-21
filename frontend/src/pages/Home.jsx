@@ -2,13 +2,18 @@ import {React, useState} from "react";
 import MejoresJuegos from "../components/home/MejoresJuegos";
 import Header from "../components/home/Header";
 import Resultados from "../components/home/Resultados";
+import MejoresOfertas from "../components/home/Ofertas";
 const Home = () => {
   const [busqueda, setBusqueda] = useState("");
   return (
     <div>
       <Header onBuscar={setBusqueda} />
       {busqueda === "" ? (
-        <MejoresJuegos />
+        <>
+        <MejoresOfertas />
+
+         <MejoresJuegos />
+        </>
       ) : (
         <Resultados busqueda={busqueda} />
       )}

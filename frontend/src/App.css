@@ -144,11 +144,7 @@ body {
     drop-shadow(0 0 60px var(--clr));
 }
 
-.header-divider {
-  margin-top: 20px;
-  height: 1px;
-  background: #1e293b;
-}
+
 
 .titulo-home,
 .titulo-seccion {
@@ -249,6 +245,7 @@ body {
   background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
 }
 
+/* imagen */
 .hero-card img {
   width: 100%;
   height: 150px;

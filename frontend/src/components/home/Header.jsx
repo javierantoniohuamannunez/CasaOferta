@@ -5,10 +5,9 @@ const Header = ({ onBuscar }) => {
   return (
     <header className="header">
       <div className="header-top">
-        <h1 className="logo">🎮 CazaOfertas</h1>
+        <h1 className="logo">CazaOfertas</h1>
         <Buscador onBuscar={onBuscar} />
       </div>
-
       <nav className="nav">
         <ul>
           <li style={{ "--clr": "#2483ff" }}>
@@ -41,9 +40,9 @@ const Header = ({ onBuscar }) => {
         </ul>
       </nav>
 
-      <div className="header-divider"></div>
     </header>
   );
 };
 
 export default Header;
+///https://freefrontend.com/css-menu/ ejemplo del navbar

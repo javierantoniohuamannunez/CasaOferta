@@ -38,7 +38,6 @@ const TarjetaJuego = ({ juego }) => {
         })}
       </div>
 
-      {/* 🔥 PRECIO */}
       {juego.precio != null && (
         <div className="precio">
           {juego.descuento && (
