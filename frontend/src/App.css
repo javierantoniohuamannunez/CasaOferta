@@ -1,3 +1,4 @@
+/* ===== RESET ===== */
 * {
   margin: 0;
   padding: 0;
@@ -9,6 +10,7 @@ body {
   font-family: Arial, sans-serif;
 }
 
+/* ===== HEADER ===== */
 .header {
   padding: 20px;
 }
@@ -19,13 +21,14 @@ body {
   align-items: center;
 }
 
-/* logo */
+/* LOGO */
 .logo {
   font-size: 28px;
   font-weight: bold;
   color: white;
 }
 
+/* BUSCADOR */
 .form-buscador {
   display: flex;
 }
@@ -45,107 +48,52 @@ body {
   background: #334155;
 }
 
+/* ===== NAV SIMPLE ===== */
 .nav {
-  margin-top: 20px;
   display: flex;
   justify-content: center;
-}
-
-.nav ul {
-  display: flex;
   gap: 50px;
+  margin-top: 20px;
 }
 
-.nav li {
+.nav a {
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #fff;
+  padding: 5px 0;
+  transition: 0.3s;
   position: relative;
-  list-style: none;
-  width: 80px;
-  height: 80px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  cursor: pointer;
-  transition: 0.5s;
 }
 
-.nav li::before {
+/* hover naranja */
+.nav a:hover {
+  color: #ff7a18;
+}
+
+/* subrayado animado */
+.nav a::after {
   content: "";
   position: absolute;
-  inset: 30px;
-
-  box-shadow:
-    0 0 0 10px var(--clr),
-    0 0 0 20px #020617,
-    0 0 0 22px var(--clr);
-
-  transition: 0.5s;
-  
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background: #ff7a18;
+  transition: 0.3s;
 }
 
-.nav li:hover::before {
-  inset: 15px;
+.nav a:hover::after {
+  width: 100%;
 }
 
-.nav li::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: #020617;
-
-  transform: rotate(45deg);
-  transition: 0.5s;
+/* efecto fade */
+.nav:has(a:hover) a:not(:hover) {
+  opacity: 0.3;
 }
 
-.nav li:hover::after {
-  transform: rotate(0deg);
-}
-
-.nav li a {
-  position: relative;
-  z-index: 10;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.nav li svg {
-  font-size: 28px;
-  color: var(--clr);
-  transition: 0.5s;
-}
-
-.nav li span {
-  position: absolute;
-  color: var(--clr);
-
-  opacity: 0;
-  transition: 0.5s;
-
-  transform: scale(0) translateY(200%);
-}
-
-.nav li:hover svg {
-  transform: translateY(-40%);
-}
-
-.nav li:hover span {
-  opacity: 1;
-  transform: scale(1) translateY(100%);
-}
-
-.nav li:hover svg,
-.nav li:hover span {
-  filter:
-    drop-shadow(0 0 20px var(--clr))
-    drop-shadow(0 0 40px var(--clr))
-    drop-shadow(0 0 60px var(--clr));
-}
-
-
-
+/* ===== TITULOS ===== */
 .titulo-home,
 .titulo-seccion {
   color: white;
@@ -153,6 +101,7 @@ body {
   margin: 20px;
 }
 
+/* ===== CARRUSEL ===== */
 .hero {
   display: flex;
   gap: 20px;
@@ -173,6 +122,7 @@ body {
   position: relative;
 }
 
+/* BOTONES */
 .btn {
   position: absolute;
   top: 50%;
@@ -199,6 +149,7 @@ body {
 .btn.left { left: 5px; }
 .btn.right { right: 5px; }
 
+/* ===== GRID ===== */
 .grid-juegos {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -218,6 +169,7 @@ body {
   }
 }
 
+/* ===== TARJETAS ===== */
 .hero-card {
   min-width: 260px;
   max-width: 260px;
@@ -238,6 +190,7 @@ body {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
 }
 
+/* overlay oscuro */
 .hero-card::after {
   content: "";
   position: absolute;
@@ -245,21 +198,21 @@ body {
   background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
 }
 
-/* imagen */
+/* IMAGEN */
 .hero-card img {
   width: 100%;
   height: 150px;
   object-fit: cover;
 }
 
-/* titulo */
+/* TITULO */
 .hero-card h2 {
   font-size: 15px;
   margin: 10px;
   color: white;
 }
 
-/* metacritic */
+/* METACRITIC */
 .metacritic {
   font-weight: bold;
   margin: 0 10px;
@@ -269,7 +222,7 @@ body {
 .metacritic.medio { color: #facc15; }
 .metacritic.bajo { color: #ef4444; }
 
-/* plataformas */
+/* PLATAFORMAS */
 .plataformas {
   display: flex;
   gap: 10px;
@@ -287,7 +240,7 @@ body {
   transform: scale(1.2);
 }
 
-/* precio */
+/* PRECIO */
 .precio {
   display: flex;
   align-items: center;
@@ -309,7 +262,7 @@ body {
   font-weight: bold;
 }
 
-/* tienda */
+/* TIENDA */
 .tienda {
   display: block;
   margin: 0 10px 10px;
@@ -317,7 +270,7 @@ body {
   color: #94a3b8;
 }
 
-/* loading */
+/* LOADING */
 .loading {
   height: 220px;
   background: #1e293b;
