@@ -8,9 +8,11 @@ const MejoresJuegos = () => {
   useEffect(() => {
     fetch("http://localhost:3000/games/top")
       .then((res) => res.json())
-      .then((data) => setJuegos(data));
+      .then((data) => setJuegos(data))
+      .catch((err) => console.log("Error:", err));
   }, []);
 
+  // 🔥 ICONOS
   const getIcono = (plataforma) => {
     if (plataforma.includes("PC")) return <FaWindows />;
     if (plataforma.includes("PlayStation")) return <FaPlaystation />;
@@ -19,6 +21,7 @@ const MejoresJuegos = () => {
     return null;
   };
 
+  // 🔥 SCROLL
   const scroll = (direccion) => {
     const container = carruselRef.current;
     const scrollAmount = 300;
@@ -30,6 +33,7 @@ const MejoresJuegos = () => {
     }
   };
 
+  // 🔥 LOADING
   if (juegos.length === 0) {
     return (
       <div className="hero">
@@ -44,6 +48,7 @@ const MejoresJuegos = () => {
   return (
     <div className="hero-container">
       <h2 className="titulo-home">Juegos Destacados</h2>
+
       <button className="btn left" onClick={() => scroll("left")}>
         ◀
       </button>
@@ -51,21 +56,29 @@ const MejoresJuegos = () => {
       <div className="hero" ref={carruselRef}>
         {juegos.map((juego) => (
           <div key={juego.id} className="hero-card">
+            
+            {/* IMAGEN */}
             <img src={juego.imagen} alt={juego.nombre} />
+
+            {/* NOMBRE */}
             <h2>{juego.nombre}</h2>
 
-            <p
-              className={`metacritic ${
-                juego.metacritic > 85
-                  ? "alto"
-                  : juego.metacritic >= 70
+            {/* METACRITIC */}
+            {juego.metacritic > 0 && (
+              <p
+                className={`metacritic ${
+                  juego.metacritic > 85
+                    ? "alto"
+                    : juego.metacritic >= 70
                     ? "medio"
                     : "bajo"
-              }`}
-            >
-              {juego.metacritic}
-            </p>
+                }`}
+              >
+                {juego.metacritic}
+              </p>
+            )}
 
+            {/* PLATAFORMAS */}
             <div className="plataformas">
               {juego.plataformas?.map((p, i) => {
                 const icono = getIcono(p);
@@ -73,6 +86,7 @@ const MejoresJuegos = () => {
                 return <span key={i}>{icono}</span>;
               })}
             </div>
+
           </div>
         ))}
       </div>

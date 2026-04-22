@@ -2,7 +2,7 @@ const rawgService = require("../services/rawgService");
 const ofertasService = require("../services/ofertasService");
 const tiendas = require("../utils/tiendas");
 
-//conbina datos de las ofertas con los juegos
+//combina datos de las ofertas con los juegos
 const buscarCompleto = async (query) => {
   //buscar en rawg
   const juegos = await rawgService.buscarGames(query);

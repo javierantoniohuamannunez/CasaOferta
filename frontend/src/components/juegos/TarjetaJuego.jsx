@@ -2,6 +2,8 @@ import { obtenerNombreTienda } from "../../utils/tiendas";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
 
 const TarjetaJuego = ({ juego }) => {
+
+
   const getIcono = (plataforma) => {
     if (plataforma.includes("PC")) return <FaWindows />;
     if (plataforma.includes("PlayStation")) return <FaPlaystation />;

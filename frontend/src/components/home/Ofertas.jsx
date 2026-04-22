@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import GridJuegos from "../juegos/GridJuegos";
 import { obtenerTopOfertas } from "../../services/api";
 
 const MejoresOfertas = () => {
@@ -12,7 +11,6 @@ const MejoresOfertas = () => {
 
     const cargar = async () => {
       try {
-        // volver a cargar para evitar baneo
         const cache = localStorage.getItem("ofertas");
         if (cache) {
           setJuegos(JSON.parse(cache));
@@ -29,7 +27,8 @@ const MejoresOfertas = () => {
             id: j.id,
             nombre: j.nombre,
             imagen:
-              j.imagen || "https://via.placeholder.com/300x150?text=No+Image", // fallback
+              j.imagen ||
+              "https://via.placeholder.com/300x150?text=No+Image",
             metacritic: j.metacritic ?? 0,
             precio: j.precio,
             descuento: j.descuento,
@@ -37,20 +36,14 @@ const MejoresOfertas = () => {
           }));
 
         setJuegos(juegosFormateados);
-
-        // guardar en cache para evitar baneo
         localStorage.setItem("ofertas", JSON.stringify(juegosFormateados));
 
         setError(null);
       } catch (err) {
         console.log("Error:", err);
-        if (!cancelado) {
-          setError("No se pudieron cargar las ofertas.");
-        }
+        if (!cancelado) setError("No se pudieron cargar las ofertas.");
       } finally {
-        if (!cancelado) {
-          setCargando(false);
-        }
+        if (!cancelado) setCargando(false);
       }
     };
 
@@ -61,16 +54,36 @@ const MejoresOfertas = () => {
     };
   }, []);
 
-  if (cargando) {
-    <p>Cargando ofertas...</p>;
-  }
-  if (error) {
-    <p>{error}</p>;
-  }
+  if (cargando) return <p>Cargando ofertas...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <div className="mejores-ofertas">
       <h2 className="titulo-seccion">Mejores Ofertas</h2>
-      <GridJuegos juegos={juegos} />
+
+      <div className="grid-juegos">
+        {juegos.map((juego) => (
+          <div key={juego.id} className="hero-card">
+            <img src={juego.imagen} alt={juego.nombre} />
+            <h2>{juego.nombre}</h2>
+
+            {juego.metacritic > 0 && (
+              <p className="metacritic">{juego.metacritic}</p>
+            )}
+
+            <div className="precio">
+              {juego.descuento && (
+                <span className="descuento">
+                  -{Math.round(juego.descuento)}%
+                </span>
+              )}
+              <span className="precio-final">
+                {juego.precio}€
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
