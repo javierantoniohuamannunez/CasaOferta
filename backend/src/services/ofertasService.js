@@ -1,31 +1,60 @@
 const axios = require("axios");
 
-// Buscar ofertas de videojuegos
+const obtenerTopOfertas = async () => {
+  try {
+    const tiendas = ["1", "11", "2"]; // Steam, Humble, GMG
 
-const obtenerOfertas = async () => {
-  const response = await axios.get("https://www.cheapshark.com/api/1.0/deals", {
-    params: {
-      pageSize: 20,
-      sortBy: "Savings",
-      desc: 1,
-    },
-    headers: {
-      "User-Agent": "MiAppComparadorJuegos/1.0",
-    },
-  });
+    const resultados = await Promise.all(
+      tiendas.map(async (storeID) => {
+        const response = await axios.get(
+          "https://www.cheapshark.com/api/1.0/deals",
+          {
+            params: {
+              storeID,
+              pageSize: 10,
+              sortBy: "Deal Rating",
+              desc: 1,
+            },
+          }
+        );
 
-  return response.data;
+        return response.data.slice(0, 2).map((juego) => ({
+          id: juego.dealID,
+          nombre: juego.title,
+          imagen: juego.thumb,
+          precio: juego.salePrice,
+          descuento: juego.savings,
+          tienda: juego.storeID,
+        }));
+      })
+    );
+
+    return resultados.flat();
+  } catch (error) {
+    console.log("Error ofertas:", error.message);
+    return [];
+  }
 };
 const buscarOfertas = async (nombre) => {
-  const response = await axios.get("https://www.cheapshark.com/api/1.0/deals", {
-    params: {
-      title: nombre,
-      pageSize: 5,
-    },
-    headers: {
-      "User-Agent": "MiAppComparadorJuegos/1.0",
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.get(
+      "https://www.cheapshark.com/api/1.0/deals",
+      {
+        params: {
+          title: nombre,
+          pageSize: 5,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log("Error buscarOfertas:", error.message);
+    return [];
+  }
 };
-module.exports = {obtenerOfertas,buscarOfertas};
+
+module.exports = {
+  obtenerTopOfertas,
+  buscarOfertas, 
+};

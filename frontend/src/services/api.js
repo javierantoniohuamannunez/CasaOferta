@@ -10,6 +10,6 @@ export const buscarJuegos = async (query) => {
 };
 
 export const obtenerTopOfertas = async () => {
-  const response = await fetch(`${API_URL}/games/top-ofertas`);
+  const response = await fetch(`${API_URL}/ofertas/top-ofertas`);
   return response.json();
 };

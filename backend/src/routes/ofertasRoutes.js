@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const { getOfertas } = require('../controllers/ofertasController');
+const { getTopOfertas } = require('../controllers/ofertasController');
 
 // GET ofertas
-router.get('/', getOfertas);
+router.get("/top-ofertas", getTopOfertas);
+
 
 module.exports = router;
