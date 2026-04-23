@@ -60,7 +60,7 @@ const getTopOfertas = async (req, res, next) => {
 
         if (ofertas && ofertas.length > 0) {
           mejor = ofertas.sort(
-            (a, b) => parseFloat(a.salePrice) - parseFloat(b.salePrice)
+            (a, b) => parseFloat(a.salePrice) - parseFloat(b.salePrice),
           )[0];
         }
 
@@ -75,19 +75,55 @@ const getTopOfertas = async (req, res, next) => {
           descuento: Math.round(parseFloat(mejor.savings)),
           tienda: mejor.storeID,
         });
-
       } catch (error) {
         console.log("error precio:", error.message);
       }
 
       // evitar ban
-      await new Promise(res => setTimeout(res, 500));
+      await new Promise((res) => setTimeout(res, 500));
     }
 
     res.json(resultado);
-
   } catch (error) {
     next(error);
   }
 };
-module.exports = { getGames, getGameById, getTopGames, getTopOfertas };
+const getJuegosPorGenero = async (req, res, next) => {
+  try {
+    const { genero } = req.query;
+    const juegos = await rawgService.obtenerJuegosPorGenero(genero);
+    const formateados = juegos.map((j) => ({
+      id: j.id,
+      nombre: j.name,
+      imagen: j.background_image,
+      metacritic: j.metacritic ?? 0,
+      plataformas: j.platforms ? j.platforms.map((p) => p.platform.name) : [],
+    }));
+
+    res.json(formateados);
+  } catch (error) {
+    next(error);
+  }
+};
+const getCategorias = async (req, res, next) => {
+  
+  try {
+    const categorias = await rawgService.obtenerCategorias();
+    const formateados = categorias.slice(0,10).map((c) => ({
+      id: c.id,
+      nombre: c.name,
+      imagen: c.image_background,
+    }));
+    res.json(formateados);
+  } catch (error) {
+    next(error);
+  }
+};
+module.exports = {
+  getGames,
+  getGameById,
+  getTopGames,
+  getTopOfertas,
+  getJuegosPorGenero,
+  getCategorias,
+};

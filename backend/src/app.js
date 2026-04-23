@@ -12,7 +12,6 @@ const busquedaRoutes = require("./routes/busquedaRoutes");
 const notFound = require("../middlewares/notFound");
 const handleErrors = require("../middlewares/handleErrors");
 
-// Nota (2026-04-15): ruta simplificada; este archivo ya vive en `src/`.
 const sequelize = require("./config/db");
 const favoritoRoutes = require("./routes/favoritosRoutes");
 

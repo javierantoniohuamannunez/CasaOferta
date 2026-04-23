@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
+import { obtenerJuegosPorGenero } from "../../services/api";
 
-const Resultados = ({ busqueda }) => {
+const ResultadosGenero = ({ categoria }) => {
   const [juegos, setJuegos] = useState([]);
 
   useEffect(() => {
-    if (!busqueda) return;
+    if (!categoria) return;
 
-    fetch(`http://localhost:3000/games?buscar=${busqueda}`)
-      .then((res) => res.json())
-      .then((data) => setJuegos(data))
-      .catch((error) => {
-        console.error("Error al buscar juegos:", error);
+    const cargar = async () => {
+      try {
+        const data = await obtenerJuegosPorGenero(categoria.id);
+        setJuegos(data);
+      } catch (error) {
+        console.error("Error al cargar juegos por género:", error);
         setJuegos([]);
-      });
-  }, [busqueda]);
+      }
+    };
+
+    cargar();
+  }, [categoria]);
 
   const getIcono = (plataforma) => {
     if (plataforma.includes("PC")) return <FaWindows />;
@@ -24,27 +29,17 @@ const Resultados = ({ busqueda }) => {
     return null;
   };
 
-  const juegosFormateados = juegos.map((j) => ({
-    id: j.id,
-    nombre: j.name,
-    imagen: j.background_image || "https://via.placeholder.com/300x150",
-    metacritic: j.metacritic ?? 0,
-    plataformas: j.platforms
-      ? j.platforms.map((p) => p.platform.name)
-      : [],
-  }));
-
   return (
     <div>
       <h2 className="titulo-seccion">
-        Resultados para: {busqueda}
+        Categoría: {categoria?.nombre}
       </h2>
 
       {juegos.length === 0 ? (
         <p style={{ padding: "20px" }}>No hay resultados</p>
       ) : (
         <div className="grid-juegos">
-          {juegosFormateados.map((juego) => (
+          {juegos.map((juego) => (
             <div key={juego.id} className="hero-card">
               
               <img src={juego.imagen} alt={juego.nombre} />
@@ -66,7 +61,7 @@ const Resultados = ({ busqueda }) => {
               )}
 
               <div className="plataformas">
-                {juego.plataformas.map((p, i) => {
+                {juego.plataformas?.map((p, i) => {
                   const icono = getIcono(p);
                   if (!icono) return null;
                   return <span key={i}>{icono}</span>;
@@ -81,4 +76,4 @@ const Resultados = ({ busqueda }) => {
   );
 };
 
-export default Resultados;
+export default ResultadosGenero;

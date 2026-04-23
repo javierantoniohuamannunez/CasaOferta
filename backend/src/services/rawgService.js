@@ -2,6 +2,18 @@ const axios = require("axios");
 
 const API_KEY = process.env.RAWG_API_KEY;
 
+//categorias
+const obtenerJuegosPorGenero = async (generoId) => {
+  const response = await axios.get("https://api.rawg.io/api/games", {
+    params: {
+      key: API_KEY,
+      genres: generoId,
+      page_size: 12,
+    },
+  });
+
+  return response.data.results;
+};
 // Buscar juegos
 const buscarGames = async (query) => {
   const response = await axios.get("https://api.rawg.io/api/games", {
@@ -47,6 +59,14 @@ const obtenerJuegosTop = async () => {
     return [];
   }
 };
+const obtenerCategorias = async () => {
+  const response = await axios.get("https://api.rawg.io/api/genres", {
+    params: {
+      key: API_KEY,
+    },
+  });
 
-module.exports = { buscarGames, obtenerJuegoPorId, obtenerJuegosTop };
+  return response.data.results;
+};
+module.exports = { buscarGames, obtenerJuegoPorId, obtenerJuegosTop, obtenerJuegosPorGenero ,obtenerCategorias};
 // modificar caso de uso, agregar mas modelos que me falta usuario evento, alerta, favorito, notificacion

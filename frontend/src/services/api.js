@@ -13,3 +13,15 @@ export const obtenerTopOfertas = async () => {
   const response = await fetch(`${API_URL}/ofertas/top-ofertas`);
   return response.json();
 };
+
+export const obtenerCategorias = async () => {
+  const response = await fetch(`${API_URL}/games/categorias`);
+  return response.json();
+};
+
+export const obtenerJuegosPorGenero = async (generoId) => {
+  const response = await fetch(
+    `${API_URL}/games/por-genero?genero=${generoId}`
+  );
+  return response.json();
+};
