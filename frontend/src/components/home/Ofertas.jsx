@@ -30,21 +30,21 @@ const MejoresOfertas = () => {
 
   const agruparPorTienda = (juegos) => {
     const tiendasValidas = ["1", "11", "2"];
-    const tiendas = {};
+    const resultado = {};
 
     juegos.forEach((juego) => {
       if (!tiendasValidas.includes(juego.tienda)) return;
 
-      if (!tiendas[juego.tienda]) {
-        tiendas[juego.tienda] = [];
+      if (!resultado[juego.tienda]) {
+        resultado[juego.tienda] = [];
       }
 
-      if (tiendas[juego.tienda].length < 2) {
-        tiendas[juego.tienda].push(juego);
+      if (resultado[juego.tienda].length < 2) {
+        resultado[juego.tienda].push(juego);
       }
     });
 
-    return Object.entries(tiendas);
+    return Object.entries(resultado);
   };
 
   if (cargando) {
@@ -77,8 +77,32 @@ const MejoresOfertas = () => {
                 <div className="oferta-info">
                   <p className="nombre">{juego.nombre}</p>
 
+                  <div className="extra-info">
+                    {juego.metacritic > 0 && (
+                      <span
+                        className={`metacritic small ${
+                          juego.metacritic > 85
+                            ? "alto"
+                            : juego.metacritic >= 70
+                              ? "medio"
+                              : "bajo"
+                        }`}
+                      >
+                        {juego.metacritic}
+                      </span>
+                    )}
+
+                    {juego.rating && (
+                      <span className="steam-rating">
+                        Metacritic: {juego.rating}%
+                      </span>
+                    )}
+                  </div>
+
                   <div className="precios">
-                    <span className="precio">{juego.precio}€</span>
+                    <span className="precio">
+                      {Number(juego.precio).toFixed(2)}€
+                    </span>
 
                     {juego.descuento && (
                       <span className="descuento">

@@ -3,6 +3,7 @@ import MejoresJuegos from "../components/home/MejoresJuegos";
 import Header from "../components/home/Header";
 import Resultados from "../components/home/Resultados";
 import MejoresOfertas from "../components/home/Ofertas";
+import Categorias from "../components/home/Categorias";
 const Home = () => {
   const [busqueda, setBusqueda] = useState("");
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <Header onBuscar={setBusqueda} />
       {busqueda === "" ? (
         <>
+        <Categorias/>
         <MejoresOfertas />
 
          <MejoresJuegos />

@@ -25,6 +25,8 @@ const obtenerTopOfertas = async () => {
           precio: juego.salePrice,
           descuento: juego.savings,
           tienda: juego.storeID,
+          metacritic: Number(juego.metacriticScore),
+          rating :juego.steamRatingPercent,
         }));
       })
     );
