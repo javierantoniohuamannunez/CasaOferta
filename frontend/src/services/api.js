@@ -25,3 +25,8 @@ export const obtenerJuegosPorGenero = async (generoId) => {
   );
   return response.json();
 };
+
+export const obtenerJuegoPorId = async (id) => {
+  const response = await fetch(`${API_URL}/games/${id}`);
+  return response.json();
+};

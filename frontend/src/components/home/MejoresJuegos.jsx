@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const MejoresJuegos = () => {
   const [juegos, setJuegos] = useState([]);
   const carruselRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3000/games/top")
@@ -52,23 +54,33 @@ const MejoresJuegos = () => {
 
       <div className="hero" ref={carruselRef}>
         {juegos.map((juego) => (
-          <div key={juego.id} className="hero-card">
+          <div
+            key={juego.id}
+            className="hero-card"
+            onClick={() => navigate(`/juego/${juego.id}`)}
+            style={{ cursor: "pointer" }}
+          >
             <img src={juego.imagen} alt={juego.nombre} />
+
             <h2>{juego.nombre}</h2>
-            Metacritic:{" "}
+
             {juego.metacritic > 0 && (
-              <p
-                className={`metacritic ${
-                  juego.metacritic > 85
-                    ? "alto"
-                    : juego.metacritic >= 70
-                      ? "medio"
-                      : "bajo"
-                }`}
-              >
-                {juego.metacritic}
-              </p>
+              <div className="info">
+                <span>Metacritic:</span>
+                <span
+                  className={`meta ${
+                    juego.metacritic > 85
+                      ? "alto"
+                      : juego.metacritic >= 70
+                        ? "medio"
+                        : "bajo"
+                  }`}
+                >
+                  {juego.metacritic}
+                </span>
+              </div>
             )}
+
             <div className="plataformas">
               {juego.plataformas?.map((p, i) => {
                 const icono = getIcono(p);

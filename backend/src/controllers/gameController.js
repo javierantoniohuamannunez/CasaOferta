@@ -20,17 +20,19 @@ const getGames = async (req, res, next) => {
   }
 };
 // Obtener detalle de juego
-const getGameById = async (req, res, next) => {
+const getJuegoPorId = async (req, res, next) => {
   try {
     const { id } = req.params;
 
     const juego = await rawgService.obtenerJuegoPorId(id);
 
     res.json({
+      id: juego.id,
       nombre: juego.name,
       descripcion: juego.description_raw,
       imagen: juego.background_image,
       rating: juego.rating,
+      metacritic: juego.metacritic,
       generos: juego.genres.map((g) => g.name),
     });
   } catch (error) {
@@ -106,10 +108,9 @@ const getJuegosPorGenero = async (req, res, next) => {
   }
 };
 const getCategorias = async (req, res, next) => {
-  
   try {
     const categorias = await rawgService.obtenerCategorias();
-    const formateados = categorias.slice(0,10).map((c) => ({
+    const formateados = categorias.slice(0, 10).map((c) => ({
       id: c.id,
       nombre: c.name,
       imagen: c.image_background,
@@ -121,7 +122,7 @@ const getCategorias = async (req, res, next) => {
 };
 module.exports = {
   getGames,
-  getGameById,
+  getJuegoPorId,
   getTopGames,
   getTopOfertas,
   getJuegosPorGenero,
