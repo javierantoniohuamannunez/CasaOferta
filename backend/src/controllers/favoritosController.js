@@ -3,14 +3,14 @@ const Favorito = require("../models/Favorito");
 //se crea un favorito
 const crearFavorito = async (req, res) => {
   try {
-    const {juegoId}=req.body;
-    const existe= await Favorito.findOne({where:{juegoId}});
-if(existe){
-  return res.status(400).json({
-    ok: false,
-    error: "El juego ya esta en tu lista de favoritos"
-  });
-}
+    const { juegoId } = req.body;
+    const existe = await Favorito.findOne({ where: { juegoId } });
+    if (existe) {
+      return res.status(400).json({
+        ok: false,
+        error: "El juego ya esta en tu lista de favoritos",
+      });
+    }
     const favorito = await Favorito.create(req.body);
     res.json(favorito);
   } catch (error) {
@@ -38,8 +38,8 @@ const eliminarFavorito = async (req, res) => {
     res.status(500).json(error);
   }
 };
-module.exports={
-    crearFavorito,
-    obtenerFavoritos,
-    eliminarFavorito
-}
+module.exports = {
+  crearFavorito,
+  obtenerFavoritos,
+  eliminarFavorito,
+};

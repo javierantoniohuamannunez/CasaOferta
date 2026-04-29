@@ -2,6 +2,18 @@ const axios = require("axios");
 
 const API_KEY = process.env.RAWG_API_KEY;
 
+const filtrarJuegos = (juegos) => {
+  return juegos.filter((juego) => {
+    return (
+      juego.background_image &&
+      juego.metacritic !== null &&
+      juego.metacritic > 50 &&
+      !juego.name.toLowerCase().includes("demo") &&
+      !juego.name.toLowerCase().includes("fan") &&
+      !juego.name.toLowerCase().includes("test")
+    );
+  });
+};
 //categorias
 const obtenerJuegosPorGenero = async (generoId) => {
   const response = await axios.get("https://api.rawg.io/api/games", {
@@ -20,10 +32,17 @@ const buscarGames = async (query) => {
     params: {
       key: API_KEY,
       search: query,
+      search_precise: true, 
+      page_size: 20,
+      ordering: "-metacritic", 
     },
   });
 
-  return response.data.results;
+  let juegos = response.data.results;
+
+  juegos = filtrarJuegos(juegos);
+
+  return juegos;
 };
 const obtenerJuegoPorId = async (id) => {
   const response = await axios.get(`https://api.rawg.io/api/games/${id}`, {

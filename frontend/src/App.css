@@ -221,25 +221,32 @@ body {
   transform: scale(1.2);
 }
 
-.precio {
+.precios {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 10px;
+  gap: 10px;
+}
+
+.precio-original {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 14px;
+}
+
+.precio-oferta {
+  color: #00ff88;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .descuento {
-  background: #22c55e;
-  color: black;
-  font-size: 12px;
-  padding: 3px 6px;
+  background: #00ff88;
+  color: #000;
+  padding: 2px 6px;
   border-radius: 5px;
-  font-weight: bold;
+  font-size: 12px;
 }
 
-.precio-final {
-  font-weight: bold;
-}
 
 .grid-juegos {
   display: grid;

@@ -11,24 +11,31 @@ const obtenerTopOfertas = async () => {
           {
             params: {
               storeID,
-              pageSize: 10,
-              sortBy: "Deal Rating",
-              desc: 1,
+              pageSize: 60,
+              sortBy: "DealRating",
+              desc: 1, 
+              onSale: 1, // solo ofertas reales
+              steamRating: 80, // calidad mínima
+              steamRatingCount: 500, // evita juegos basura
+              metacritic: 70, // calidad general
+              upperPrice: 30, // evita precios absurdos
+              
             },
-          }
+          },
         );
 
         return response.data.slice(0, 2).map((juego) => ({
           id: juego.dealID,
           nombre: juego.title,
           imagen: juego.thumb,
-          precio: juego.salePrice,
+          precio: Number(juego.salePrice),
+          precioOriginal: Number(juego.normalPrice),
           descuento: juego.savings,
           tienda: juego.storeID,
           metacritic: Number(juego.metacriticScore),
-          rating :juego.steamRatingPercent,
+          rating: juego.steamRatingPercent,
         }));
-      })
+      }),
     );
 
     return resultados.flat();
@@ -46,7 +53,7 @@ const buscarOfertas = async (nombre) => {
           title: nombre,
           pageSize: 5,
         },
-      }
+      },
     );
 
     return response.data;
@@ -58,5 +65,5 @@ const buscarOfertas = async (nombre) => {
 
 module.exports = {
   obtenerTopOfertas,
-  buscarOfertas, 
+  buscarOfertas,
 };

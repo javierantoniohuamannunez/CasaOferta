@@ -100,8 +100,14 @@ const MejoresOfertas = () => {
                   </div>
 
                   <div className="precios">
-                    <span className="precio">
-                      {Number(juego.precio).toFixed(2)}€
+                    {juego.precioOriginal !=null && (
+                      <span className="precio-original">
+                        {juego.precioOriginal.toFixed(2)}€
+                      </span>
+                    )}
+
+                    <span className="precio-oferta">
+                      {juego.precio.toFixed(2)}€
                     </span>
 
                     {juego.descuento && (

@@ -68,7 +68,7 @@ const MejoresJuegos = () => {
               <div className="info">
                 <span>Metacritic:</span>
                 <span
-                  className={`meta ${
+                  className={`metacritic ${
                     juego.metacritic > 85
                       ? "alto"
                       : juego.metacritic >= 70
