@@ -1,17 +1,23 @@
 import { useEffect, useState, useRef } from "react";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
+import { obtenerJuegosTop } from "../../services/api";
 const MejoresJuegos = () => {
   const [juegos, setJuegos] = useState([]);
   const carruselRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/games/top")
-      .then((res) => res.json())
-      .then((data) => setJuegos(data))
-      .catch((err) => console.log("Error:", err));
+    const cargar = async () => {
+      try {
+        const data = await obtenerJuegosTop();
+        setJuegos(data);
+      } catch (error) {
+        console.log("Error:", error);
+      }
+    };
+
+    cargar();
   }, []);
 
   const getIcono = (plataforma) => {

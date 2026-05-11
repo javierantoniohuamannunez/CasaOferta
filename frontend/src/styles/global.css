@@ -1,0 +1,19 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #020617;
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+.container {
+  padding: 20px 40px;
+}
+
+a {
+  text-decoration: none;
+}

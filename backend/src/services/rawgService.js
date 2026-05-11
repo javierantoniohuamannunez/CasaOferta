@@ -61,10 +61,13 @@ const obtenerJuegosTop = async () => {
         key: API_KEY,
         page_size: 20,
         ordering: "-added", //ordering: "-metacritic" mejor calificado
-        parent_platforms:"1",
+        //parent_platforms:"1",
       },
     });
-
+    if (!response.data.results.length) {
+      console.log("RAWG vacío");
+      return [];
+    }
     return response.data.results.map((juego) => ({
       id: juego.id,
       nombre: juego.name,
@@ -79,13 +82,18 @@ const obtenerJuegosTop = async () => {
   }
 };
 const obtenerCategorias = async () => {
-  const response = await axios.get("https://api.rawg.io/api/genres", {
+  try{
+const response = await axios.get("https://api.rawg.io/api/genres", {
     params: {
       key: API_KEY,
     },
   });
-
   return response.data.results;
+  }catch (error) {
+    console.log("Error RAWG:", error.message);
+    return [];
+  }
 };
+  
 module.exports = { buscarGames, obtenerJuegoPorId, obtenerJuegosTop, obtenerJuegosPorGenero ,obtenerCategorias};
 // modificar caso de uso, agregar mas modelos que me falta usuario evento, alerta, favorito, notificacion

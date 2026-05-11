@@ -1,10 +1,10 @@
-import { React, useState } from "react";
-import MejoresJuegos from "../components/home/MejoresJuegos";
-import Header from "../components/home/Header";
-import Resultados from "../components/home/Resultados";
-import MejoresOfertas from "../components/home/Ofertas";
-import Categorias from "../components/home/Categorias";
-import ResultadosGenero from "../components/home/ResultadosGenero";
+import { useState } from "react";
+import MejoresJuegos from "../components/hero/MejoresJuegos";
+import Header from "../components/header/Header";
+import Resultados from "../components/resultados/Resultados";
+import ResultadosGenero from "../components/resultados/ResultadosGenero";
+import MejoresOfertas from "../components/ofertas/Ofertas";
+import Categorias from "../components/categorias/Categorias";
 const Home = () => {
   const [busqueda, setBusqueda] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");

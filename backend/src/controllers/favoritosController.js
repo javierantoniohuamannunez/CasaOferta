@@ -1,43 +1,63 @@
 const Favorito = require("../models/Favorito");
+const Usuario = require("../models/Usuario");
 
-//se crea un favorito
+// crear favorito
 const crearFavorito = async (req, res) => {
   try {
+    const usuarioId = req.user.id;
     const { juegoId } = req.body;
-    const existe = await Favorito.findOne({ where: { juegoId } });
+
+    const existe = await Favorito.findOne({
+      where: { usuarioId, juegoId },
+    });
+
     if (existe) {
       return res.status(400).json({
         ok: false,
-        error: "El juego ya esta en tu lista de favoritos",
+        error: "Ya está en favoritos",
       });
     }
-    const favorito = await Favorito.create(req.body);
+
+    const favorito = await Favorito.create({
+      usuarioId,
+      juegoId,
+    });
+
     res.json(favorito);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
-//obtener favoritos
 const obtenerFavoritos = async (req, res) => {
   try {
-    const favoritos = await Favorito.findAll();
+    const usuarioId = req.user.id;
+
+    const favoritos = await Favorito.findAll({
+      where: { usuarioId },
+      include: Usuario,
+    });
+
     res.json(favoritos);
   } catch (error) {
     res.status(500).json(error);
   }
 };
-
-//elimina favorito
 const eliminarFavorito = async (req, res) => {
   try {
-    const { id } = req.params;
-    await Favorito.destroy({ where: { id } });
+    const usuarioId = req.user.id;
+    const { juegoId } = req.params;
+
+    await Favorito.destroy({
+      where: { usuarioId, juegoId },
+    });
+
     res.json({ ok: true });
   } catch (error) {
     res.status(500).json(error);
   }
 };
+
 module.exports = {
   crearFavorito,
   obtenerFavoritos,

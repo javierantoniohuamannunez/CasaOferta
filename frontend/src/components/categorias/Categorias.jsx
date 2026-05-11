@@ -1,3 +1,4 @@
+import "./categorias.css";
 import { useEffect, useState } from "react";
 import { obtenerCategorias } from "../../services/api";
 const Categorias = ({ onCategoriaClick }) => {

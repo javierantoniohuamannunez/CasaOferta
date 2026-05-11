@@ -1,3 +1,4 @@
+import "./ofertas.css";
 import { useEffect, useState } from "react";
 import { obtenerTopOfertas } from "../../services/api";
 import { obtenerNombreTienda } from "../../utils/tiendas";

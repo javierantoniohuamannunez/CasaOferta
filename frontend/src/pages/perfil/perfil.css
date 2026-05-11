@@ -1,0 +1,78 @@
+.perfil-page {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.perfil-card {
+  background: #0f172a;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.perfil-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.perfil-card h1 {
+  margin-bottom: 10px;
+}
+
+.perfil-email {
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+
+.perfil-info {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.perfil-box {
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 14px;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.perfil-box span {
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.perfil-box strong {
+  font-size: 18px;
+}
+
+.favoritos-section {
+  margin-top: 40px;
+}
+
+.favoritos-section h2 {
+  margin-bottom: 20px;
+}
+
+.favoritos-vacio {
+  background: #0f172a;
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  color: #94a3b8;
+}

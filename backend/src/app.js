@@ -4,40 +4,51 @@ const cors = require("cors");
 
 const app = express();
 
+const sequelize = require("./config/db");
+
+// modelos
+// require("./models/Usuario");
+// require("./models/Favorito");
+require("./models");
+// rutas
 const gameRoutes = require("./routes/gameRoutes");
 const ofertasRoutes = require("./routes/ofertasRoutes");
-
 const busquedaRoutes = require("./routes/busquedaRoutes");
+const favoritoRoutes = require("./routes/favoritosRoutes");
+const authRoutes = require("./routes/authRoutes");
 
+// middlewares
 const notFound = require("../middlewares/notFound");
 const handleErrors = require("../middlewares/handleErrors");
-
-const sequelize = require("./config/db");
-const favoritoRoutes = require("./routes/favoritosRoutes");
 
 app.use(cors());
 app.use(express.json());
 
+// rutas
 app.use("/games", gameRoutes);
 app.use("/ofertas", ofertasRoutes);
-
 app.use("/busqueda", busquedaRoutes);
-
 app.use("/favoritos", favoritoRoutes);
-app.get("/", (request, response) => {
-  response.send("api funcionando");
+app.use("/auth", authRoutes);
+
+app.get("/", (req, res) => {
+  res.send("api funcionando");
 });
 
-// middlewares
+// ERRORES
 app.use(notFound);
 app.use(handleErrors);
 
+// prender servidor y db
 const PORT = process.env.PORT || 3000;
 
-sequelize.sync()
-  .then(() => console.log("Base de datos conectada"))
-  .catch(err => console.error(err));
+sequelize
+  .sync({ alter: true })
+  .then(() => {
+    console.log("Base de datos conectada");
 
-app.listen(PORT, () => {
-  console.log(`servidor funcionando en el puerto ${PORT}`);
-});
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Servidor funcionando en el puerto ${PORT}`);
+    });
+  })
+  .catch((err) => console.error(err));

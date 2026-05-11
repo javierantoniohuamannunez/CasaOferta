@@ -30,3 +30,7 @@ export const obtenerJuegoPorId = async (id) => {
   const response = await fetch(`${API_URL}/games/${id}`);
   return response.json();
 };
+export const obtenerJuegosTop = async () => {
+  const response = await fetch(`${API_URL}/games/top`);
+  return response.json();
+};

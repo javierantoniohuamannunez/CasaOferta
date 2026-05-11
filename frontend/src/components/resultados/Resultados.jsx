@@ -1,50 +1,63 @@
 import { useEffect, useState } from "react";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
-import { obtenerJuegosPorGenero } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { buscarJuegos } from "../../services/api";
+import "./resultados.css";
 
-const ResultadosGenero = ({ categoria }) => {
+const Resultados = ({ busqueda }) => {
   const [juegos, setJuegos] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!categoria) return;
+    if (!busqueda) return;
 
     const cargar = async () => {
       try {
-        const data = await obtenerJuegosPorGenero(categoria.id);
+        const data = await buscarJuegos(busqueda);
+
         setJuegos(data);
       } catch (error) {
-        console.error("Error al cargar juegos por género:", error);
+        console.error("Error al buscar juegos:", error);
         setJuegos([]);
       }
     };
 
     cargar();
-  }, [categoria]);
+  }, [busqueda]);
 
   const getIcono = (plataforma) => {
     if (plataforma.includes("PC")) return <FaWindows />;
     if (plataforma.includes("PlayStation")) return <FaPlaystation />;
     if (plataforma.includes("Xbox")) return <FaXbox />;
     if (plataforma.includes("Linux")) return <FaLinux />;
+
     return null;
   };
 
+  const juegosFormateados = juegos.map((j) => ({
+    id: j.id,
+    nombre: j.name,
+    imagen: j.background_image || "https://via.placeholder.com/300x150",
+
+    metacritic: j.metacritic ?? 0,
+
+    plataformas: j.platforms ? j.platforms.map((p) => p.platform.name) : [],
+  }));
+
   return (
-    <div>
-      <h2 className="titulo-seccion">Categoría: {categoria?.nombre}</h2>
+    <div className="resultados-container">
+      <h2 className="titulo-seccion">Resultados para: {busqueda}</h2>
 
       {juegos.length === 0 ? (
-        <p style={{ padding: "20px" }}>No hay resultados</p>
+        <p className="no-resultados">No hay resultados</p>
       ) : (
         <div className="grid-juegos">
-          {juegos.map((juego) => (
+          {juegosFormateados.map((juego) => (
             <div
               key={juego.id}
               className="hero-card"
               onClick={() => navigate(`/juego/${juego.id}`)}
-              style={{ cursor: "pointer" }}
             >
               <img src={juego.imagen} alt={juego.nombre} />
 
@@ -53,6 +66,7 @@ const ResultadosGenero = ({ categoria }) => {
               {juego.metacritic > 0 && (
                 <div className="info">
                   <span>Metacritic:</span>
+
                   <span
                     className={`metacritic ${
                       juego.metacritic > 85
@@ -68,9 +82,11 @@ const ResultadosGenero = ({ categoria }) => {
               )}
 
               <div className="plataformas">
-                {juego.plataformas?.map((p, i) => {
+                {juego.plataformas.map((p, i) => {
                   const icono = getIcono(p);
+
                   if (!icono) return null;
+
                   return <span key={i}>{icono}</span>;
                 })}
               </div>
@@ -82,4 +98,4 @@ const ResultadosGenero = ({ categoria }) => {
   );
 };
 
-export default ResultadosGenero;
+export default Resultados;

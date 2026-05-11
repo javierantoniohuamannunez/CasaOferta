@@ -1,0 +1,173 @@
+/* CONTENEDOR */
+.mejores-ofertas {
+  padding: 30px;
+}
+
+/* TITULO */
+.titulo-seccion {
+  font-size: 24px;
+  margin-bottom: 25px;
+}
+
+/* GRID */
+.tiendas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+}
+
+/* CARD TIENDA */
+.tienda-card {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 18px;
+  transition: 0.3s;
+}
+
+.tienda-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* NOMBRE TIENDA */
+.tienda-nombre {
+  font-size: 20px;
+  margin-bottom: 18px;
+  font-weight: bold;
+}
+
+/* ITEM */
+.oferta-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  padding: 10px;
+  border-radius: 10px;
+
+  margin-bottom: 14px;
+
+  transition: 0.25s;
+}
+
+.oferta-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* IMAGEN */
+.oferta-item img {
+  width: 90px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* INFO */
+.oferta-info {
+  flex: 1;
+}
+
+/* NOMBRE JUEGO */
+.nombre {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* EXTRA INFO */
+.extra-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 8px;
+}
+
+/* METACRITIC */
+.metacritic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 32px;
+  height: 24px;
+
+  padding: 0 6px;
+
+  border-radius: 6px;
+
+  font-size: 11px;
+  font-weight: bold;
+
+  border: 2px solid transparent;
+}
+
+.metacritic.alto {
+  color: #22c55e;
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.metacritic.medio {
+  color: #facc15;
+  border-color: #facc15;
+  background: rgba(250, 204, 21, 0.1);
+}
+
+.metacritic.bajo {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* RATING */
+.steam-rating {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+/* PRECIOS */
+.precios {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* PRECIO ORIGINAL */
+.precio-original {
+  text-decoration: line-through;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* PRECIO OFERTA */
+.precio-oferta {
+  color: #22c55e;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* DESCUENTO */
+.descuento {
+  background: #22c55e;
+  color: black;
+
+  padding: 3px 6px;
+  border-radius: 5px;
+
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .tiendas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .tiendas-grid {
+    grid-template-columns: 1fr;
+  }
+}

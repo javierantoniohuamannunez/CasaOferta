@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { obtenerJuegoPorId } from "../services/api";
+import { obtenerJuegoPorId } from "../../services/api";
 
 const DetalleJuego = () => {
   const { id } = useParams();

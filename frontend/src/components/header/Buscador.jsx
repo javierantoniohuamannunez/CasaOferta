@@ -1,3 +1,5 @@
+import "./header.css";
+
 import { useState } from "react";
 const Buscador = ({ onBuscar }) => {
   const [texto, setTexto] = useState("");

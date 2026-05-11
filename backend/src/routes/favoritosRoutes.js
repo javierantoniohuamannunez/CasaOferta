@@ -1,19 +1,16 @@
-const express= require ('express');
+const express = require("express");
 const router = express.Router();
 
 const {
-    obtenerFavoritos,
-    crearFavorito,
-    eliminarFavorito
-} = require('../controllers/favoritosController');
+  crearFavorito,
+  obtenerFavoritos,
+  eliminarFavorito,
+} = require("../controllers/favoritosController");
 
-// get favoritos
-router.get('/', obtenerFavoritos);
+const verificarToken = require("../../middlewares/auth"); 
 
-// post favoritos
-router.post('/', crearFavorito);
-
-// delete favoritos
-router.delete('/:id', eliminarFavorito);
+router.post("/", verificarToken, crearFavorito);
+router.get("/", verificarToken, obtenerFavoritos);
+router.delete("/:juegoId", verificarToken, eliminarFavorito);
 
 module.exports = router;
