@@ -32,9 +32,9 @@ const buscarGames = async (query) => {
     params: {
       key: API_KEY,
       search: query,
-      search_precise: true, 
+      search_precise: true,
       page_size: 20,
-      ordering: "-metacritic", 
+      ordering: "-metacritic",
     },
   });
 
@@ -45,13 +45,32 @@ const buscarGames = async (query) => {
   return juegos;
 };
 const obtenerJuegoPorId = async (id) => {
-  const response = await axios.get(`https://api.rawg.io/api/games/${id}`, {
-    params: {
-      key: API_KEY,
-    },
-  });
+  try {
+    const response = await axios.get(`https://api.rawg.io/api/games/${id}`, {
+      params: {
+        key: API_KEY,
+      },
+    });
+    const juego = response.data;
+    return {
+      id: juego.id,
+      nombre: juego.name,
+      imagen: juego.background_image,
+      descripcion: juego.description,
+      rating: juego.rating,
+      metacritic: juego.metacritic,
+      generos: juego.genres ? juego.genres.map((g) => g.name) : [],
 
-  return response.data;
+      plataformas: juego.platforms
+        ? juego.platforms.map((p) => p.platform.name)
+        : [],
+      released: juego.released,
+      website: juego.website,
+    };
+  } catch (error) {
+    console.log("Error RAWG:", error.message);
+    return null;
+  }
 };
 // se usa en hero no tocar
 const obtenerJuegosTop = async () => {
@@ -74,7 +93,7 @@ const obtenerJuegosTop = async () => {
       imagen: juego.background_image,
       rating: juego.rating,
       metacritic: juego.metacritic,
-      plataformas: juego.parent_platforms.map((p) => p.platform.name) ,
+      plataformas: juego.parent_platforms.map((p) => p.platform.name),
     }));
   } catch (error) {
     console.log("Error RAWG:", error.message);
@@ -82,18 +101,24 @@ const obtenerJuegosTop = async () => {
   }
 };
 const obtenerCategorias = async () => {
-  try{
-const response = await axios.get("https://api.rawg.io/api/genres", {
-    params: {
-      key: API_KEY,
-    },
-  });
-  return response.data.results;
-  }catch (error) {
+  try {
+    const response = await axios.get("https://api.rawg.io/api/genres", {
+      params: {
+        key: API_KEY,
+      },
+    });
+    return response.data.results;
+  } catch (error) {
     console.log("Error RAWG:", error.message);
     return [];
   }
 };
-  
-module.exports = { buscarGames, obtenerJuegoPorId, obtenerJuegosTop, obtenerJuegosPorGenero ,obtenerCategorias};
+
+module.exports = {
+  buscarGames,
+  obtenerJuegoPorId,
+  obtenerJuegosTop,
+  obtenerJuegosPorGenero,
+  obtenerCategorias,
+};
 // modificar caso de uso, agregar mas modelos que me falta usuario evento, alerta, favorito, notificacion

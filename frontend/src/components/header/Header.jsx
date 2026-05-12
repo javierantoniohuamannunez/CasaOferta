@@ -61,7 +61,7 @@ const Header = ({ onBuscar }) => {
 
       <nav className="nav">
         <a href="#">Inicio</a>
-        <a href="../destacados">Destacados</a>
+        <a href="">Destacados</a>
         <a href="#ofertas">Ofertas</a>
         <a href="#tiendas">Tiendas</a>
       </nav>

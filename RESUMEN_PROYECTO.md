@@ -670,3 +670,7 @@ Segun `report.md`, el frontend estaba apuntando a `http://localhost:3000`.
 El frontend esta hecho con React/Vite y permite buscar juegos, navegar por categorias, ver destacados y abrir una pantalla de detalle.  
 El backend expone endpoints REST con Express, consulta RAWG para informacion de juegos y CheapShark para precios/ofertas, y guarda favoritos en MySQL mediante Sequelize.  
 El proyecto ya tiene build del frontend generada, varios componentes funcionales, algunos placeholders vacios y un `report.md` con incidencias tecnicas previas.
+
+
+
+npm install jwt-decode

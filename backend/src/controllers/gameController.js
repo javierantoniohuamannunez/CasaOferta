@@ -26,15 +26,7 @@ const getJuegoPorId = async (req, res, next) => {
 
     const juego = await rawgService.obtenerJuegoPorId(id);
 
-    res.json({
-      id: juego.id,
-      nombre: juego.name,
-      descripcion: juego.description_raw,
-      imagen: juego.background_image,
-      rating: juego.rating,
-      metacritic: juego.metacritic,
-      generos: juego.genres.map((g) => g.name),
-    });
+  res.json(juego);
   } catch (error) {
     next(error);
   }

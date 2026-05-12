@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { obtenerJuegosTop } from "../../services/api";
+//import { FaHeart } from "react-icons/fa";
 const MejoresJuegos = () => {
   const [juegos, setJuegos] = useState([]);
   const carruselRef = useRef(null);
@@ -67,7 +68,15 @@ const MejoresJuegos = () => {
             style={{ cursor: "pointer" }}
           >
             <img src={juego.imagen} alt={juego.nombre} />
-
+            {/* <button
+              className="btn-favorito"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("favorito");
+              }}
+            >
+              <FaHeart />
+            </button> */}
             <h2>{juego.nombre}</h2>
 
             {juego.metacritic > 0 && (

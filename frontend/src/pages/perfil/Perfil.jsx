@@ -1,6 +1,41 @@
 import "./perfil.css";
+
+import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+
+import { obtenerFavoritos } from "../../services/auth";
+
 const Perfil = () => {
-  const token = localStorage.getItem("token");
+  const [usuario, setUsuario] = useState(null);
+  const [favoritos, setFavoritos] = useState([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    try {
+      const data = jwtDecode(token);
+
+      setUsuario(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const cargarFavoritos = async () => {
+      try {
+        const data = await obtenerFavoritos();
+
+        setFavoritos(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    cargarFavoritos();
+  }, []);
 
   return (
     <div className="perfil-page">
@@ -12,20 +47,18 @@ const Perfil = () => {
         <h1>Mi Perfil</h1>
 
         <p className="perfil-email">
-          Usuario logeado
+          {usuario?.email}
         </p>
 
         <div className="perfil-info">
           <div className="perfil-box">
             <span>Estado</span>
-            <strong>
-              {token ? "Conectado" : "Desconectado"}
-            </strong>
+            <strong>Conectado</strong>
           </div>
 
           <div className="perfil-box">
             <span>Favoritos</span>
-            <strong>0 juegos</strong>
+            <strong>{favoritos.length} juegos</strong>
           </div>
         </div>
       </div>
@@ -33,9 +66,27 @@ const Perfil = () => {
       <div className="favoritos-section">
         <h2>❤️ Juegos Favoritos</h2>
 
-        <div className="favoritos-vacio">
-          No tienes favoritos todavía
-        </div>
+        {favoritos.length === 0 ? (
+          <div className="favoritos-vacio">
+            No tienes favoritos todavía
+          </div>
+        ) : (
+          <div className="favoritos-grid">
+            {favoritos.map((juego) => (
+              <div
+                key={juego.id}
+                className="favorito-card"
+              >
+                <img
+                  src={juego.imagen}
+                  alt={juego.nombre}
+                />
+
+                <h3>{juego.nombre}</h3>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -1,9 +1,13 @@
+import "./detallejuego.css";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { obtenerJuegoPorId } from "../../services/api";
 
+import { FaHeart } from "react-icons/fa";
+
 const DetalleJuego = () => {
   const { id } = useParams();
+
   const [juego, setJuego] = useState(null);
 
   useEffect(() => {
@@ -18,20 +22,42 @@ const DetalleJuego = () => {
   if (!juego) {
     return <p>Cargando...</p>;
   }
-
   return (
-    <div className="detalle-juego">
-      <img src={juego.imagen} alt={juego.nombre} />
+    <div className="detalle-container">
+      <div className="detalle-background">
+        <img src={juego.imagen} alt={juego.nombre} />
+      </div>
 
-      <h1>{juego.nombre}</h1>
+      <div className="detalle-overlay"></div>
 
-      <p>{juego.descripcion}</p>
+      <div className="detalle-content">
+        <div className="detalle-banner">
+          <img src={juego.imagen} alt={juego.nombre} className="detalle-img" />
 
-      <p> Rating: {juego.rating}</p>
+          <button className="detalle-favorito">
+            <FaHeart />
+          </button>
+        </div>
 
-      <p> Metacritic: {juego.metacritic}</p>
+        <div className="detalle-info">
+          <h1>{juego.nombre}</h1>
 
-      <p> Géneros: {juego.generos.join(", ")}</p>
+          <div className="detalle-stats">
+            <span>⭐ Rating: {juego.rating}</span>
+
+            <span>🎯 Metacritic: {juego.metacritic}</span>
+          </div>
+
+          <p className="detalle-generos">{juego.generos?.join(", ")}</p>
+
+          <div
+            className="detalle-desc"
+            dangerouslySetInnerHTML={{
+              __html: juego.descripcion,
+            }}
+          ></div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -52,9 +52,10 @@ const login = async (req, res) => {
       });
     }
     const token = jwt.sign(
-      { id: usuario.id, email: usuario.email },
+      { id: usuario.id, 
+        email: usuario.email },
       "secreto123",
-      { expiresIn: "1d" },
+      { expiresIn: "7d" },
     );
 
     res.json({ token });
