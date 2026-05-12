@@ -5,7 +5,7 @@ import DetalleJuego from "./pages/detallesJuegos/DetalleJuego";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Perfil from "./pages/perfil/Perfil";
-import CategoriaPage from "../src/components/categorias/Categorias";
+import CategoriaPage from "./components/categorias/CategoriaPage";
 function App() {
   return (
     <BrowserRouter>

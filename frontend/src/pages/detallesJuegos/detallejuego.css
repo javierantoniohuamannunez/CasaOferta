@@ -230,30 +230,24 @@
 }
 .detalle-generos {
   display: flex;
+  gap: 10px;
   flex-wrap: wrap;
-  gap: 12px;
-  margin: 20px 0;
+  margin-top: 15px;
 }
 
 .genero-tag {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.1);
-
-  padding: 8px 16px;
-
+  background: rgba(255, 136, 0, 0.15);
+  border: 1px solid #ff8800;
+  color: #ff8800;
+  padding: 8px 14px;
   border-radius: 30px;
-
-  color: #ff914d;
   text-decoration: none;
-
   font-weight: 600;
-
   transition: 0.2s;
 }
 
 .genero-tag:hover {
-  background: #ff4d4d;
+  background: #ff8800;
   color: white;
-
   transform: scale(1.05);
 }

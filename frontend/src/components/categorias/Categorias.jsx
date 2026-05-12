@@ -1,8 +1,12 @@
 import "./categorias.css";
 import { useEffect, useState } from "react";
 import { obtenerCategorias } from "../../services/api";
-const Categorias = ({ onCategoriaClick }) => {
+import { useNavigate } from "react-router-dom";
+
+const Categorias = () => {
   const [categorias, setCategorias] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cargar = async () => {
@@ -26,10 +30,13 @@ const Categorias = ({ onCategoriaClick }) => {
           <div
             className="categoria-card"
             key={cat.id}
-            onClick={() => onCategoriaClick(cat)}
+            onClick={() => navigate(`/categoria/${cat.id}`)}
           >
             <img src={cat.imagen} alt={cat.nombre} />
-            <div className="overlay">{cat.nombre}</div>
+
+            <div className="overlay">
+              {cat.nombre}
+            </div>
           </div>
         ))}
       </div>

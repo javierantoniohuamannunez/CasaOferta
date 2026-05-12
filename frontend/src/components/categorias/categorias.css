@@ -1,15 +1,12 @@
-/* TITULO */
 .titulo-seccion {
   font-size: 22px;
   margin-bottom: 25px;
 }
 
-/* CONTENEDOR */
 .categorias-container {
   padding: 30px;
 }
 
-/* GRID */
 .categorias {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -31,14 +28,12 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
-/* IMAGEN */
 .categoria-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* OVERLAY */
 .overlay {
   position: absolute;
   inset: 0;

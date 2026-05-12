@@ -1,28 +1,28 @@
 import "./resultados.css";
 import { useEffect, useState } from "react";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
-import { obtenerJuegosPorGenero } from "../../services/api";
+// import { obtenerJuegosPorGenero } from "../../services/api";
 import { useNavigate } from "react-router-dom";
 
-const ResultadosGenero = ({ categoria }) => {
-  const [juegos, setJuegos] = useState([]);
+const ResultadosGenero = ({ juegos, titulo }) => {
+  // const [juegos, setJuegos] = useState([]);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!categoria) return;
+  // useEffect(() => {
+  //   if (!categoria) return;
 
-    const cargar = async () => {
-      try {
-        const data = await obtenerJuegosPorGenero(categoria.id);
-        setJuegos(data);
-      } catch (error) {
-        console.error("Error al cargar juegos por género:", error);
-        setJuegos([]);
-      }
-    };
+  //   const cargar = async () => {
+  //     try {
+  //       const data = await obtenerJuegosPorGenero(categoria.id);
+  //       setJuegos(data);
+  //     } catch (error) {
+  //       console.error("Error al cargar juegos por género:", error);
+  //       setJuegos([]);
+  //     }
+  //   };
 
-    cargar();
-  }, [categoria]);
+  //   cargar();
+  // }, [categoria]);
 
   const getIcono = (plataforma) => {
     if (plataforma.includes("PC")) return <FaWindows />;
@@ -33,9 +33,8 @@ const ResultadosGenero = ({ categoria }) => {
   };
 
   return (
-<div className="resultados-container">
-        <h2 className="titulo-seccion">Categoría: {categoria?.nombre}</h2>
-
+    <div className="resultados-container">
+      <h2 className="titulo-seccion">{titulo}</h2>
       {juegos.length === 0 ? (
         <p style={{ padding: "20px" }}>No hay resultados</p>
       ) : (

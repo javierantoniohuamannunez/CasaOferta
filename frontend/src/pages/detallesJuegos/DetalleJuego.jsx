@@ -1,5 +1,5 @@
 import "./detallejuego.css";
-import { useParams,useNavigate} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { obtenerJuegoPorId } from "../../services/api";
 import { FaWindows, FaPlaystation, FaXbox, FaLinux } from "react-icons/fa";
@@ -9,9 +9,10 @@ import {
   obtenerFavorito,
 } from "../../services/favoritos";
 import { FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 const DetalleJuego = () => {
   const { id } = useParams();
-const navigate = useNavigate();
+
   const [juego, setJuego] = useState(null);
   const [favorito, setFavorito] = useState(false);
 
@@ -59,14 +60,14 @@ const navigate = useNavigate();
       console.log(error);
     }
   };
-   const getIcono = (plataforma) => {
-     if (plataforma.includes("PC")) return <FaWindows />;
-     if (plataforma.includes("PlayStation")) return <FaPlaystation />;
-     if (plataforma.includes("Xbox")) return <FaXbox />;
-     if (plataforma.includes("Linux")) return <FaLinux />;
- 
-     return null;
-   };
+  const getIcono = (plataforma) => {
+    if (plataforma.includes("PC")) return <FaWindows />;
+    if (plataforma.includes("PlayStation")) return <FaPlaystation />;
+    if (plataforma.includes("Xbox")) return <FaXbox />;
+    if (plataforma.includes("Linux")) return <FaLinux />;
+
+    return null;
+  };
   if (!juego) {
     return <p>Cargando...</p>;
   }
@@ -105,28 +106,17 @@ const navigate = useNavigate();
               </span>
             ))}
           </div>
-<div className="detalle-generos">
-
-  {juego.generos?.map((gen) => (
-
-    <button
-      key={gen.id}
-      className="genero-tag"
-      onClick={() =>
-        navigate("/", {
-          state: {
-            categoriaId: gen.id,
-            categoriaNombre: gen.nombre,
-          },
-        })
-      }
-    >
-      {gen.nombre}
-    </button>
-
-  ))}
-
-</div>
+          <div className="detalle-generos">
+            {juego.generos?.map((gen) => (
+              <Link
+                key={gen.id}
+                to={`/categoria/${gen.id}`}
+                className="genero-tag"
+              >
+                {gen.nombre}
+              </Link>
+            ))}
+          </div>
           <div
             className="detalle-desc"
             dangerouslySetInnerHTML={{
