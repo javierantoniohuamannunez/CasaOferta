@@ -59,8 +59,12 @@ const obtenerJuegoPorId = async (id) => {
       descripcion: juego.description,
       rating: juego.rating,
       metacritic: juego.metacritic,
-      generos: juego.genres ? juego.genres.map((g) => g.name) : [],
-
+      generos: juego.genres
+        ? juego.genres.map((g) => ({
+            id: g.id,
+            nombre: g.name,
+          }))
+        : [],
       plataformas: juego.platforms
         ? juego.platforms.map((p) => p.platform.name)
         : [],

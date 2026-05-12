@@ -1,6 +1,6 @@
 const Favorito = require("../models/Favorito");
 const Usuario = require("../models/Usuario");
-
+const rawgService = require("../services/rawgService");
 // crear favorito
 const crearFavorito = async (req, res) => {
   try {
@@ -37,8 +37,21 @@ const obtenerFavoritos = async (req, res) => {
       where: { usuarioId },
       include: Usuario,
     });
+    const juegos = await Promise.all(
+      favoritos.map(async (fav) => {
+        const juego = await rawgService.obtenerJuegoPorId(fav.juegoId);
 
-    res.json(favoritos);
+        return {
+          id: juego.id,
+          nombre: juego.nombre,
+          imagen: juego.imagen,
+          rating: juego.rating,
+          metacritic: juego.metacritic,
+        };
+      }),
+    );
+
+    res.json(juegos);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -47,7 +60,6 @@ const eliminarFavorito = async (req, res) => {
   try {
     const usuarioId = req.user.id;
     const { juegoId } = req.params;
-
     await Favorito.destroy({
       where: { usuarioId, juegoId },
     });

@@ -5,6 +5,7 @@ import DetalleJuego from "./pages/detallesJuegos/DetalleJuego";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Perfil from "./pages/perfil/Perfil";
+import CategoriaPage from "../src/components/categorias/Categorias";
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/categoria/:id" element={<CategoriaPage />} />
       </Routes>
     </BrowserRouter>
   );

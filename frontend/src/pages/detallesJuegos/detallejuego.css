@@ -199,3 +199,61 @@
     font-size: 15px;
   }
 }
+.detalle-favorito.activo {
+  background: #ef4444;
+}
+
+.detalle-favorito.activo svg {
+  color: white;
+}
+.detalle-plataformas {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 18px 0;
+}
+
+.plataforma-icono {
+  font-size: 1.8rem;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s;
+}
+
+.plataforma-icono:hover {
+  transform: scale(1.15);
+  color: #ff4d4d;
+}
+.detalle-generos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.genero-tag {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  padding: 8px 16px;
+
+  border-radius: 30px;
+
+  color: #ff914d;
+  text-decoration: none;
+
+  font-weight: 600;
+
+  transition: 0.2s;
+}
+
+.genero-tag:hover {
+  background: #ff4d4d;
+  color: white;
+
+  transform: scale(1.05);
+}
