@@ -1,6 +1,6 @@
 import { useState } from "react";
 import MejoresJuegos from "../components/hero/MejoresJuegos";
-import Header from "../components/header/Header";
+// import Header from "../components/header/Header";
 import Resultados from "../components/resultados/Resultados";
 import ResultadosGenero from "../components/resultados/ResultadosGenero";
 import MejoresOfertas from "../components/ofertas/Ofertas";
@@ -10,7 +10,7 @@ const Home = () => {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
   return (
     <div>
-      <Header onBuscar={setBusqueda} />
+      {/* <Header onBuscar={setBusqueda} /> */}
       {categoriaSeleccionada ? (
         <ResultadosGenero categoria={categoriaSeleccionada} />
       ) : busqueda === "" ? (

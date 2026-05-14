@@ -39,11 +39,11 @@ app.get("/", (req, res) => {
 app.use(notFound);
 app.use(handleErrors);
 
-// prender servidor y db
+// prender servidor y db sequelize.sync()
 const PORT = process.env.PORT || 3000;
 
 sequelize
-  .sync({ alter: true })
+  .sync({  })
   .then(() => {
     console.log("Base de datos conectada");
 

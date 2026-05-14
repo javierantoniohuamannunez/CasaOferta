@@ -2,12 +2,12 @@ import "./perfil.css";
 import { Link } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import { obtenerFavorito } from "../../services/favoritos";
 const Perfil = () => {
   const [usuario, setUsuario] = useState(null);
   const [favoritos, setFavoritos] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -38,6 +38,9 @@ const Perfil = () => {
 
   return (
     <div className="perfil-page">
+      <button className="btn-volver" onClick={() => navigate(-1)}>
+        ← Volver
+      </button>
       <div className="perfil-card">
         <div className="perfil-avatar">👤</div>
 

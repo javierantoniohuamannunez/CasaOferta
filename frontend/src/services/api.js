@@ -1,7 +1,4 @@
-
 const API_URL = import.meta.env.VITE_API_URL;
-
-
 export const buscarJuegos = async (query) => {
   const response = await fetch(
     `${API_URL}/games?buscar=${encodeURIComponent(query)}`,
@@ -21,7 +18,7 @@ export const obtenerCategorias = async () => {
 
 export const obtenerJuegosPorGenero = async (generoId) => {
   const response = await fetch(
-    `${API_URL}/games/por-genero?genero=${generoId}`
+    `${API_URL}/games/por-genero?genero=${generoId}`,
   );
   return response.json();
 };
@@ -33,4 +30,22 @@ export const obtenerJuegoPorId = async (id) => {
 export const obtenerJuegosTop = async () => {
   const response = await fetch(`${API_URL}/games/top`);
   return response.json();
+};
+
+///iTAD
+export const obtenerOfertasJuego = async (id) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/games/${id}/ofertas`
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+
+    return {
+      mejorOferta: null,
+      ofertas: [],
+    };
+  }
 };
