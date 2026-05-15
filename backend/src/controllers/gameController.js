@@ -1,8 +1,28 @@
 const rawgService = require("../services/rawgService");
-const ofertasService = require("../services/ofertasService");
 const itadService = require("../services/itadService");
+
 console.log(itadService);
-// obtiene la lista de juegos por busqueda
+
+const respuestaSinOfertas = (juego) => ({
+  juego: {
+    id: juego.id,
+    nombre: juego.nombre,
+    imagen: juego.imagen,
+    rating: juego.rating,
+    metacritic: juego.metacritic,
+    descripcion: juego.descripcion,
+    plataformas: juego.plataformas || [],
+    generos: juego.generos || [],
+    released: juego.released,
+    website: juego.website,
+  },
+
+  mejorOferta: null,
+  totalOfertas: 0,
+  ofertas: [],
+  historialPrecios: [],
+});
+
 const getGames = async (req, res, next) => {
   try {
     const { buscar } = req.query;
@@ -13,6 +33,7 @@ const getGames = async (req, res, next) => {
         error: "Falta el parametro 'buscar'",
       });
     }
+
     const games = await rawgService.buscarGames(buscar);
 
     res.json(games);
@@ -20,7 +41,7 @@ const getGames = async (req, res, next) => {
     next(error);
   }
 };
-// Obtener detalle de juego
+
 const getJuegoPorId = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -32,61 +53,23 @@ const getJuegoPorId = async (req, res, next) => {
     next(error);
   }
 };
+
 const getTopGames = async (req, res, next) => {
   try {
     const juegos = await rawgService.obtenerJuegosTop();
+
     res.json(juegos);
   } catch (error) {
     next(error);
   }
 };
 
-const getTopOfertas = async (req, res, next) => {
-  try {
-    const juegos = await rawgService.obtenerJuegosTop();
-
-    const resultado = [];
-
-    for (const juego of juegos.slice(0, 10)) {
-      try {
-        const ofertas = await ofertasService.buscarOfertas(juego.nombre);
-
-        let mejor = null;
-
-        if (ofertas && ofertas.length > 0) {
-          mejor = ofertas.sort(
-            (a, b) => parseFloat(a.salePrice) - parseFloat(b.salePrice),
-          )[0];
-        }
-
-        if (!mejor) continue;
-
-        resultado.push({
-          id: juego.id,
-          nombre: juego.nombre,
-          imagen: juego.imagen,
-          metacritic: juego.metacritic,
-          precio: mejor.salePrice,
-          descuento: Math.round(parseFloat(mejor.savings)),
-          tienda: mejor.storeID,
-        });
-      } catch (error) {
-        console.log("error precio:", error.message);
-      }
-
-      // evitar ban
-      await new Promise((res) => setTimeout(res, 500));
-    }
-
-    res.json(resultado);
-  } catch (error) {
-    next(error);
-  }
-};
 const getJuegosPorGenero = async (req, res, next) => {
   try {
     const { genero } = req.query;
+
     const juegos = await rawgService.obtenerJuegosPorGenero(genero);
+
     const formateados = juegos.map((j) => ({
       id: j.id,
       nombre: j.name,
@@ -100,21 +83,22 @@ const getJuegosPorGenero = async (req, res, next) => {
     next(error);
   }
 };
+
 const getCategorias = async (req, res, next) => {
   try {
     const categorias = await rawgService.obtenerCategorias();
+
     const formateados = categorias.slice(0, 10).map((c) => ({
       id: c.id,
       nombre: c.name,
       imagen: c.image_background,
     }));
+
     res.json(formateados);
   } catch (error) {
     next(error);
   }
 };
-
-// itadService ///
 
 const testITAD = async (req, res) => {
   try {
@@ -136,85 +120,107 @@ const testITAD = async (req, res) => {
 const testPrecio = async (req, res) => {
   try {
     const juegos = await itadService.buscarJuego("The Witcher 3");
+
     const juego = juegos[0];
+
     const precio = await itadService.obtenerOfertas(juego.id);
+
     res.json(precio);
   } catch (error) {
     console.log(error);
+
     res.status(500).json({
       ok: false,
       error: error.message,
     });
   }
 };
+
 const getOfertasJuego = async (req, res) => {
   try {
     const { id } = req.params;
-    const juego = await rawgService.obtenerJuegoPorId(id);
-    const resultadosITAD = await itadService.buscarJuego(juego.nombre);
 
-    if (!resultadosITAD.length) {
-      return res.json({
-        juego,
-        mejorOferta: null,
-        ofertas: [],
+    // RAWG
+    const juego = await rawgService.obtenerJuegoPorId(id);
+
+    if (!juego) {
+      return res.status(404).json({
+        ok: false,
+        error: "Juego no encontrado",
       });
     }
 
-    const juegosFiltrados = resultadosITAD.filter((j) => j.type === "game");
+    const resultadosITAD = await itadService.buscarJuego(juego.nombre);
+    console.log("RESULTADOS ITAD:", JSON.stringify(resultadosITAD, null, 2));
 
+    if (!resultadosITAD || resultadosITAD.length === 0) {
+      return res.json(respuestaSinOfertas(juego));
+    }
+
+    const juegosFiltrados = resultadosITAD.filter(
+      (j) => j.type === "game" || j.type === "package" || j.type === "bundle",
+    );
+    if (juegosFiltrados.length === 0) {
+      return res.json(respuestaSinOfertas(juego));
+    }
     const juegoITAD =
-      juegosFiltrados.find(
-        (j) => j.title.toLowerCase() === juego.nombre.toLowerCase(),
+      juegosFiltrados.find((j) =>
+        j.title.toLowerCase().includes(juego.nombre.toLowerCase()),
       ) || juegosFiltrados[0];
 
+    console.log("JUEGO ITAD:", juegoITAD);
+    if (!juegoITAD?.id) {
+      return res.json(respuestaSinOfertas(juego));
+    }
     const respuestaPrecios = await itadService.obtenerOfertas(juegoITAD.id);
-    const historial = await itadService.obtenerHistorialPrecio(juegoITAD.id);
 
+    console.log(
+      "RESPUESTA PRECIOS:",
+      JSON.stringify(respuestaPrecios, null, 2),
+    );
+
+    const historial = await itadService.obtenerHistorialPrecio(juegoITAD.id);
     console.log("HISTORIAL:", historial);
 
+    if (
+      !respuestaPrecios ||
+      !Array.isArray(respuestaPrecios) ||
+      respuestaPrecios.length === 0
+    ) {
+      return res.json(respuestaSinOfertas(juego));
+    }
+
     const dataJuego = respuestaPrecios[0];
-
     const ofertas = dataJuego?.deals || [];
-
-    if (!ofertas.length) {
-      return res.json({
-        juego: {
-          id: juego.id,
-          nombre: juego.nombre,
-          imagen: juego.imagen,
-        },
-
-        mejorOferta: null,
-        ofertas: [],
-      });
+    if (ofertas.length === 0) {
+      return res.json(respuestaSinOfertas(juego));
     }
 
     const ofertasOrdenadas = ofertas.sort(
       (a, b) => a.price.amount - b.price.amount,
     );
-
-    const mejorOferta = ofertasOrdenadas[0];
-
     const ofertasLimpias = ofertasOrdenadas.map((oferta) => ({
-      tienda: oferta.shop.name,
-      precioActual: oferta.price.amount,
-      precioNormal: oferta.regular.amount,
-      descuento: oferta.cut,
-      moneda: oferta.price.currency,
-      drm: oferta.drm.map((d) => d.name),
-      plataformas: oferta.platforms.map((p) => p.name),
+      tienda: oferta.shop?.name,
+      precioActual: oferta.price?.amount || 0,
+      precioNormal: oferta.regular?.amount || 0,
+      descuento: oferta.cut || 0,
+      moneda: oferta.price?.currency || "USD",
+      drm: oferta.drm?.map((d) => d.name) || [],
+      plataformas: oferta.platforms?.map((p) => p.name) || [],
       url: oferta.url,
-      expiracion: oferta.expiry,
-      ahorro: oferta.regular.amount - oferta.price.amount,
+      expiracion: oferta.expiry || null,
+      ahorro: (oferta.regular?.amount || 0) - (oferta.price?.amount || 0),
     }));
+
     const historialPrecios = historial.map((item) => ({
       fecha: item.timestamp,
       tienda: item.shop?.name || "Desconocida",
       precio: item.deal?.price?.amount || 0,
       precioRegular: item.deal?.regular?.amount || 0,
+
       descuento: item.deal?.cut || 0,
     }));
+
     return res.json({
       juego: {
         id: juego.id,
@@ -222,10 +228,19 @@ const getOfertasJuego = async (req, res) => {
         imagen: juego.imagen,
         rating: juego.rating,
         metacritic: juego.metacritic,
+        descripcion: juego.descripcion,
+        plataformas: juego.plataformas || [],
+        generos: juego.generos || [],
+        released: juego.released,
+        website: juego.website,
       },
+
       mejorOferta: ofertasLimpias[0],
+
       totalOfertas: ofertasLimpias.length,
+
       ofertas: ofertasLimpias,
+
       historialPrecios,
     });
   } catch (error) {
@@ -237,11 +252,11 @@ const getOfertasJuego = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   getGames,
   getJuegoPorId,
   getTopGames,
-  getTopOfertas,
   getJuegosPorGenero,
   getCategorias,
   testITAD,

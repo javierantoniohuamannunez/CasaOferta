@@ -3,48 +3,30 @@ import "./detallejuego.css";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import {
-  FaWindows,
-  FaPlaystation,
-  FaXbox,
-  FaLinux,
-  FaHeart,
+import { FaWindows, FaPlaystation, FaXbox,FaLinux,FaHeart,
 } from "react-icons/fa";
-
-import {
-  obtenerJuegoPorId,
-  obtenerOfertasJuego,
-} from "../../services/api";
-
-import {
-  agregarFavorito,
-  eliminarFavorito,
-  obtenerFavorito,
-} from "../../services/favoritos";
+import { obtenerOfertasJuego } from "../../services/api";
+import { agregarFavorito,eliminarFavorito,obtenerFavorito,} from "../../services/favoritos";
+import PrecioChart from "../../components/PrecioChart";
 
 const DetalleJuego = () => {
   const { id } = useParams();
-
   const [juego, setJuego] = useState(null);
   const [favorito, setFavorito] = useState(false);
-
   const [ofertas, setOfertas] = useState([]);
   const [mejorOferta, setMejorOferta] = useState(null);
-
+  const [historialPrecios, setHistorialPrecios] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     const cargar = async () => {
       try {
-        // juego
-        const data = await obtenerJuegoPorId(id);
-        setJuego(data);
-
-        // ofertas
-        const ofertasData = await obtenerOfertasJuego(id);
-
-        setOfertas(ofertasData.ofertas || []);
-        setMejorOferta(ofertasData.mejorOferta);
+        const data = await obtenerOfertasJuego(id);
+        console.log(data);
+        setJuego(data.juego);
+        setOfertas(data.ofertas || []);
+        setMejorOferta(data.mejorOferta || null);
+        setHistorialPrecios(data.historialPrecios || []);
       } catch (error) {
         console.log(error);
       }
@@ -52,24 +34,16 @@ const DetalleJuego = () => {
 
     const cargarFavoritos = async () => {
       const token = localStorage.getItem("token");
-
       if (!token) return;
-
       try {
         const response = await obtenerFavorito();
-
         const favoritos = response.favoritos || [];
-
-        const existe = favoritos.some(
-          (fav) => fav.juegoId === Number(id),
-        );
-
+        const existe = favoritos.some((fav) => fav.juegoId === Number(id));
         setFavorito(existe);
       } catch (error) {
         console.log(error);
       }
     };
-
     cargar();
     cargarFavoritos();
   }, [id]);
@@ -78,11 +52,9 @@ const DetalleJuego = () => {
     try {
       if (favorito) {
         await eliminarFavorito(id);
-
         setFavorito(false);
       } else {
         await agregarFavorito(id);
-
         setFavorito(true);
       }
     } catch (error) {
@@ -91,49 +63,39 @@ const DetalleJuego = () => {
   };
 
   const getIcono = (plataforma) => {
-    if (plataforma.includes("PC")) return <FaWindows />;
-    if (plataforma.includes("PlayStation"))
+    if (plataforma.includes("PC") || plataforma.includes("Windows")) {
+      return <FaWindows />;
+    }
+    if (plataforma.includes("PlayStation")) {
       return <FaPlaystation />;
-    if (plataforma.includes("Xbox")) return <FaXbox />;
-    if (plataforma.includes("Linux")) return <FaLinux />;
-
+    }
+    if (plataforma.includes("Xbox")) {
+      return <FaXbox />;
+    }
+    if (plataforma.includes("Linux")) {
+      return <FaLinux />;
+    }
     return null;
   };
 
   if (!juego) {
     return <p>Cargando...</p>;
   }
-
   return (
     <div className="detalle-container">
       <div className="detalle-background">
-        <img
-          src={juego.imagen}
-          alt={juego.nombre}
-        />
+        <img src={juego.imagen} alt={juego.nombre} />
       </div>
 
       <div className="detalle-overlay"></div>
 
       <div className="detalle-content">
-        <button
-          className="btn-volver"
-          onClick={() => navigate(-1)}
-        >
-          ← Volver
-        </button>
 
         <div className="detalle-banner">
-          <img
-            src={juego.imagen}
-            alt={juego.nombre}
-            className="detalle-img"
-          />
+          <img src={juego.imagen} alt={juego.nombre} className="detalle-img" />
 
           <button
-            className={`detalle-favorito ${
-              favorito ? "activo" : ""
-            }`}
+            className={`detalle-favorito ${favorito ? "activo" : ""}`}
             onClick={toggleFavorito}
           >
             <FaHeart />
@@ -144,53 +106,43 @@ const DetalleJuego = () => {
           <h1>{juego.nombre}</h1>
 
           <div className="detalle-stats">
-            <span>⭐ Rating: {juego.rating}</span>
+            <span>Rating: {juego.rating}</span>
 
-            <span>
-              🎯 Metacritic: {juego.metacritic}
-            </span>
+            <span>Metacritic: {juego.metacritic}</span>
           </div>
 
-          {/* OFERTA */}
           {mejorOferta && (
             <div className="mejor-oferta">
-              <h3>🔥 Mejor Oferta</h3>
+              <h2>Mejor oferta</h2>
 
               <div className="oferta-box">
-                <span>{mejorOferta.tienda}</span>
+                <div>
+                  <h3>{mejorOferta.tienda}</h3>
 
-                <strong>
-                  {mejorOferta.precio}€
-                </strong>
+                  <p>
+                    {mejorOferta.precioActual} {mejorOferta.moneda}
+                  </p>
+                </div>
 
-                <span className="descuento">
-                  -{mejorOferta.descuento}%
-                </span>
+                <div className="oferta-extra">
+                  <span className="descuento">-{mejorOferta.descuento}%</span>
 
-                <a
-                  href={mejorOferta.url}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ver oferta
-                </a>
+                  <a href={mejorOferta.url} target="_blank" rel="noreferrer">
+                    Ver oferta
+                  </a>
+                </div>
               </div>
             </div>
           )}
 
-          {/* PLATAFORMAS */}
           <div className="detalle-plataformas">
             {juego.plataformas?.map((plat) => (
-              <span
-                key={plat}
-                className="plataforma-icono"
-              >
+              <span key={plat} className="plataforma-icono">
                 {getIcono(plat)}
               </span>
             ))}
           </div>
 
-          {/* GENEROS */}
           <div className="detalle-generos">
             {juego.generos?.map((gen) => (
               <Link
@@ -203,45 +155,40 @@ const DetalleJuego = () => {
             ))}
           </div>
 
-          {/* DESCRIPCION */}
-          <div
-            className="detalle-desc"
-            dangerouslySetInnerHTML={{
-              __html: juego.descripcion,
-            }}
-          ></div>
+          <div className="detalle-desc">
+            <p>{juego.descripcion}</p>
+          </div>
 
-          {/* TODAS LAS OFERTAS */}
+          <div className="historial-container">
+            <h2>Historial de precios</h2>
+
+            {historialPrecios.length > 0 ? (
+              <PrecioChart historial={historialPrecios} />
+            ) : (
+              <p>No hay historial de precios</p>
+            )}
+          </div>
+
           {ofertas.length > 0 && (
             <div className="lista-ofertas">
-              <h2>🛒 Todas las ofertas</h2>
+              <h2>Todas las ofertas</h2>
 
               {ofertas.map((oferta, index) => (
-                <div
-                  key={index}
-                  className="oferta-item"
-                >
+                <div key={index} className="oferta-item">
                   <div>
-                    <strong>
-                      {oferta.shop.name}
-                    </strong>
+                    <strong>{oferta.tienda}</strong>
 
                     <p>
-                      {oferta.price.amount}{" "}
-                      {oferta.price.currency}
+                      {oferta.precioActual} {oferta.moneda}
                     </p>
+
+                    <small>Antes: {oferta.precioNormal}</small>
                   </div>
 
                   <div className="oferta-extra">
-                    <span>
-                      -{oferta.cut}%
-                    </span>
+                    <span>-{oferta.descuento}%</span>
 
-                    <a
-                      href={oferta.url}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <a href={oferta.url} target="_blank" rel="noreferrer">
                       Ir a tienda
                     </a>
                   </div>

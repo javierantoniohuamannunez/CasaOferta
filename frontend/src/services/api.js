@@ -1,4 +1,6 @@
 const API_URL = import.meta.env.VITE_API_URL;
+import axios from "axios";
+
 export const buscarJuegos = async (query) => {
   const response = await fetch(
     `${API_URL}/games?buscar=${encodeURIComponent(query)}`,

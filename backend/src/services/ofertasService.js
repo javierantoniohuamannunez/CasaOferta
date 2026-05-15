@@ -44,26 +44,7 @@ const obtenerTopOfertas = async () => {
     return [];
   }
 };
-const buscarOfertas = async (nombre) => {
-  try {
-    const response = await axios.get(
-      "https://www.cheapshark.com/api/1.0/deals",
-      {
-        params: {
-          title: nombre,
-          pageSize: 5,
-        },
-      },
-    );
-
-    return response.data;
-  } catch (error) {
-    console.log("Error buscarOfertas:", error.message);
-    return [];
-  }
-};
 
 module.exports = {
   obtenerTopOfertas,
-  buscarOfertas,
 };

@@ -13,7 +13,6 @@ require("./models");
 // rutas
 const gameRoutes = require("./routes/gameRoutes");
 const ofertasRoutes = require("./routes/ofertasRoutes");
-const busquedaRoutes = require("./routes/busquedaRoutes");
 const favoritoRoutes = require("./routes/favoritosRoutes");
 const authRoutes = require("./routes/authRoutes");
 
@@ -27,7 +26,6 @@ app.use(express.json());
 // rutas
 app.use("/games", gameRoutes);
 app.use("/ofertas", ofertasRoutes);
-app.use("/busqueda", busquedaRoutes);
 app.use("/favoritos", favoritoRoutes);
 app.use("/auth", authRoutes);
 

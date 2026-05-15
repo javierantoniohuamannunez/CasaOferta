@@ -56,7 +56,8 @@ const obtenerJuegoPorId = async (id) => {
       id: juego.id,
       nombre: juego.name,
       imagen: juego.background_image,
-      descripcion: juego.description,
+      descripcion:
+        juego.description_raw || juego.description || "Sin descripcion",
       rating: juego.rating,
       metacritic: juego.metacritic,
       generos: juego.genres
