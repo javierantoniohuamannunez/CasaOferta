@@ -1,6 +1,7 @@
 const rawgService = require("../services/rawgService");
 const ofertasService = require("../services/ofertasService");
 const itadService = require("../services/itadService");
+console.log(itadService);
 // obtiene la lista de juegos por busqueda
 const getGames = async (req, res, next) => {
   try {
@@ -168,6 +169,9 @@ const getOfertasJuego = async (req, res) => {
       ) || juegosFiltrados[0];
 
     const respuestaPrecios = await itadService.obtenerOfertas(juegoITAD.id);
+    const historial = await itadService.obtenerHistorialPrecio(juegoITAD.id);
+
+    console.log("HISTORIAL:", historial);
 
     const dataJuego = respuestaPrecios[0];
 
@@ -198,12 +202,19 @@ const getOfertasJuego = async (req, res) => {
       precioNormal: oferta.regular.amount,
       descuento: oferta.cut,
       moneda: oferta.price.currency,
-      drm: oferta.drm,
-      plataformas: oferta.platforms,
+      drm: oferta.drm.map((d) => d.name),
+      plataformas: oferta.platforms.map((p) => p.name),
       url: oferta.url,
       expiracion: oferta.expiry,
+      ahorro: oferta.regular.amount - oferta.price.amount,
     }));
-
+    const historialPrecios = historial.map((item) => ({
+      fecha: item.timestamp,
+      tienda: item.shop?.name || "Desconocida",
+      precio: item.deal?.price?.amount || 0,
+      precioRegular: item.deal?.regular?.amount || 0,
+      descuento: item.deal?.cut || 0,
+    }));
     return res.json({
       juego: {
         id: juego.id,
@@ -212,10 +223,10 @@ const getOfertasJuego = async (req, res) => {
         rating: juego.rating,
         metacritic: juego.metacritic,
       },
-
       mejorOferta: ofertasLimpias[0],
       totalOfertas: ofertasLimpias.length,
       ofertas: ofertasLimpias,
+      historialPrecios,
     });
   } catch (error) {
     console.log(error.response?.data || error.message);
