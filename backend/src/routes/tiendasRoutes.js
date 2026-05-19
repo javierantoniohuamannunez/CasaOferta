@@ -1,9 +1,10 @@
 const express = require("express");
+
 const router = express.Router();
 
-const { getTiendas } = require("../controllers/tiendasController");
+const {getTiendas,getTiendaById} = require("../controllers/tiendasController");
 
-// home tiendas
 router.get("/home", getTiendas);
+router.get("/:id", getTiendaById);
 
 module.exports = router;
