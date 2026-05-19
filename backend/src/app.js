@@ -1,4 +1,5 @@
 require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 
@@ -6,10 +7,15 @@ const app = express();
 
 const sequelize = require("./config/db");
 
+// cache BD ofertas
+const tiendasService = require("./services/tiendasService");
+const { OfertaHome } = require("./models");
+
 // modelos
 // require("./models/Usuario");
 // require("./models/Favorito");
 require("./models");
+
 // rutas
 const gameRoutes = require("./routes/gameRoutes");
 // const ofertasRoutes = require("./routes/ofertasRoutes");
@@ -23,15 +29,12 @@ const handleErrors = require("../middlewares/handleErrors");
 
 app.use(cors());
 app.use(express.json());
-
 // rutas
 app.use("/games", gameRoutes);
 // app.use("/ofertas", ofertasRoutes);
 app.use("/api/tiendas", tiendasRoutes);
-
 app.use("/favoritos", favoritoRoutes);
 app.use("/auth", authRoutes);
-
 app.get("/", (req, res) => {
   res.send("api funcionando");
 });
@@ -45,9 +48,18 @@ const PORT = process.env.PORT || 3000;
 
 sequelize
   .sync({ force: false })
-  .then(() => {
+  .then(async () => {
     console.log("Base de datos conectada");
-
+    // revisar si ya existe cache
+    const totalOfertas = await OfertaHome.count();
+    // si no hay ofertas guardadas
+    if (totalOfertas === 0) {
+      console.log("Generando cache ofertas...");
+      await tiendasService.obtenerTiendas();
+      console.log("Cache generada");
+    } else {
+      console.log(`Cache encontrada (${totalOfertas} ofertas)`);
+    }
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Servidor funcionando en el puerto ${PORT}`);
     });
