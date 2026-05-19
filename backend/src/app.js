@@ -12,7 +12,8 @@ const sequelize = require("./config/db");
 require("./models");
 // rutas
 const gameRoutes = require("./routes/gameRoutes");
-const ofertasRoutes = require("./routes/ofertasRoutes");
+// const ofertasRoutes = require("./routes/ofertasRoutes");
+const tiendasRoutes = require("./routes/tiendasRoutes");
 const favoritoRoutes = require("./routes/favoritosRoutes");
 const authRoutes = require("./routes/authRoutes");
 
@@ -25,7 +26,9 @@ app.use(express.json());
 
 // rutas
 app.use("/games", gameRoutes);
-app.use("/ofertas", ofertasRoutes);
+// app.use("/ofertas", ofertasRoutes);
+app.use("/api/tiendas", tiendasRoutes);
+
 app.use("/favoritos", favoritoRoutes);
 app.use("/auth", authRoutes);
 
@@ -41,7 +44,7 @@ app.use(handleErrors);
 const PORT = process.env.PORT || 3000;
 
 sequelize
-  .sync({  })
+  .sync({})
   .then(() => {
     console.log("Base de datos conectada");
 
