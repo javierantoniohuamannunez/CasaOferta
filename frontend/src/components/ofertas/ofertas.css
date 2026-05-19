@@ -1,22 +1,18 @@
-/* CONTENEDOR */
 .mejores-ofertas {
   padding: 30px;
 }
 
-/* TITULO */
 .titulo-seccion {
   font-size: 24px;
   margin-bottom: 25px;
 }
 
-/* GRID */
 .tiendas-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
-/* CARD TIENDA */
 .tienda-card {
   background: #1e293b;
   border-radius: 16px;
@@ -29,14 +25,12 @@
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
 }
 
-/* NOMBRE TIENDA */
 .tienda-nombre {
   font-size: 20px;
   margin-bottom: 18px;
   font-weight: bold;
 }
 
-/* ITEM */
 .oferta-item {
   display: flex;
   gap: 12px;
@@ -62,19 +56,16 @@
   border-radius: 8px;
 }
 
-/* INFO */
 .oferta-info {
   flex: 1;
 }
 
-/* NOMBRE JUEGO */
 .nombre {
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 6px;
 }
 
-/* EXTRA INFO */
 .extra-info {
   display: flex;
   align-items: center;
@@ -83,7 +74,6 @@
   margin-bottom: 8px;
 }
 
-/* METACRITIC */
 .metacritic {
   display: inline-flex;
   align-items: center;
@@ -120,34 +110,29 @@
   background: rgba(239, 68, 68, 0.1);
 }
 
-/* RATING */
 .steam-rating {
   font-size: 11px;
   color: #94a3b8;
 }
 
-/* PRECIOS */
 .precios {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-/* PRECIO ORIGINAL */
 .precio-original {
   text-decoration: line-through;
   color: #94a3b8;
   font-size: 13px;
 }
 
-/* PRECIO OFERTA */
 .precio-oferta {
   color: #22c55e;
   font-size: 16px;
   font-weight: bold;
 }
 
-/* DESCUENTO */
 .descuento {
   background: #22c55e;
   color: black;
@@ -158,8 +143,11 @@
   font-size: 11px;
   font-weight: bold;
 }
-
-/* RESPONSIVE */
+.sin-ofertas {
+  color: #94a3b8;
+  font-size: 14px;
+  padding: 10px 0;
+}
 @media (max-width: 1100px) {
   .tiendas-grid {
     grid-template-columns: repeat(2, 1fr);
