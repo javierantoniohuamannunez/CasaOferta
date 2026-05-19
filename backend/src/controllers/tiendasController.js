@@ -1,12 +1,17 @@
 const tiendasService = require("../services/tiendasService");
 
-const getTiendas = async (req, res, next) => {
+const getTiendas = async (req, res) => {
   try {
-    const data = await tiendasService.obtenerTiendasHome();
+    const tiendas = await tiendasService.obtenerTiendas();
 
-    res.json(data);
+    res.json(tiendas);
   } catch (error) {
-    next(error);
+    console.log(error);
+
+    res.status(500).json({
+      ok: false,
+      error: "Error obteniendo tiendas",
+    });
   }
 };
 

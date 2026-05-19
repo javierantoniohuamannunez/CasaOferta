@@ -118,12 +118,41 @@ const obtenerCategorias = async () => {
     return [];
   }
 };
+const obtenerJuegosParaOfertas = async () => {
+  try {
+    const response = await axios.get("https://api.rawg.io/api/games", {
+      params: {
+        key: API_KEY,
+        page_size: 100,
+        ordering: "-added",
+        dates: "2020-01-01,2026-12-31",
+      },
+    });
 
+    if (!response.data.results.length) {
+      return [];
+    }
+
+    return response.data.results.map((juego) => ({
+      id: juego.id,
+      nombre: juego.name,
+      imagen: juego.background_image,
+      rating: juego.rating,
+      metacritic: juego.metacritic || 0,
+      plataformas: juego.parent_platforms?.map((p) => p.platform.name) || [],
+    }));
+  } catch (error) {
+    console.log("Error RAWG:", error.message);
+
+    return [];
+  }
+};
 module.exports = {
   buscarGames,
   obtenerJuegoPorId,
   obtenerJuegosTop,
   obtenerJuegosPorGenero,
   obtenerCategorias,
+  obtenerJuegosParaOfertas,
 };
 // modificar caso de uso, agregar mas modelos que me falta usuario evento, alerta, favorito, notificacion

@@ -1,82 +1,107 @@
+const axios = require("axios");
 const rawgService = require("./rawgService");
 const itadService = require("./itadService");
 
-const tiendasPrincipales = [
-  "steam",
-  "Humble",
-  "GreenManGaming",
-  "Fanatical",
-  "GOG",
-];
-
-const obtenerTiendasHome = async () => {
+const obtenerTiendas = async () => {
   try {
-    // TOP JUEGOS RAWG
-    const juegosRAWG = await rawgService.obtenerJuegosTop();
+    const tiendasObjetivo = [
+      { id: 61, nombre: "Steam" },
+      { id: 6, nombre: "Fanatical" },
+      { id: 37, nombre: "Humble Store" },
+      { id: 35, nombre: "GOG" },
+      { id: 24, nombre: "GamersGate" },
+      
+    ];
 
-    // limitar
-    const juegosLimitados = juegosRAWG.slice(0, 12);
+    // pool grande de juegos
+    const juegosRawg = await rawgService.obtenerJuegosParaOfertas();
 
-    // estructura
-    const tiendasMap = {};
+    const resultadoFinal = [];
 
-    tiendasObjetivo.forEach((tienda) => {
-      tiendasMap[tienda] = [];
-    });
+    for (const tienda of tiendasObjetivo) {
+      const juegosPorTienda = [];
 
-    // recorrer juegos
-    for (const juego of juegosLimitados) {
-      try {
-        const resultadosITAD = await itadService.buscarJuego(juego.nombre);
+      // limitamos cantidad para evitar muchas requests
+      for (const juego of juegosRawg.slice(0, 150)) {
+        try {
+          const resultadosITAD = await itadService.buscarJuego(juego.nombre);
 
-        if (!resultadosITAD || resultadosITAD.length === 0) {
-          continue;
-        }
-
-        // evitar dlcs
-        const juegoITAD = resultadosITAD.find(
-          (j) => j.type === "game" || j.type === "package",
-        );
-
-        if (!juegoITAD?.id) {
-          continue;
-        }
-        // ofertas
-        const precios = await itadService.obtenerOfertas(juegoITAD.id);
-
-        if (!precios || !precios.length) {
-          continue;
-        }
-        const deals = precios[0]?.deals || [];
-        deals.forEach((deal) => {
-          const tienda = deal.shop?.name;
-          if (!tiendasObjetivo.includes(tienda)) {
-            return;
+          if (!resultadosITAD || resultadosITAD.length === 0) {
+            continue;
           }
-          // maximo 3 juegos
-          if (tiendasMap[tienda].length >= 3) {
-            return;
+
+          const juegoITAD = resultadosITAD.find(
+            (j) => j.type === "game" || j.type === "package",
+          );
+
+          if (!juegoITAD) {
+            continue;
           }
-          tiendasMap[tienda].push({
+
+          const precios = await itadService.obtenerOfertas(juegoITAD.id);
+
+          if (!precios || !precios[0]) {
+            continue;
+          }
+
+          const deals = precios[0].deals || [];
+
+          // filtros MUCHO mas suaves
+          const deal = deals.find((d) => d.shop.id === tienda.id && d.cut > 15);
+
+          if (!deal) {
+            continue;
+          }
+
+          const descuento = deal.cut || 0;
+
+          const metacritic = juego.metacritic || 0;
+
+          // score menos agresivo
+          const score = descuento + metacritic / 4;
+
+          juegosPorTienda.push({
             id: juego.id,
+
             nombre: juego.nombre,
+
             imagen: juego.imagen,
-            precioActual: deal.price?.amount,
-            precioNormal: deal.regular?.amount,
-            descuento: deal.cut,
-            metacritic: juego.metacritic,
-            tienda,
+
+            precioActual: deal.price.amount,
+
+            precioNormal: deal.regular.amount,
+
+            descuento,
+
+            metacritic,
+
+            tiendaId: tienda.id,
+
+            tienda: deal.shop.name,
+
             url: deal.url,
+
+            score,
           });
-        });
-      } catch (error) {
-        console.log("Error juego:", juego.nombre);
+
+          // SOLO 3 juegos por tienda
+          if (juegosPorTienda.length >= 3) {
+            break;
+          }
+        } catch (error) {
+          continue;
+        }
       }
+
+      resultadoFinal.push({
+        tiendaId: tienda.id,
+        tienda: tienda.nombre,
+
+        juegos: juegosPorTienda.sort((a, b) => b.score - a.score),
+      });
     }
-    return Object.entries(tiendasMap).map(([tienda, juegos]) => ({
-      tienda,
-      juegos,
-    }));
+
+    return resultadoFinal;
   } catch (error) {
     console.log("Error tiendas:", error.message);
 
@@ -85,5 +110,5 @@ const obtenerTiendasHome = async () => {
 };
 
 module.exports = {
-  obtenerTiendasHome,
+  obtenerTiendas,
 };
