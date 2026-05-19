@@ -7,6 +7,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import Perfil from "./pages/perfil/Perfil";
 import CategoriaPage from "./components/categorias/CategoriaPage";
+import Tienda from "./pages/tiendas/Tienda";
 function App() {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/categoria/:id" element={<CategoriaPage />} />
+          <Route path="/tienda/:id" element={<Tienda />} />
         </Routes>
     </BrowserRouter>
   );

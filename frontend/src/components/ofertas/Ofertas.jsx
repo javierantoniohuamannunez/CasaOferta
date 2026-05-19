@@ -1,12 +1,13 @@
 import "./ofertas.css";
 import { useEffect, useState } from "react";
 import { obtenerTiendas } from "../../services/api";
+import { useNavigate } from "react-router-dom";
 
 const MejoresOfertas = () => {
   const [tiendas, setTiendas] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const cargar = async () => {
       try {
@@ -37,48 +38,39 @@ const MejoresOfertas = () => {
   }
 
   if (tiendas.length === 0) {
-    return (
-      <p style={{ padding: 20 }}>
-        No hay ofertas disponibles
-      </p>
-    );
+    return <p style={{ padding: 20 }}>No hay ofertas disponibles</p>;
   }
 
   return (
     <div className="mejores-ofertas">
-      <h2 className="titulo-seccion">
-        Mejores Ofertas
-      </h2>
+      <h2 className="titulo-seccion">Mejores Ofertas</h2>
 
       <div className="tiendas-grid">
         {tiendas.map((tienda) => (
           <div
             key={tienda.tiendaId}
             className="tienda-card"
+            onClick={() => navigate(`/tienda/${tienda.tiendaId}`)}
+            style={{ cursor: "pointer" }}
           >
-            <h3 className="tienda-nombre">
-              {tienda.tienda}
-            </h3>
-
+            <h3 className="tienda-nombre">{tienda.tienda}</h3>
             {tienda.juegos.length === 0 ? (
-              <p className="sin-ofertas">
-                No hay ofertas
-              </p>
+              <p className="sin-ofertas">No hay ofertas</p>
             ) : (
               tienda.juegos.map((juego) => (
                 <div
                   key={`${tienda.tiendaId}-${juego.id}`}
                   className="oferta-item"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/juego/${juego.id}`);
+                  }}
+                  style={{ cursor: "pointer" }}
                 >
-                  <img
-                    src={juego.imagen}
-                    alt={juego.nombre}
-                  />
+                  <img src={juego.imagen} alt={juego.nombre} />
 
                   <div className="oferta-info">
-                    <p className="nombre">
-                      {juego.nombre}
-                    </p>
+                    <p className="nombre">{juego.nombre}</p>
 
                     <div className="extra-info">
                       {juego.metacritic > 0 && (
@@ -98,22 +90,14 @@ const MejoresOfertas = () => {
 
                     <div className="precios">
                       <span className="precio-original">
-                        €
-                        {juego.precioNormal.toFixed(
-                          2,
-                        )}
+                        €{juego.precioNormal.toFixed(2)}
                       </span>
 
                       <span className="precio-oferta">
-                        €
-                        {juego.precioActual.toFixed(
-                          2,
-                        )}
+                        €{juego.precioActual.toFixed(2)}
                       </span>
 
-                      <span className="descuento">
-                        -{juego.descuento}%
-                      </span>
+                      <span className="descuento">-{juego.descuento}%</span>
                     </div>
                   </div>
                 </div>
