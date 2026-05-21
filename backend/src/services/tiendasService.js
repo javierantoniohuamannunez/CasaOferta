@@ -2,6 +2,8 @@ const rawgService = require("./rawgService");
 const itadService = require("./itadService");
 
 const { guardarOfertas } = require("./cacheTiendasService");
+const { guardarTiendas } = require("./cacheTiendasCompletoService");
+
 const obtenerTiendas = async () => {
   try {
     const tiendasObjetivo = [
@@ -10,70 +12,69 @@ const obtenerTiendas = async () => {
       { id: 37, nombre: "Humble Store" },
       { id: 35, nombre: "GOG" },
       { id: 24, nombre: "GamersGate" },
+      { id: 20, nombre: "GreenManGaming" },
     ];
 
-    const juegosRawg = await rawgService.obtenerJuegosParaOfertas();
-
     const resultadoFinal = [];
+    const todasLasOfertas = [];
 
     for (const tienda of tiendasObjetivo) {
-      const juegosPorTienda = [];
+      console.log(`Cargando tienda ${tienda.nombre}...`);
 
-      for (const juego of juegosRawg.slice(0, 150)) {
-        try {
-          const resultadosITAD = await itadService.buscarJuego(juego.nombre);
-
-          if (!resultadosITAD || resultadosITAD.length === 0) {
-            continue;
-          }
-          const juegoITAD = resultadosITAD.find(
-            (j) => j.type === "game" || j.type === "package",
-          );
-          if (!juegoITAD) {
-            continue;
-          }
-          const precios = await itadService.obtenerOfertas(juegoITAD.id);
-          if (!precios || !precios[0]) {
-            continue;
-          }
-          const deals = precios[0].deals || [];
-          const deal = deals.find((d) => d.shop.id === tienda.id && d.cut > 15);
-
-          if (!deal) {
-            continue;
-          }
-          const descuento = deal.cut || 0;
-          const metacritic = juego.metacritic || 0;
-          const score = descuento + metacritic / 4;
-          juegosPorTienda.push({
-            id: juego.id,
-            nombre: juego.nombre,
-            imagen: juego.imagen,
-            precioActual: deal.price.amount,
-            precioNormal: deal.regular.amount,
-            descuento,
-            metacritic,
-            tiendaId: tienda.id,
-            tienda: deal.shop.name,
-            url: deal.url,
-            score,
-          });
-
-          // 3 juegos por tienda
-          if (juegosPorTienda.length >= 3) {
-            break;
-          }
-        } catch (error) {
-          continue;
-        }
+      // deals directos desde ITAD
+      const deals = await itadService.obtenerDealsTienda(tienda.id);
+      if (!deals.length) {
+        continue;
       }
+
+      const juegosFormateados = deals.map((deal) => {
+        const descuento = deal.deal?.cut || 0;
+
+        const score = descuento;
+
+        const juego = {
+          juegoId: deal.id,
+          nombre: deal.title,
+          imagen: deal.assets?.boxart || deal.assets?.banner || "",
+          precioActual: deal.deal?.price?.amount || 0,
+          precioNormal: deal.deal?.regular?.amount || 0,
+          descuento,
+          metacritic: deal.reviews?.score || 0,
+          tiendaId: tienda.id,
+          tienda: tienda.nombre,
+          url: deal.deal?.url || "",
+          score,
+        };
+
+        return juego;
+      });
+
+      // guardar las ofertas
+      todasLasOfertas.push(...juegosFormateados);
+
       resultadoFinal.push({
         tiendaId: tienda.id,
         tienda: tienda.nombre,
-        juegos: juegosPorTienda.sort((a, b) => b.score - a.score),
+
+        juegos: juegosFormateados
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3)
+          .map((juego) => ({
+            id: juego.juegoId,
+            nombre: juego.nombre,
+            imagen: juego.imagen,
+            precioActual: juego.precioActual,
+            precioNormal: juego.precioNormal,
+            descuento: juego.descuento,
+            metacritic: juego.metacritic,
+            tiendaId: juego.tiendaId,
+            tienda: juego.tienda,
+            url: juego.url,
+            score: juego.score,
+          })),
       });
     }
-    // guardado en MySQL
+
     const ofertasPlanas = resultadoFinal.flatMap((tienda) =>
       tienda.juegos.map((juego) => ({
         juegoId: juego.id,
@@ -89,10 +90,19 @@ const obtenerTiendas = async () => {
         url: juego.url,
       })),
     );
+
+    // guardar ofertas
     await guardarOfertas(ofertasPlanas);
+
+    // guardar tiendas
+    await guardarTiendas(todasLasOfertas);
+
+    console.log("Cache de tiendas completada");
+
     return resultadoFinal;
   } catch (error) {
     console.log("Error tiendas:", error.message);
+
     return [];
   }
 };

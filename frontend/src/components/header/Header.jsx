@@ -1,27 +1,27 @@
 import "./header.css";
 
 import Buscador from "./Buscador";
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 
 import logo from "../../assets/logo.png";
 
 const Header = ({ onBuscar }) => {
   const token = localStorage.getItem("token");
 
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem("token");
-    window.location.reload();
+
+    navigate("/");
   };
 
   return (
     <header className="header">
       <div className="header-top">
         <Link to="/" className="logo-link">
-          <img
-            src={logo}
-            alt="CazaOfertas"
-            className="logo-img"
-          />
+          <img src={logo} alt="CazaOfertas" className="logo-img" />
         </Link>
 
         <div className="header-search">
@@ -35,10 +35,7 @@ const Header = ({ onBuscar }) => {
                 Perfil
               </Link>
 
-              <button
-                className="logout-btn"
-                onClick={handleLogout}
-              >
+              <button className="logout-btn" onClick={handleLogout}>
                 Logout
               </button>
             </>
@@ -48,10 +45,7 @@ const Header = ({ onBuscar }) => {
                 Login
               </Link>
 
-              <Link
-                to="/register"
-                className="auth-btn register-btn"
-              >
+              <Link to="/register" className="auth-btn register-btn">
                 Register
               </Link>
             </>
@@ -61,8 +55,11 @@ const Header = ({ onBuscar }) => {
 
       <nav className="nav">
         <a href="#">Inicio</a>
+
         <a href="">Destacados</a>
+
         <a href="#ofertas">Ofertas</a>
+
         <a href="#tiendas">Tiendas</a>
       </nav>
     </header>

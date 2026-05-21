@@ -3,7 +3,7 @@ const sequelize = require("../config/db");
 
 const OfertaHome = sequelize.define("OfertaHome", {
   juegoId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   nombre: {

@@ -6,9 +6,19 @@ export const registerUser = async (email, password) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({
+      email,
+      password,
+    }),
   });
-  return response.json();
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Error registrando usuario");
+  }
+
+  return data;
 };
 
 export const loginUser = async (email, password) => {
@@ -17,10 +27,24 @@ export const loginUser = async (email, password) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({
+      email,
+      password,
+    }),
   });
-  return response.json();
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Error login");
+  }
+
+  // guardar token
+  localStorage.setItem("token", data.token);
+
+  return data;
 };
+
 export const obtenerFavoritos = async () => {
   const token = localStorage.getItem("token");
 
@@ -29,12 +53,14 @@ export const obtenerFavoritos = async () => {
       Authorization: `Bearer ${token}`,
     },
   });
+
   if (!response.ok) {
     throw new Error("Error obteniendo favoritos");
   }
 
   return response.json();
 };
+
 export const agregarFavorito = async (juego) => {
   const token = localStorage.getItem("token");
 
@@ -46,6 +72,10 @@ export const agregarFavorito = async (juego) => {
     },
     body: JSON.stringify(juego),
   });
+
+  if (!response.ok) {
+    throw new Error("Error agregando favorito");
+  }
 
   return response.json();
 };

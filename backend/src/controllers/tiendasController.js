@@ -1,4 +1,4 @@
-const { OfertaHome } = require("../models");
+const { OfertaHome, OfertaTienda } = require("../models");
 
 const getTiendas = async (req, res) => {
   try {
@@ -46,7 +46,8 @@ const getTiendaById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const ofertas = await OfertaHome.findAll({
+    // LEER DESDE MYSQL
+    const juegos = await OfertaTienda.findAll({
       where: {
         tiendaId: id,
       },
@@ -54,16 +55,18 @@ const getTiendaById = async (req, res) => {
       order: [["score", "DESC"]],
     });
 
-    if (!ofertas.length) {
+    if (!juegos.length) {
       return res.status(404).json({
         error: "Tienda no encontrada",
       });
     }
 
     return res.json({
-      tiendaId: ofertas[0].tiendaId,
-      tienda: ofertas[0].tienda,
-      juegos: ofertas,
+      tiendaId: id,
+
+      tienda: juegos[0].tienda,
+
+      juegos,
     });
   } catch (error) {
     console.log(error);

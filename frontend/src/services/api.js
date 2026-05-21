@@ -59,3 +59,8 @@ export const obtenerTiendas = async () => {
 
   return response.data;
 };
+export const obtenerTiendaPorId = async (id) => {
+  const response = await axios.get(`${API_URL}/api/tiendas/${id}`);
+
+  return response.data;
+};

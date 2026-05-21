@@ -41,7 +41,7 @@ const login = async (req, res) => {
       },
     });
     if (!usuario) {
-      return res.staturs(400).json({
+      return res.status(400).json({
         error: "El usuario no existe",
       });
     }

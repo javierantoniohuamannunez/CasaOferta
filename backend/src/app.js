@@ -29,12 +29,15 @@ const handleErrors = require("../middlewares/handleErrors");
 
 app.use(cors());
 app.use(express.json());
+
 // rutas
 app.use("/games", gameRoutes);
 // app.use("/ofertas", ofertasRoutes);
 app.use("/api/tiendas", tiendasRoutes);
+
 app.use("/favoritos", favoritoRoutes);
 app.use("/auth", authRoutes);
+
 app.get("/", (req, res) => {
   res.send("api funcionando");
 });
@@ -50,16 +53,14 @@ sequelize
   .sync({ force: false })
   .then(async () => {
     console.log("Base de datos conectada");
-    // revisar si ya existe cache
-    const totalOfertas = await OfertaHome.count();
-    // si no hay ofertas guardadas
-    if (totalOfertas === 0) {
-      console.log("Generando cache ofertas...");
-      await tiendasService.obtenerTiendas();
-      console.log("Cache generada");
-    } else {
-      console.log(`Cache encontrada (${totalOfertas} ofertas)`);
-    }
+
+    // generar cache completa
+    console.log("Generando cache ofertas...");
+
+    await tiendasService.obtenerTiendas();
+
+    console.log("Cache generada");
+
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Servidor funcionando en el puerto ${PORT}`);
     });

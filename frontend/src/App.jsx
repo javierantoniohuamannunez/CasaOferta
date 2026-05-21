@@ -11,16 +11,16 @@ import Tienda from "./pages/tiendas/Tienda";
 function App() {
   return (
     <BrowserRouter>
-      <Header/>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/juego/:id" element={<DetalleJuego />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/perfil" element={<Perfil />} />
-          <Route path="/categoria/:id" element={<CategoriaPage />} />
-          <Route path="/tienda/:id" element={<Tienda />} />
-        </Routes>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/juego/:id" element={<DetalleJuego />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/perfil" element={<Perfil />} />
+        <Route path="/categoria/:id" element={<CategoriaPage />} />
+        <Route path="/tienda/:id" element={<Tienda />} />
+      </Routes>
     </BrowserRouter>
   );
 }

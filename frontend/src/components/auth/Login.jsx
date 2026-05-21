@@ -5,7 +5,10 @@ import { useNavigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -13,6 +16,8 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      setLoading(true);
+
       const data = await loginUser(email, password);
 
       localStorage.setItem("token", data.token);
@@ -22,7 +27,10 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
-      alert("Error al iniciar sesión");
+
+      alert(error.message || "Error al iniciar sesión");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,6 +44,7 @@ const Login = () => {
             className="auth-input"
             type="email"
             placeholder="Correo electrónico"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -44,12 +53,13 @@ const Login = () => {
             className="auth-input"
             type="password"
             placeholder="Contraseña"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button className="auth-button" type="submit">
-            Entrar
+          <button className="auth-button" type="submit" disabled={loading}>
+            {loading ? "Entrando..." : "Entrar"}
           </button>
         </form>
 
