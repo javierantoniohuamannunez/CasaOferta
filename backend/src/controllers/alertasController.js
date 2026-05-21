@@ -4,25 +4,34 @@ const { Alerta } = require("../models");
 const crearAlerta = async (req, res) => {
   try {
     const usuarioId = req.user.id;
-
-    const { juegoId, nombreJuego, precioObjetivo } = req.body;
-
+    const { juegoId, nombreJuego, ultimoPrecio } = req.body;
     // validar
-    if (!juegoId || !nombreJuego || !precioObjetivo) {
+    if (!juegoId || !nombreJuego || !ultimoPrecio) {
       return res.status(400).json({
         error: "Faltan datos",
       });
     }
+    // evitar duplicados
+    const existe = await Alerta.findOne({
+      where: {
+        usuarioId,
+        juegoId,
+        activa: true,
+      },
+    });
+    if (existe) {
+      return res.status(400).json({
+        error: "Ya tienes alerta de este juego",
+      });
+    }
 
-    // crear alerta
     const alerta = await Alerta.create({
       usuarioId,
       juegoId,
       nombreJuego,
-      precioObjetivo,
+      ultimoPrecio,
       activa: true,
     });
-
     return res.json(alerta);
   } catch (error) {
     console.log(error);
@@ -37,15 +46,12 @@ const crearAlerta = async (req, res) => {
 const obtenerAlertas = async (req, res) => {
   try {
     const usuarioId = req.user.id;
-
     const alertas = await Alerta.findAll({
       where: {
         usuarioId,
+        activa: true,
       },
-
-      order: [["createdAt", "DESC"]],
     });
-
     return res.json(alertas);
   } catch (error) {
     console.log(error);
@@ -60,30 +66,18 @@ const obtenerAlertas = async (req, res) => {
 const eliminarAlerta = async (req, res) => {
   try {
     const usuarioId = req.user.id;
-
-    const { id } = req.params;
-
-    const alerta = await Alerta.findOne({
+    const { juegoId } = req.params;
+    await Alerta.destroy({
       where: {
-        id,
         usuarioId,
+        juegoId,
       },
     });
-
-    if (!alerta) {
-      return res.status(404).json({
-        error: "Alerta no encontrada",
-      });
-    }
-
-    await alerta.destroy();
-
     return res.json({
-      ok: true,
+      mensaje: "Alerta eliminada",
     });
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({
       error: "Error eliminando alerta",
     });

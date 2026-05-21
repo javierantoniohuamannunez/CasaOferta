@@ -10,12 +10,12 @@ Usuario.hasMany(Favorito, {
 Favorito.belongsTo(Usuario, {
   foreignKey: "usuarioId",
 });
-Usuario.hasMany(Alerta,{
+Usuario.hasMany(Alerta, {
   foreignKey: "usuarioId",
 });
 Alerta.belongsTo(Usuario, {
   foreignKey: "usuarioId",
-})
+});
 module.exports = {
   Usuario,
   Favorito,

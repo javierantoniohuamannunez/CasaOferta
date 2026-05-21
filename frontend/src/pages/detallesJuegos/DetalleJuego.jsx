@@ -1,12 +1,21 @@
 import "./detallejuego.css";
-
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-
-import { FaWindows, FaPlaystation, FaXbox,FaLinux,FaHeart,
+import {
+  FaWindows,
+  FaPlaystation,
+  FaXbox,
+  FaLinux,
+  FaHeart,
+  FaBell,
 } from "react-icons/fa";
 import { obtenerOfertasJuego } from "../../services/api";
-import { agregarFavorito,eliminarFavorito,obtenerFavorito,} from "../../services/favoritos";
+import {
+  agregarFavorito,
+  eliminarFavorito,
+  obtenerFavorito,
+} from "../../services/favoritos";
+import { crearAlerta } from "../../services/alertas";
 import PrecioChart from "../../components/PrecioChart";
 
 const DetalleJuego = () => {
@@ -16,7 +25,6 @@ const DetalleJuego = () => {
   const [ofertas, setOfertas] = useState([]);
   const [mejorOferta, setMejorOferta] = useState(null);
   const [historialPrecios, setHistorialPrecios] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const cargar = async () => {
@@ -34,11 +42,14 @@ const DetalleJuego = () => {
 
     const cargarFavoritos = async () => {
       const token = localStorage.getItem("token");
+
       if (!token) return;
+
       try {
         const response = await obtenerFavorito();
         const favoritos = response.favoritos || [];
         const existe = favoritos.some((fav) => fav.juegoId === Number(id));
+
         setFavorito(existe);
       } catch (error) {
         console.log(error);
@@ -62,6 +73,28 @@ const DetalleJuego = () => {
     }
   };
 
+  const handleCrearAlerta = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Debes iniciar sesión");
+        return;
+      }
+
+      await crearAlerta({
+        juegoId: juego.id,
+        nombreJuego: juego.nombre,
+        ultimoPrecio: mejorOferta?.precioActual || 0,
+      });
+
+      alert("Juego añadido a tu wishlist 🔔");
+    } catch (error) {
+      console.log(error);
+
+      alert(error.response?.data?.error || "Error creando alerta");
+    }
+  };
+
   const getIcono = (plataforma) => {
     if (plataforma.includes("PC") || plataforma.includes("Windows")) {
       return <FaWindows />;
@@ -77,7 +110,6 @@ const DetalleJuego = () => {
     }
     return null;
   };
-
   if (!juego) {
     return <p>Cargando...</p>;
   }
@@ -90,16 +122,21 @@ const DetalleJuego = () => {
       <div className="detalle-overlay"></div>
 
       <div className="detalle-content">
-
         <div className="detalle-banner">
           <img src={juego.imagen} alt={juego.nombre} className="detalle-img" />
 
-          <button
-            className={`detalle-favorito ${favorito ? "activo" : ""}`}
-            onClick={toggleFavorito}
-          >
-            <FaHeart />
-          </button>
+          <div className="detalle-actions">
+            <button
+              className={`detalle-favorito ${favorito ? "activo" : ""}`}
+              onClick={toggleFavorito}
+            >
+              <FaHeart />
+            </button>
+
+            <button className="detalle-alerta" onClick={handleCrearAlerta}>
+              <FaBell />
+            </button>
+          </div>
         </div>
 
         <div className="detalle-info">
@@ -177,17 +214,14 @@ const DetalleJuego = () => {
                 <div key={index} className="oferta-item">
                   <div>
                     <strong>{oferta.tienda}</strong>
-
                     <p>
                       {oferta.precioActual} {oferta.moneda}
                     </p>
-
                     <small>Antes: {oferta.precioNormal}</small>
                   </div>
 
                   <div className="oferta-extra">
                     <span>-{oferta.descuento}%</span>
-
                     <a href={oferta.url} target="_blank" rel="noreferrer">
                       Ir a tienda
                     </a>
