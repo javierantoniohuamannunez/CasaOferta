@@ -80,14 +80,15 @@ const DetalleJuego = () => {
         alert("Debes iniciar sesión");
         return;
       }
-
+      console.log(juego);
       await crearAlerta({
         juegoId: juego.id,
         nombreJuego: juego.nombre,
-        ultimoPrecio: mejorOferta?.precioActual || 0,
+        imagen: juego.imagen,
+        precioBase: mejorOferta?.precioNormal || 0,
       });
 
-      alert("Juego añadido a tu wishlist 🔔");
+      alert("Juego añadido a tu lista de deseo");
     } catch (error) {
       console.log(error);
 

@@ -4,52 +4,107 @@
   margin: auto;
 }
 
+/* BOTON VOLVER */
+
+.btn-volver {
+  background: rgba(255, 255, 255, 0.08);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  color: white;
+
+  padding: 10px 18px;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  margin-bottom: 20px;
+
+  transition: 0.2s ease;
+
+  font-weight: 600;
+}
+
+.btn-volver:hover {
+  background: #ff7b00;
+
+  border-color: #ff7b00;
+
+  transform: translateY(-2px);
+}
+
+/* CARD PERFIL */
+
 .perfil-card {
   background: #0f172a;
-  border-radius: 20px;
+
+  border-radius: 24px;
+
   padding: 40px;
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
-  border: 1px solid rgba(255,255,255,0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 }
 
 .perfil-avatar {
   width: 110px;
+
   height: 110px;
+
   border-radius: 50%;
-  background: #1e293b;
+
+  background: linear-gradient(135deg, #1e293b, #334155);
+
   display: flex;
+
   align-items: center;
+
   justify-content: center;
   font-size: 50px;
   margin-bottom: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.08);
 }
 
 .perfil-card h1 {
   margin-bottom: 10px;
+  font-size: 34px;
 }
-
 .perfil-email {
   color: #94a3b8;
   margin-bottom: 30px;
+  font-size: 15px;
 }
 
 .perfil-info {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .perfil-box {
   background: #1e293b;
   padding: 20px;
-  border-radius: 14px;
+  border-radius: 16px;
   min-width: 180px;
   display: flex;
   flex-direction: column;
   gap: 10px;
   text-align: center;
+  transition: 0.2s;
+}
+
+.perfil-box:hover {
+  transform: translateY(-4px);
+  background: #263548;
 }
 
 .perfil-box span {
@@ -59,43 +114,48 @@
 
 .perfil-box strong {
   font-size: 18px;
+  color: white;
 }
-
 .favoritos-section {
-  margin-top: 40px;
+  margin-top: 50px;
 }
-
 .favoritos-section h2 {
   margin-bottom: 20px;
+  font-size: 28px;
 }
 
 .favoritos-vacio {
   background: #0f172a;
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 40px;
   text-align: center;
   color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
 .favoritos-grid {
   display: grid;
+
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+
   gap: 20px;
 }
 
 .favorito-card {
   background: #0f172a;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  transition: 0.3s;
+  transition: 0.25s;
   cursor: pointer;
   color: white;
   text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
-
 .favorito-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.12);
 }
-
 .favorito-card img {
   width: 100%;
   height: 140px;
@@ -105,4 +165,68 @@
 .favorito-card h3 {
   padding: 15px;
   font-size: 15px;
+  line-height: 1.4;
+}
+
+.favorito-card p {
+  padding: 0 15px;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.wishlist-actions {
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+}
+
+.wishlist-btn,
+.wishlist-delete {
+  flex: 1;
+  border: none;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  color: white;
+  text-align: center;
+  transition: 0.2s;
+  font-size: 14px;
+}
+.wishlist-btn {
+  background: #2563eb;
+}
+.wishlist-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.03);
+}
+.wishlist-delete {
+  background: #dc2626;
+}
+.wishlist-delete:hover {
+  background: #b91c1c;
+  transform: scale(1.03);
+}
+
+@media (max-width: 768px) {
+  .perfil-page {
+    padding: 20px;
+  }
+  .perfil-card {
+    padding: 30px 20px;
+  }
+  .perfil-info {
+    flex-direction: column;
+    width: 100%;
+  }
+  .perfil-box {
+    width: 100%;
+  }
+  .favoritos-grid {
+    grid-template-columns: 1fr;
+  }
+  .wishlist-actions {
+    flex-direction: column;
+  }
 }

@@ -4,13 +4,13 @@ const { Alerta } = require("../models");
 const crearAlerta = async (req, res) => {
   try {
     const usuarioId = req.user.id;
-    const { juegoId, nombreJuego, ultimoPrecio } = req.body;
-    // validar
-    if (!juegoId || !nombreJuego || !ultimoPrecio) {
+    const { juegoId, nombreJuego, imagen, precioBase } = req.body;
+    if (!juegoId || !nombreJuego) {
       return res.status(400).json({
         error: "Faltan datos",
       });
     }
+
     // evitar duplicados
     const existe = await Alerta.findOne({
       where: {
@@ -19,9 +19,10 @@ const crearAlerta = async (req, res) => {
         activa: true,
       },
     });
+
     if (existe) {
       return res.status(400).json({
-        error: "Ya tienes alerta de este juego",
+        error: "Ya tienes este juego en wishlist",
       });
     }
 
@@ -29,23 +30,25 @@ const crearAlerta = async (req, res) => {
       usuarioId,
       juegoId,
       nombreJuego,
-      ultimoPrecio,
+      imagen,
+      precioBase,
       activa: true,
     });
+
     return res.json(alerta);
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({
       error: "Error creando alerta",
     });
   }
 };
 
-// obtener alertas usuario
+// obtener alertas
 const obtenerAlertas = async (req, res) => {
   try {
     const usuarioId = req.user.id;
+
     const alertas = await Alerta.findAll({
       where: {
         usuarioId,
@@ -55,7 +58,6 @@ const obtenerAlertas = async (req, res) => {
     return res.json(alertas);
   } catch (error) {
     console.log(error);
-
     return res.status(500).json({
       error: "Error obteniendo alertas",
     });
@@ -74,7 +76,7 @@ const eliminarAlerta = async (req, res) => {
       },
     });
     return res.json({
-      mensaje: "Alerta eliminada",
+      mensaje: "Juego eliminado wishlist",
     });
   } catch (error) {
     console.log(error);

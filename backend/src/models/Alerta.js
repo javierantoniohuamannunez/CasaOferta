@@ -17,7 +17,10 @@ const Alerta = sequelize.define(
     nombreJuego: {
       type: DataTypes.STRING,
     },
-    ultimoPrecio: {
+     imagen: {
+      type: DataTypes.TEXT,
+    },
+    precioBase: {
       type: DataTypes.FLOAT,
     },
     activa: {
