@@ -1,6 +1,6 @@
 const cron = require("node-cron");
 
-const { Alerta, Usuario, OfertaTienda } = require("../models");
+const { Alerta, Usuario, OfertaTienda, Notificacion } = require("../models");
 
 const { enviarCorreoOferta } = require("../services/emailService");
 
@@ -29,27 +29,47 @@ cron.schedule("0 * * * *", async () => {
         },
         order: [["precioActual", "ASC"]],
       });
+
       if (!oferta) {
         continue;
       }
 
-      // si tiene descuento
-      if (oferta.precioActual < alerta.precioBase) {
+      // si bajo de precio y tiene descuento
+      if (oferta.precioActual < alerta.precioBase && oferta.descuento >= 10) {
+        // enviar correo
         await enviarCorreoOferta(
           alerta.Usuario.email,
           alerta.nombreJuego,
+          alerta.imagen,
           oferta.precioActual,
           alerta.precioBase,
+          oferta.descuento,
+          oferta.tienda,
           oferta.url,
         );
+        // crear notificacion interna
+        await Notificacion.create({
+          usuarioId: alerta.usuarioId,
+          juegoId: alerta.juegoId,
+          titulo: "Juego en oferta",
+          mensaje: `
+              ${alerta.nombreJuego}
+                ahora cuesta
+              ${oferta.precioActual}€
+              (-${oferta.descuento}%)
+              `,
+          imagen: alerta.imagen,
+          leida: false,
+        });
+        console.log(`Correo enviado: ${alerta.nombreJuego}`);
 
-        // actualizar precio base
+        // actualizar precio basepara evitar spam
         alerta.precioBase = oferta.precioActual;
+
         await alerta.save();
-        console.log(`Correo enviado ${alerta.nombreJuego}`);
       }
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error cron alertas:", error.message);
   }
 });

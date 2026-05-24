@@ -1,5 +1,4 @@
 require("dotenv").config();
-require("./cron/checkAlertasCron");
 const express = require("express");
 const cors = require("cors");
 
@@ -11,11 +10,12 @@ const { iniciarCronOfertas } = require("./cron/updateOfertasCron");
 // cache BD ofertas
 const tiendasService = require("./services/tiendasService");
 const { OfertaHome } = require("./models");
-
+const notificacionesRoutes = require("./routes/notificacionesRoutes");
 // modelos
 // require("./models/Usuario");
 // require("./models/Favorito");
 require("./models");
+require("./cron/checkAlertasCron");
 
 // rutas
 const gameRoutes = require("./routes/gameRoutes");
@@ -28,6 +28,9 @@ const alertasRoutes = require("./routes/alertasRoutes");
 // middlewares
 const notFound = require("../middlewares/notFound");
 const handleErrors = require("../middlewares/handleErrors");
+//notificaciones
+app.use("/notificaciones", notificacionesRoutes);
+
 
 app.use(cors());
 app.use(express.json());

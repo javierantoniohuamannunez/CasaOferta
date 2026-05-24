@@ -3,6 +3,23 @@ const axios = require("axios");
 const API_URL = "https://api.isthereanydeal.com";
 const API_KEY = process.env.ITAD_API_KEY;
 
+const respuestaSinPrecio = () => ({
+  precioActual: null,
+  precioNormal: null,
+  descuento: 0,
+  moneda: "USD",
+  tienda: null,
+  url: null,
+});
+
+const normalizarTitulo = (texto = "") =>
+  texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+
 const buscarJuego = async (nombre) => {
   const response = await axios.get(`${API_URL}/games/search/v1`, {
     params: {
@@ -22,11 +39,8 @@ const obtenerOfertas = async (idJuego) => {
     params: {
       key: API_KEY,
       country: "US",
-      // traer aunque no tengan descuento
       deals: false,
-      // tiendas
       capacity: 6,
-      // tiendas importantes
       shops: "61,6,37,24,35",
     },
     headers: {
@@ -38,6 +52,73 @@ const obtenerOfertas = async (idJuego) => {
   return response.data;
 };
 
+const obtenerMejorOfertaPorTitulo = async (nombre) => {
+  try {
+    const resultados = await buscarJuego(nombre);
+
+    if (!Array.isArray(resultados) || resultados.length === 0) {
+      return respuestaSinPrecio();
+    }
+
+    const nombreNormalizado = normalizarTitulo(nombre);
+    const juegosFiltrados = resultados.filter(
+      (juego) =>
+        juego?.id &&
+        ["game", "package", "bundle"].includes(juego.type) &&
+        juego.title,
+    );
+
+    if (juegosFiltrados.length === 0) {
+      return respuestaSinPrecio();
+    }
+
+    const juegoITAD =
+      juegosFiltrados.find(
+        (juego) => normalizarTitulo(juego.title) === nombreNormalizado,
+      ) ||
+      juegosFiltrados.find((juego) =>
+        normalizarTitulo(juego.title).includes(nombreNormalizado),
+      ) ||
+      juegosFiltrados[0];
+
+    const respuestaPrecios = await obtenerOfertas(juegoITAD.id);
+    const deals = Array.isArray(respuestaPrecios?.[0]?.deals)
+      ? respuestaPrecios[0].deals
+      : [];
+
+    if (deals.length === 0) {
+      return respuestaSinPrecio();
+    }
+
+    const mejorOferta = deals.reduce((mejor, actual) => {
+      const mejorPrecio = mejor?.price?.amount ?? Number.POSITIVE_INFINITY;
+      const actualPrecio = actual?.price?.amount ?? Number.POSITIVE_INFINITY;
+
+      return actualPrecio < mejorPrecio ? actual : mejor;
+    }, null);
+
+    if (mejorOferta?.price?.amount == null) {
+      return respuestaSinPrecio();
+    }
+
+    return {
+      precioActual: mejorOferta.price.amount,
+      precioNormal: mejorOferta.regular?.amount ?? mejorOferta.price.amount,
+      descuento: mejorOferta.cut ?? 0,
+      moneda: mejorOferta.price.currency ?? "USD",
+      tienda: mejorOferta.shop?.name ?? null,
+      url: mejorOferta.url ?? null,
+    };
+  } catch (error) {
+    console.log(
+      `Error obteniendo mejor oferta para ${nombre}:`,
+      error.response?.data || error.message,
+    );
+
+    return respuestaSinPrecio();
+  }
+};
+
 const obtenerHistorialPrecio = async (idJuego) => {
   try {
     const fecha = new Date();
@@ -46,13 +127,9 @@ const obtenerHistorialPrecio = async (idJuego) => {
 
     const since = fecha.toISOString().split(".")[0] + "Z";
 
-    // console.log("idhistorial:", idJuego);
-    // console.log("since:", since);
-
     const response = await axios.get(`${API_URL}/games/history/v2`, {
       params: {
         key: process.env.ITAD_API_KEY,
-
         id: idJuego,
         country: "US",
         shops: "61,37,6,20,35",
@@ -69,6 +146,7 @@ const obtenerHistorialPrecio = async (idJuego) => {
     return [];
   }
 };
+
 const obtenerDealsTienda = async (shopId) => {
   try {
     const response = await axios.get(`${API_URL}/deals/v2`, {
@@ -114,9 +192,11 @@ const obtenerDealsTienda = async (shopId) => {
     return [];
   }
 };
+
 module.exports = {
   buscarJuego,
   obtenerOfertas,
+  obtenerMejorOfertaPorTitulo,
   obtenerHistorialPrecio,
   obtenerDealsTienda,
 };
