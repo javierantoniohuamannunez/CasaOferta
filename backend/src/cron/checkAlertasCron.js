@@ -25,7 +25,7 @@ cron.schedule("0 * * * *", async () => {
       // buscar oferta actual
       const oferta = await OfertaTienda.findOne({
         where: {
-          nombre: alerta.nombreJuego,
+          juegoId: alerta.juegoId,
         },
         order: [["precioActual", "ASC"]],
       });
