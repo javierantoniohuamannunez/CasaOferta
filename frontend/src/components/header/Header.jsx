@@ -1,10 +1,8 @@
 import "./header.css";
-
 import Buscador from "./Buscador";
-
 import { Link, useNavigate } from "react-router-dom";
-
 import logo from "../../assets/logo.png";
+import Notificaciones from "../notificaciones/Notificaciones";
 
 const Header = ({ onBuscar }) => {
   const token = localStorage.getItem("token");
@@ -31,6 +29,8 @@ const Header = ({ onBuscar }) => {
         <div className="header-user">
           {token ? (
             <>
+              <Notificaciones />
+
               <Link to="/perfil" className="perfil-link">
                 Perfil
               </Link>
@@ -56,9 +56,11 @@ const Header = ({ onBuscar }) => {
       <nav className="nav">
         <a href="#">Inicio</a>
 
-        <a href="">Destacados</a>
+        <a href="#destacados">Top Juegos</a>
 
         <a href="#ofertas">Ofertas</a>
+
+        <a href="#categorias">Categorías</a>
 
         <a href="#tiendas">Tiendas</a>
       </nav>

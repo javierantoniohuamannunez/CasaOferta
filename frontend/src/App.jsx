@@ -8,6 +8,8 @@ import Register from "./components/auth/Register";
 import Perfil from "./pages/perfil/Perfil";
 import CategoriaPage from "./components/categorias/CategoriaPage";
 import Tienda from "./pages/tiendas/Tienda";
+import DetalleOferta from "./components/detalleOferta/DetalleOferta";
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/juego/:id" element={<DetalleJuego />} />
+        <Route path="/oferta/:tiendaId/:juegoId" element={<DetalleOferta />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/perfil" element={<Perfil />} />

@@ -1,4 +1,4 @@
-.detalle-juego-page {
+.detalle-oferta-page {
   position: relative;
   min-height: 100vh;
   color: #f8fafc;
@@ -7,14 +7,14 @@
     linear-gradient(180deg, #09111f 0%, #07101a 48%, #04070c 100%);
 }
 
-.detalle-juego-backdrop {
+.detalle-oferta-backdrop {
   position: absolute;
   inset: 0;
   overflow: hidden;
   opacity: 0.22;
 }
 
-.detalle-juego-backdrop img {
+.detalle-oferta-backdrop img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -22,13 +22,17 @@
   transform: scale(1.08);
 }
 
-.detalle-juego-overlay {
+.detalle-oferta-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(4, 7, 12, 0.2), rgba(4, 7, 12, 0.96));
+  background: linear-gradient(
+    180deg,
+    rgba(4, 7, 12, 0.2),
+    rgba(4, 7, 12, 0.96)
+  );
 }
 
-.detalle-juego-shell {
+.detalle-oferta-shell {
   position: relative;
   z-index: 1;
   max-width: 1180px;
@@ -36,7 +40,16 @@
   padding: 110px 24px 60px;
 }
 
-.detalle-juego-hero {
+.detalle-oferta-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #f8d5b0;
+  text-decoration: none;
+  margin-bottom: 28px;
+}
+
+.detalle-oferta-hero {
   display: grid;
   grid-template-columns: 320px 1fr;
   gap: 28px;
@@ -44,74 +57,40 @@
   margin-bottom: 28px;
 }
 
-.detalle-juego-media,
-.detalle-juego-copy,
-.detalle-juego-panel {
+.detalle-oferta-media,
+.detalle-oferta-copy,
+.detalle-oferta-panel {
   background: rgba(9, 17, 31, 0.72);
   border: 1px solid rgba(248, 250, 252, 0.08);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(18px);
 }
 
-.detalle-juego-media {
-  position: relative;
+.detalle-oferta-media {
   border-radius: 28px;
   overflow: hidden;
 }
 
-.detalle-juego-cover {
+.detalle-oferta-cover {
   width: 100%;
   height: 100%;
   min-height: 360px;
   object-fit: cover;
 }
 
-.detalle-juego-actions {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.detalle-juego-btn {
-  width: 52px;
-  height: 52px;
-  border: 0;
-  border-radius: 50%;
-  color: #f8fafc;
-  cursor: pointer;
-  background: rgba(4, 7, 12, 0.72);
-  transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.detalle-juego-btn:hover {
-  transform: scale(1.06);
-}
-
-.detalle-juego-btn.favorito:hover,
-.detalle-juego-btn.favorito.activo {
-  background: #ef4444;
-}
-
-.detalle-juego-btn.alerta:hover {
-  background: #f97316;
-}
-
-.detalle-juego-copy {
+.detalle-oferta-copy {
   border-radius: 28px;
   padding: 32px;
 }
 
-.detalle-juego-labels {
+.detalle-oferta-labels {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 18px;
 }
 
-.detalle-juego-badge {
+.detalle-oferta-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -121,29 +100,24 @@
   font-weight: 700;
 }
 
-.detalle-juego-badge.principal {
+.detalle-oferta-badge.principal {
   background: rgba(249, 115, 22, 0.18);
   color: #fdba74;
 }
 
-.detalle-juego-badge.score {
+.detalle-oferta-badge.score {
   background: rgba(34, 197, 94, 0.16);
   color: #86efac;
 }
 
-.detalle-juego-badge.soft {
-  background: rgba(148, 163, 184, 0.16);
-  color: #cbd5e1;
-}
-
-.detalle-juego-copy h1 {
+.detalle-oferta-copy h1 {
   margin: 0;
   font-size: clamp(2rem, 4vw, 4rem);
   line-height: 0.96;
   letter-spacing: -0.04em;
 }
 
-.detalle-juego-subtitle {
+.detalle-oferta-subtitle {
   margin: 18px 0 0;
   max-width: 720px;
   color: #cbd5e1;
@@ -151,20 +125,20 @@
   line-height: 1.7;
 }
 
-.detalle-juego-pricebox {
+.detalle-oferta-pricebox {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   margin-top: 28px;
 }
 
-.detalle-juego-pricebox > div {
+.detalle-oferta-pricebox > div {
   border-radius: 20px;
   padding: 18px;
   background: rgba(255, 255, 255, 0.04);
 }
 
-.detalle-juego-caption {
+.detalle-oferta-caption {
   display: block;
   margin-bottom: 8px;
   color: #94a3b8;
@@ -173,28 +147,28 @@
   letter-spacing: 0.08em;
 }
 
-.detalle-juego-pricebox strong {
+.detalle-oferta-pricebox strong {
   font-size: 1.7rem;
   color: #f8fafc;
 }
 
-.detalle-juego-oldprice {
+.detalle-oferta-oldprice {
   color: #cbd5e1;
   text-decoration: line-through;
 }
 
-.detalle-juego-discount {
+.detalle-oferta-discount {
   color: #86efac;
   font-size: 1.5rem;
   font-weight: 800;
 }
 
-.detalle-juego-actions-row {
+.detalle-oferta-actions {
   margin-top: 24px;
 }
 
-.detalle-juego-actions-row a,
-.detalle-juego-meta a {
+.detalle-oferta-actions a,
+.detalle-oferta-meta a {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -206,59 +180,23 @@
   background: linear-gradient(135deg, #f97316, #fb923c);
 }
 
-.detalle-juego-platforms {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-top: 28px;
-}
-
-.plataforma-icono {
-  width: 46px;
-  height: 46px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
-  color: #f8fafc;
-  font-size: 1.15rem;
-}
-
-.detalle-juego-genres {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 24px;
-}
-
-.genero-tag {
-  background: rgba(249, 115, 22, 0.12);
-  border: 1px solid rgba(249, 115, 22, 0.45);
-  color: #fdba74;
-  padding: 8px 14px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.detalle-juego-grid {
+.detalle-oferta-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(280px, 0.8fr);
   gap: 24px;
   margin-bottom: 24px;
 }
 
-.detalle-juego-panel {
+.detalle-oferta-panel {
   border-radius: 24px;
   padding: 24px;
 }
 
-.detalle-juego-panel.wide {
+.detalle-oferta-panel.wide {
   min-height: 420px;
 }
 
-.detalle-juego-panelhead {
+.detalle-oferta-panelhead {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -266,44 +204,39 @@
   margin-bottom: 20px;
 }
 
-.detalle-juego-panelhead h2 {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+.detalle-oferta-panelhead h2 {
   margin: 0;
   font-size: 1.3rem;
 }
 
-.detalle-juego-panelhead span {
+.detalle-oferta-panelhead span {
   color: #94a3b8;
   font-size: 0.92rem;
 }
 
-.detalle-juego-summary {
+.detalle-oferta-summary {
   display: grid;
   gap: 12px;
 }
 
-.detalle-juego-summary strong {
+.detalle-oferta-summary strong {
   font-size: 2rem;
 }
 
-.detalle-juego-summary span {
+.detalle-oferta-summary span {
   color: #cbd5e1;
 }
 
-.detalle-juego-description p {
-  margin: 0;
-  color: #e2e8f0;
-  line-height: 1.8;
+.ofertas-lista {
+  margin-top: 0;
 }
 
-.detalle-juego-list {
+.detalle-oferta-list {
   display: grid;
   gap: 14px;
 }
 
-.detalle-juego-item {
+.detalle-oferta-item {
   display: flex;
   justify-content: space-between;
   gap: 18px;
@@ -313,32 +246,32 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.detalle-juego-item h3,
-.detalle-juego-item p,
-.detalle-juego-item small {
+.detalle-oferta-item h3,
+.detalle-oferta-item p,
+.detalle-oferta-item small {
   margin: 0;
 }
 
-.detalle-juego-item p {
+.detalle-oferta-item p {
   margin-top: 8px;
   font-size: 1.15rem;
   font-weight: 700;
 }
 
-.detalle-juego-item small {
+.detalle-oferta-item small {
   display: block;
   margin-top: 6px;
   color: #94a3b8;
 }
 
-.detalle-juego-meta {
+.detalle-oferta-meta {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
 }
 
-.detalle-juego-meta .descuento {
+.detalle-oferta-meta .descuento {
   border-radius: 999px;
   padding: 8px 12px;
   font-weight: 800;
@@ -346,37 +279,37 @@
   background: #86efac;
 }
 
-.detalle-juego-empty {
+.detalle-oferta-empty {
   color: #94a3b8;
   margin: 0;
 }
 
 @media (max-width: 920px) {
-  .detalle-juego-hero,
-  .detalle-juego-grid {
+  .detalle-oferta-hero,
+  .detalle-oferta-grid {
     grid-template-columns: 1fr;
   }
 
-  .detalle-juego-pricebox {
+  .detalle-oferta-pricebox {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 640px) {
-  .detalle-juego-shell {
+  .detalle-oferta-shell {
     padding: 92px 16px 40px;
   }
 
-  .detalle-juego-copy,
-  .detalle-juego-panel {
+  .detalle-oferta-copy,
+  .detalle-oferta-panel {
     padding: 20px;
   }
 
-  .detalle-juego-item {
+  .detalle-oferta-item {
     flex-direction: column;
   }
 
-  .detalle-juego-meta {
+  .detalle-oferta-meta {
     align-items: flex-start;
   }
 }

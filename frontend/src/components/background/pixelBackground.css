@@ -1,0 +1,39 @@
+.pixel-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events:none;
+
+  background: radial-gradient(
+    circle at top,
+    rgba(30, 41, 59, 0.8),
+    #020617 60%
+  );
+
+  overflow: hidden;
+}
+
+.pixel-overlay {
+  position: absolute;
+  inset: 0;
+
+  background-image: radial-gradient(
+    rgba(255, 255, 255, 0.12) 1px,
+    transparent 1px
+  );
+
+  background-size: 28px 28px;
+  opacity: 0.8;
+
+  animation: movePixels 8s linear infinite;
+}
+
+@keyframes movePixels {
+  from {
+    transform: translateY(0px);
+  }
+
+  to {
+    transform: translateY(40px);
+  }
+}

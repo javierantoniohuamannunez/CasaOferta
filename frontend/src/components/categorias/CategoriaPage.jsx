@@ -8,7 +8,9 @@ import ResultadosGenero from "../resultados/ResultadosGenero";
 
 const CategoriaPage = () => {
   const { id } = useParams();
+
   // const navigate = useNavigate();
+
   const [juegos, setJuegos] = useState([]);
 
   useEffect(() => {
@@ -27,6 +29,10 @@ const CategoriaPage = () => {
 
   return (
     <div className="categoria-page">
+      <div className="categoria-hero">
+        <h1 className="categoria-title">Explora nuevos videojuegos</h1>
+     
+      </div>
       {/* <button className="btn-volver" onClick={() => navigate(-1)}>
         ← Volver
       </button> */}

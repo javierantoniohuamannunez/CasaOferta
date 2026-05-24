@@ -8,6 +8,7 @@ const MejoresOfertas = () => {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const cargar = async () => {
       try {
@@ -42,8 +43,14 @@ const MejoresOfertas = () => {
   }
 
   return (
-    <div className="mejores-ofertas">
-      <h2 className="titulo-seccion">Mejores Ofertas</h2>
+    <section className="mejores-ofertas" id="ofertas">
+      <div className="ofertas-header">
+        <h2 className="titulo-seccion">Ofertas destacadas</h2>
+        <p className="ofertas-subtitle">
+          Los mejores descuentos encontrados entre Steam, Humble, Fanatical, GOG
+          y más tiendas.
+        </p>
+      </div>
 
       <div className="tiendas-grid">
         {tiendas.map((tienda) => (
@@ -51,11 +58,16 @@ const MejoresOfertas = () => {
             key={tienda.tiendaId}
             className="tienda-card"
             onClick={() => navigate(`/tienda/${tienda.tiendaId}`)}
-            style={{ cursor: "pointer" }}
           >
-            <h3 className="tienda-nombre">{tienda.tienda}</h3>
+            <div className="tienda-top">
+              <h3 className="tienda-nombre">{tienda.tienda}</h3>
+              <span className="tienda-total">
+                {tienda.juegos.length} ofertas
+              </span>
+            </div>
+
             {tienda.juegos.length === 0 ? (
-              <p className="sin-ofertas">No hay ofertas</p>
+              <p className="sin-ofertas">No hay ofertas disponibles</p>
             ) : (
               tienda.juegos.map((juego) => (
                 <div
@@ -63,11 +75,15 @@ const MejoresOfertas = () => {
                   className="oferta-item"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/juego/${juego.id}`);
+                    navigate(`/oferta/${tienda.tiendaId}/${juego.id}`);
                   }}
-                  style={{ cursor: "pointer" }}
                 >
-                  <img src={juego.imagen} alt={juego.nombre} />
+                  <div className="oferta-img">
+                    <img src={juego.imagen} alt={juego.nombre} />
+                    <div className="descuento-floating">
+                      -{juego.descuento}%
+                    </div>
+                  </div>
 
                   <div className="oferta-info">
                     <p className="nombre">{juego.nombre}</p>
@@ -92,12 +108,9 @@ const MejoresOfertas = () => {
                       <span className="precio-original">
                         €{juego.precioNormal.toFixed(2)}
                       </span>
-
                       <span className="precio-oferta">
                         €{juego.precioActual.toFixed(2)}
                       </span>
-
-                      <span className="descuento">-{juego.descuento}%</span>
                     </div>
                   </div>
                 </div>
@@ -106,7 +119,7 @@ const MejoresOfertas = () => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 

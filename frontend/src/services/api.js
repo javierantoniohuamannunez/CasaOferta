@@ -14,10 +14,7 @@ export const obtenerCategorias = async () => {
 
   return response.json();
 };
-// export const obtenerTopOfertas = async () => {
-//   const response = await fetch(`${API_URL}/ofertas/top-ofertas`);
-//   return response.json();
-// };
+
 export const obtenerJuegosPorGenero = async (generoId) => {
   const response = await fetch(
     `${API_URL}/games/por-genero?genero=${generoId}`,
@@ -38,7 +35,6 @@ export const obtenerJuegosTop = async () => {
   return response.json();
 };
 
-// ITAD detalle
 export const obtenerOfertasJuego = async (id) => {
   try {
     const response = await axios.get(`${API_URL}/games/${id}/ofertas`);
@@ -59,8 +55,17 @@ export const obtenerTiendas = async () => {
 
   return response.data;
 };
+
 export const obtenerTiendaPorId = async (id) => {
   const response = await axios.get(`${API_URL}/api/tiendas/${id}`);
+
+  return response.data;
+};
+
+export const obtenerDetalleOferta = async (tiendaId, juegoId) => {
+  const response = await axios.get(
+    `${API_URL}/api/tiendas/${tiendaId}/ofertas/${juegoId}`,
+  );
 
   return response.data;
 };
