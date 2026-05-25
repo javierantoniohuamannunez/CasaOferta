@@ -2,29 +2,24 @@
   position: fixed;
   inset: 0;
   z-index: -1;
-  pointer-events:none;
-
+  pointer-events: none;
   background: radial-gradient(
     circle at top,
-    rgba(30, 41, 59, 0.8),
+    rgba(30, 41, 59, 0.82),
     #020617 60%
   );
-
   overflow: hidden;
 }
 
 .pixel-overlay {
   position: absolute;
   inset: 0;
-
   background-image: radial-gradient(
     rgba(255, 255, 255, 0.12) 1px,
     transparent 1px
   );
-
   background-size: 28px 28px;
-  opacity: 0.8;
-
+  opacity: 0.55;
   animation: movePixels 8s linear infinite;
 }
 
@@ -35,5 +30,12 @@
 
   to {
     transform: translateY(40px);
+  }
+}
+
+@media (max-width: 768px) {
+  .pixel-overlay {
+    opacity: 0.32;
+    animation-duration: 12s;
   }
 }

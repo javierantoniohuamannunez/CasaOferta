@@ -18,7 +18,11 @@ import {
   eliminarFavorito,
   obtenerFavorito,
 } from "../../services/favoritos";
-import { crearAlerta } from "../../services/alertas";
+import {
+  crearAlerta,
+  eliminarAlerta,
+  obtenerAlertas,
+} from "../../services/alertas";
 import PrecioChart from "../../components/PrecioChart";
 
 const formatearPrecio = (precio, moneda = "USD") => {
@@ -33,6 +37,7 @@ const DetalleJuego = () => {
   const { id } = useParams();
   const [juego, setJuego] = useState(null);
   const [favorito, setFavorito] = useState(false);
+  const [alertaActiva, setAlertaActiva] = useState(false);
   const [ofertas, setOfertas] = useState([]);
   const [mejorOferta, setMejorOferta] = useState(null);
   const [historialPrecios, setHistorialPrecios] = useState([]);
@@ -51,27 +56,42 @@ const DetalleJuego = () => {
       }
     };
 
-    const cargarFavoritos = async () => {
+    const cargarPreferencias = async () => {
       const token = localStorage.getItem("token");
 
       if (!token) return;
 
       try {
-        const response = await obtenerFavorito();
-        const favoritos = response.favoritos || [];
-        const existe = favoritos.some((fav) => fav.juegoId === Number(id));
+        const [favoritosResponse, alertasResponse] = await Promise.all([
+          obtenerFavorito(),
+          obtenerAlertas(),
+        ]);
 
-        setFavorito(existe);
+        const favoritos = Array.isArray(favoritosResponse)
+          ? favoritosResponse
+          : favoritosResponse?.favoritos || [];
+        const alertas = Array.isArray(alertasResponse) ? alertasResponse : [];
+        const juegoId = Number(id);
+
+        setFavorito(favoritos.some((fav) => Number(fav.id) === juegoId));
+        setAlertaActiva(alertas.some((alerta) => Number(alerta.juegoId) === juegoId));
       } catch (error) {
         console.log(error);
       }
     };
 
     cargar();
-    cargarFavoritos();
+    cargarPreferencias();
   }, [id]);
 
   const toggleFavorito = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Debes iniciar sesión");
+      return;
+    }
+
     try {
       if (favorito) {
         await eliminarFavorito(id);
@@ -82,15 +102,23 @@ const DetalleJuego = () => {
       }
     } catch (error) {
       console.log(error);
+      alert(error?.response?.data?.error || "Error actualizando favorito");
     }
   };
 
-  const handleCrearAlerta = async () => {
+  const toggleAlerta = async () => {
     try {
       const token = localStorage.getItem("token");
 
       if (!token) {
         alert("Debes iniciar sesión");
+        return;
+      }
+
+      if (alertaActiva) {
+        await eliminarAlerta(id);
+        setAlertaActiva(false);
+        alert("Juego eliminado de tu lista de deseo");
         return;
       }
 
@@ -101,11 +129,11 @@ const DetalleJuego = () => {
         precioBase: mejorOferta?.precioNormal || 0,
       });
 
+      setAlertaActiva(true);
       alert("Juego añadido a tu lista de deseo");
     } catch (error) {
       console.log(error);
-
-      alert(error.response?.data?.error || "Error creando alerta");
+      alert(error.response?.data?.error || "Error actualizando alerta");
     }
   };
 
@@ -130,6 +158,14 @@ const DetalleJuego = () => {
     return <p style={{ padding: 24 }}>Cargando...</p>;
   }
 
+  const ahorroMejorOferta =
+    typeof mejorOferta?.ahorro === "number"
+      ? mejorOferta.ahorro
+      : typeof mejorOferta?.precioNormal === "number" &&
+          typeof mejorOferta?.precioActual === "number"
+        ? mejorOferta.precioNormal - mejorOferta.precioActual
+        : null;
+
   return (
     <section className="detalle-juego-page">
       <div className="detalle-juego-backdrop">
@@ -150,13 +186,15 @@ const DetalleJuego = () => {
               <button
                 className={`detalle-juego-btn favorito ${favorito ? "activo" : ""}`}
                 onClick={toggleFavorito}
+                title={favorito ? "Quitar de favoritos" : "Agregar a favoritos"}
               >
                 <FaHeart />
               </button>
 
               <button
-                className="detalle-juego-btn alerta"
-                onClick={handleCrearAlerta}
+                className={`detalle-juego-btn alerta ${alertaActiva ? "activo" : ""}`}
+                onClick={toggleAlerta}
+                title={alertaActiva ? "Quitar de lista de deseo" : "Agregar a lista de deseo"}
               >
                 <FaBell />
               </button>
@@ -184,11 +222,6 @@ const DetalleJuego = () => {
             </div>
 
             <h1>{juego.nombre}</h1>
-
-            <p className="detalle-juego-subtitle">
-              Resumen del juego con su mejor precio detectado, evolución
-              reciente y acceso directo a todas las tiendas disponibles.
-            </p>
 
             <div className="detalle-juego-pricebox">
               <div>
@@ -273,17 +306,37 @@ const DetalleJuego = () => {
             )}
           </div>
 
-          <div className="detalle-juego-panel">
+          <div className="detalle-juego-panel detalle-juego-offerpanel">
             <div className="detalle-juego-panelhead">
-              <h2>Resumen</h2>
-              <span>{ofertas.length} tiendas</span>
+              <h2>Mejor oferta</h2>
+              <span>{mejorOferta?.tienda || "Sin oferta"}</span>
             </div>
 
             <div className="detalle-juego-summary">
-              <strong>{mejorOferta?.tienda || "Sin oferta"}</strong>
-              <span>Lanzamiento: {juego.released || "Sin fecha"}</span>
-              <span>Web: {juego.website || "No disponible"}</span>
+              <strong>
+                {formatearPrecio(
+                  mejorOferta?.precioActual,
+                  mejorOferta?.moneda,
+                )}
+              </strong>
+              <span>
+                Antes {formatearPrecio(mejorOferta?.precioNormal, mejorOferta?.moneda)}
+              </span>
+              <span>
+                Ahorro {ahorroMejorOferta !== null
+                  ? formatearPrecio(ahorroMejorOferta, mejorOferta?.moneda)
+                  : "Sin dato"}
+              </span>
             </div>
+
+            {mejorOferta?.url && (
+              <div className="detalle-juego-offeractions">
+                <a href={mejorOferta.url} target="_blank" rel="noreferrer">
+                  Ver en tienda
+                  <FaExternalLinkAlt />
+                </a>
+              </div>
+            )}
           </div>
         </div>
 
@@ -312,8 +365,7 @@ const DetalleJuego = () => {
                     <h3>{oferta.tienda}</h3>
                     <p>{formatearPrecio(oferta.precioActual, oferta.moneda)}</p>
                     <small>
-                      Antes{" "}
-                      {formatearPrecio(oferta.precioNormal, oferta.moneda)}
+                      Antes {formatearPrecio(oferta.precioNormal, oferta.moneda)}
                     </small>
                   </div>
 
@@ -321,8 +373,7 @@ const DetalleJuego = () => {
                     <span className="descuento">-{oferta.descuento}%</span>
                     {oferta.expiracion && (
                       <small>
-                        Expira:{" "}
-                        {new Date(oferta.expiracion).toLocaleDateString()}
+                        Expira: {new Date(oferta.expiracion).toLocaleDateString()}
                       </small>
                     )}
                     <a href={oferta.url} target="_blank" rel="noreferrer">

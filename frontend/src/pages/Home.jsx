@@ -1,45 +1,56 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import MejoresJuegos from "../components/hero/MejoresJuegos";
-// import Header from "../components/header/Header";
 import Resultados from "../components/resultados/Resultados";
-import ResultadosGenero from "../components/resultados/ResultadosGenero";
 import MejoresOfertas from "../components/ofertas/Ofertas";
 import Categorias from "../components/categorias/Categorias";
 import PixelBackground from "../components/background/PixelBackground";
 import "./home.css";
+
 const Home = () => {
-  const [busqueda, setBusqueda] = useState("");
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("");
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const busqueda = (searchParams.get("buscar") || "").trim();
+
+  useEffect(() => {
+    if (!location.hash || busqueda) {
+      return;
+    }
+
+    const sectionId = location.hash.replace("#", "");
+
+    requestAnimationFrame(() => {
+      const section = document.getElementById(sectionId);
+
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    });
+  }, [location.hash, busqueda]);
 
   return (
-  <div style={{ paddingTop: "130px" }}>
-    <PixelBackground />
+    <div style={{ paddingTop: "130px" }}>
+      <PixelBackground />
 
-    {/* <Header onBuscar={setBusqueda} /> */}
+      {busqueda === "" ? (
+        <>
+          <section id="categorias">
+            <Categorias />
+          </section>
 
-    {categoriaSeleccionada ? (
-      <ResultadosGenero categoria={categoriaSeleccionada} />
-    ) : busqueda === "" ? (
-      <>
-        <section id="categorias">
-          <Categorias
-            onCategoriaClick={setCategoriaSeleccionada}
-          />
-        </section>
+          <section id="tiendas">
+            <MejoresOfertas />
+          </section>
 
-        <section id="ofertas">
-          <MejoresOfertas />
-        </section>
-
-        <section id="destacados">
-          <MejoresJuegos />
-        </section>
-      </>
-    ) : (
-      <Resultados busqueda={busqueda} />
-    )}
-  </div>
-);
+          <section id="destacados">
+            <MejoresJuegos />
+          </section>
+        </>
+      ) : (
+        <Resultados busqueda={busqueda} />
+      )}
+    </div>
+  );
 };
 
 export default Home;

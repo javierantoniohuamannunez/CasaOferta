@@ -1,10 +1,9 @@
 body {
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #0f172a; /* azul oscuro */
-  color: #fff;
+  overflow-x: hidden;
 }
 
 .container {
-  padding: 20px 40px;
+  width: min(100%, var(--page-max-width));
+  margin: 0 auto;
+  padding-inline: var(--page-padding);
 }

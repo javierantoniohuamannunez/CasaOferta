@@ -42,7 +42,11 @@ const Tienda = () => {
           <div
             key={juego.id}
             className="card-juego"
-            onClick={() => navigate(`/oferta/${tienda.tiendaId}/${juego.juegoId || juego.id}`)}
+            onClick={() =>
+              navigate(
+                `/oferta/${tienda.tiendaId}/${juego.juegoId || juego.id}`,
+              )
+            }
           >
             <img src={juego.imagen} alt={juego.nombre} />
 

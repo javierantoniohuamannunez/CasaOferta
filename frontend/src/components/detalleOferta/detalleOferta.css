@@ -37,7 +37,7 @@
   z-index: 1;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 110px 24px 60px;
+  padding: 156px 24px 60px;
 }
 
 .detalle-oferta-back {
@@ -67,6 +67,7 @@
 }
 
 .detalle-oferta-media {
+  position: relative;
   border-radius: 28px;
   overflow: hidden;
 }
@@ -76,6 +77,42 @@
   height: 100%;
   min-height: 360px;
   object-fit: cover;
+}
+
+.detalle-oferta-actions-stack {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detalle-oferta-btn {
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  color: #f8fafc;
+  cursor: pointer;
+  background: rgba(4, 7, 12, 0.72);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.detalle-oferta-btn:hover {
+  transform: scale(1.06);
+}
+
+.detalle-oferta-btn.favorito:hover,
+.detalle-oferta-btn.favorito.activo {
+  background: #ef4444;
+}
+
+.detalle-oferta-btn.alerta:hover,
+.detalle-oferta-btn.alerta.activo {
+  background: #f97316;
 }
 
 .detalle-oferta-copy {
@@ -286,10 +323,7 @@
 
 @media (max-width: 920px) {
   .detalle-oferta-hero,
-  .detalle-oferta-grid {
-    grid-template-columns: 1fr;
-  }
-
+  .detalle-oferta-grid,
   .detalle-oferta-pricebox {
     grid-template-columns: 1fr;
   }
@@ -297,12 +331,16 @@
 
 @media (max-width: 640px) {
   .detalle-oferta-shell {
-    padding: 92px 16px 40px;
+    padding: 206px 16px 40px;
   }
 
   .detalle-oferta-copy,
   .detalle-oferta-panel {
     padding: 20px;
+  }
+
+  .detalle-oferta-cover {
+    min-height: 280px;
   }
 
   .detalle-oferta-item {

@@ -33,7 +33,7 @@
   z-index: 1;
   max-width: 1180px;
   margin: 0 auto;
-  padding: 110px 24px 60px;
+  padding: 156px 24px 60px;
 }
 
 .detalle-juego-hero {
@@ -95,7 +95,8 @@
   background: #ef4444;
 }
 
-.detalle-juego-btn.alerta:hover {
+.detalle-juego-btn.alerta:hover,
+.detalle-juego-btn.alerta.activo {
   background: #f97316;
 }
 
@@ -143,14 +144,6 @@
   letter-spacing: -0.04em;
 }
 
-.detalle-juego-subtitle {
-  margin: 18px 0 0;
-  max-width: 720px;
-  color: #cbd5e1;
-  font-size: 1.02rem;
-  line-height: 1.7;
-}
-
 .detalle-juego-pricebox {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -194,7 +187,8 @@
 }
 
 .detalle-juego-actions-row a,
-.detalle-juego-meta a {
+.detalle-juego-meta a,
+.detalle-juego-offeractions a {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -292,6 +286,16 @@
   color: #cbd5e1;
 }
 
+.detalle-juego-offerpanel {
+  display: flex;
+  flex-direction: column;
+}
+
+.detalle-juego-offeractions {
+  margin-top: auto;
+  padding-top: 24px;
+}
+
 .detalle-juego-description p {
   margin: 0;
   color: #e2e8f0;
@@ -353,10 +357,7 @@
 
 @media (max-width: 920px) {
   .detalle-juego-hero,
-  .detalle-juego-grid {
-    grid-template-columns: 1fr;
-  }
-
+  .detalle-juego-grid,
   .detalle-juego-pricebox {
     grid-template-columns: 1fr;
   }
@@ -364,12 +365,16 @@
 
 @media (max-width: 640px) {
   .detalle-juego-shell {
-    padding: 92px 16px 40px;
+    padding: 206px 16px 40px;
   }
 
   .detalle-juego-copy,
   .detalle-juego-panel {
     padding: 20px;
+  }
+
+  .detalle-juego-cover {
+    min-height: 280px;
   }
 
   .detalle-juego-item {
@@ -378,5 +383,10 @@
 
   .detalle-juego-meta {
     align-items: flex-start;
+  }
+
+  .detalle-juego-offeractions a {
+    width: 100%;
+    justify-content: center;
   }
 }

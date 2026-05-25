@@ -1,340 +1,236 @@
 .mejores-ofertas {
-  padding: 70px 30px;
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: clamp(44px, 7vw, 72px) var(--page-padding);
 }
-
-/* HEADER */
 
 .ofertas-header {
   text-align: center;
-
-  margin-bottom: 50px;
+  max-width: 900px;
+  margin: 0 auto 48px;
 }
 
-
-.titulo-seccion {
-  font-size: 58px;
-
+.mejores-ofertas .titulo-seccion {
+  font-size: clamp(2.2rem, 5vw, 4rem);
   font-weight: 900;
-
-  line-height: 1;
-
+  line-height: 0.98;
   margin-bottom: 18px;
-
-  letter-spacing: -3px;
-
-  background: linear-gradient(
-    to right,
-    #ffffff,
-    #f8d5b0,
-    #f97316
-  );
-
+  letter-spacing: -0.05em;
+  background: linear-gradient(to right, #ffffff, #f8d5b0, #f97316);
   -webkit-background-clip: text;
-
   -webkit-text-fill-color: transparent;
 }
 
 .ofertas-subtitle {
   color: #94a3b8;
-
-  font-size: 20px;
-
-  max-width: 800px;
-
-  margin: auto;
-
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.75;
 }
-
-/* GRID */
 
 .tiendas-grid {
   display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
 }
 
-/* CARD */
-
 .tienda-card {
   position: relative;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(30, 41, 59, 0.95),
-      rgba(15, 23, 42, 0.95)
-    );
-
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(
+    180deg,
+    rgba(30, 41, 59, 0.95),
+    rgba(15, 23, 42, 0.95)
+  );
   border-radius: 24px;
-
   padding: 24px;
-
-  border: 1px solid rgba(255,255,255,.05);
-
+  border: 1px solid rgba(255, 255, 255, 0.05);
   overflow: hidden;
-
-  transition: .35s;
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .tienda-card::before {
   content: "";
-
   position: absolute;
-
   top: 0;
   left: 0;
-
   width: 100%;
   height: 4px;
-
-  background: linear-gradient(
-    to right,
-    #f97316,
-    #fb923c
-  );
-
+  background: linear-gradient(to right, #f97316, #fb923c);
   opacity: 0;
-
-  transition: .3s;
+  transition: opacity 0.3s ease;
 }
 
 .tienda-card:hover {
   transform: translateY(-10px);
-
-  border-color: rgba(249,115,22,.2);
-
-  box-shadow:
-    0 20px 50px rgba(0,0,0,.45);
+  border-color: rgba(249, 115, 22, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
 }
 
 .tienda-card:hover::before {
   opacity: 1;
 }
 
-/* TOP */
-
 .tienda-top {
   display: flex;
-
-  align-items: center;
-
+  align-items: flex-start;
   justify-content: space-between;
-
+  gap: 16px;
   margin-bottom: 24px;
 }
 
 .tienda-nombre {
-  font-size: 26px;
-
+  font-size: clamp(1.4rem, 2vw, 1.7rem);
   font-weight: 800;
-
   color: white;
 }
 
 .tienda-total {
+  flex-shrink: 0;
   font-size: 13px;
-
   font-weight: 700;
-
   color: #94a3b8;
-
-  background: rgba(255,255,255,.05);
-
+  background: rgba(255, 255, 255, 0.05);
   padding: 6px 10px;
-
   border-radius: 999px;
 }
 
-/* ITEM */
-
 .oferta-item {
   display: flex;
-
   gap: 16px;
-
   align-items: center;
-
   padding: 14px;
-
   border-radius: 18px;
-
   margin-bottom: 16px;
-
-  background: rgba(255,255,255,.03);
-
-  border: 1px solid rgba(255,255,255,.04);
-
-  transition: .25s;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  transition: transform 0.25s ease, background 0.25s ease;
 }
 
 .oferta-item:hover {
-  background: rgba(255,255,255,.06);
-
+  background: rgba(255, 255, 255, 0.06);
   transform: scale(1.02);
 }
 
-/* IMAGE */
-
 .oferta-img {
   position: relative;
+  flex-shrink: 0;
 }
 
 .oferta-img img {
   width: 120px;
-
-  height: 70px;
-
+  height: 74px;
   object-fit: cover;
-
   border-radius: 12px;
 }
 
 .descuento-floating {
   position: absolute;
-
   top: 8px;
   right: 8px;
-
   background: #22c55e;
-
   color: black;
-
   font-size: 11px;
-
   font-weight: 900;
-
   padding: 5px 8px;
-
   border-radius: 8px;
 }
 
-/* INFO */
-
 .oferta-info {
   flex: 1;
+  min-width: 0;
 }
 
 .nombre {
   font-size: 16px;
-
   font-weight: 700;
-
   color: white;
-
-  line-height: 1.3;
-
+  line-height: 1.35;
   margin-bottom: 12px;
 }
-
-/* METACRITIC */
 
 .extra-info {
   margin-bottom: 12px;
 }
 
-.metacritic {
+.mejores-ofertas .metacritic {
   display: inline-flex;
-
   align-items: center;
-
   justify-content: center;
-
   min-width: 34px;
-
   height: 26px;
-
   padding: 0 8px;
-
   border-radius: 8px;
-
   font-size: 12px;
-
   font-weight: bold;
-
   border: 2px solid transparent;
 }
 
-.metacritic.alto {
+.mejores-ofertas .metacritic.alto {
   color: #22c55e;
-
   border-color: #22c55e;
-
   background: rgba(34, 197, 94, 0.1);
 }
 
-.metacritic.medio {
+.mejores-ofertas .metacritic.medio {
   color: #facc15;
-
   border-color: #facc15;
-
   background: rgba(250, 204, 21, 0.1);
 }
 
-.metacritic.bajo {
+.mejores-ofertas .metacritic.bajo {
   color: #ef4444;
-
   border-color: #ef4444;
-
   background: rgba(239, 68, 68, 0.1);
 }
 
-/* PRECIOS */
-
-.precios {
+.mejores-ofertas .precios {
   display: flex;
-
   align-items: center;
-
+  flex-wrap: wrap;
   gap: 12px;
 }
 
-.precio-original {
+.mejores-ofertas .precio-original {
   text-decoration: line-through;
-
   color: #94a3b8;
-
   font-size: 14px;
 }
 
-.precio-oferta {
+.mejores-ofertas .precio-oferta {
   color: #4ade80;
-
-  font-size: 24px;
-
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
   font-weight: 900;
 }
 
-/* EMPTY */
-
 .sin-ofertas {
   color: #94a3b8;
-
   font-size: 14px;
-
   padding: 10px 0;
 }
 
-/* RESPONSIVE */
-
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
   .tiendas-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .tiendas-grid {
     grid-template-columns: 1fr;
   }
 
-  .titulo-seccion {
-    font-size: 42px;
+  .tienda-card {
+    padding: 18px;
   }
 
-  .ofertas-subtitle {
-    font-size: 16px;
+  .oferta-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .oferta-img img {
+    width: 100%;
+    height: 170px;
   }
 }

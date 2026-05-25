@@ -1,29 +1,27 @@
 import "./header.css";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { useState } from "react";
-const Buscador = ({ onBuscar }) => {
+const Buscador = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [texto, setTexto] = useState("");
 
-  //  const handleChange = (e) => {
-  //   const valor = e.target.value;
-  //   setTexto(valor);
-  //   onBuscar(valor);
-  // };
+  useEffect(() => {
+    setTexto(searchParams.get("buscar") || "");
+  }, [searchParams]);
 
-  // return (
-  //   <input
-  //     className="buscador"
-  //     type="text"
-  //     placeholder="🔍 Buscar juegos..."
-  //     value={texto}
-  //     onChange={handleChange}
-  //   />
-  // );
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (texto.trim() === "") return; //evitar que el texto vacio
 
-    onBuscar(texto);
+    const valor = texto.trim();
+
+    if (!valor) {
+      navigate("/");
+      return;
+    }
+
+    navigate(`/?buscar=${encodeURIComponent(valor)}`);
   };
 
   return (
@@ -31,7 +29,7 @@ const Buscador = ({ onBuscar }) => {
       <input
         className="buscador"
         type="text"
-        placeholder=""
+        placeholder="Buscar juegos..."
         value={texto}
         onChange={(e) => setTexto(e.target.value)}
       />

@@ -4,62 +4,41 @@
 
 .notif-btn {
   position: relative;
-
   background: transparent;
-
   border: none;
-
   color: white;
-
   font-size: 22px;
-
   cursor: pointer;
 }
 
 .notif-badge {
   position: absolute;
-
   top: -8px;
-
   right: -8px;
-
   background: red;
-
   color: white;
-
   width: 20px;
-
   height: 20px;
-
   border-radius: 50%;
-
   font-size: 12px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 }
 
 .notif-dropdown {
   position: absolute;
-
   right: 0;
-
-  top: 40px;
-
-  width: 350px;
-
+  top: 44px;
+  width: min(350px, calc(100vw - 32px));
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
   background: #111827;
-
   border-radius: 16px;
-
   padding: 20px;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-
   z-index: 100;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .notif-dropdown h3 {
@@ -68,19 +47,12 @@
 
 .notif-item {
   display: flex;
-
   gap: 12px;
-
   padding: 12px;
-
   border-radius: 12px;
-
   cursor: pointer;
-
   transition: 0.2s;
-
   margin-bottom: 10px;
-
   background: #1f2937;
 }
 
@@ -94,15 +66,25 @@
 
 .notif-item img {
   width: 70px;
-
   height: 70px;
-
   object-fit: cover;
   border-radius: 10px;
+  flex-shrink: 0;
 }
 
 .notif-item p {
   font-size: 13px;
   color: #cbd5e1;
   margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .notif-dropdown {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .notif-item {
+    align-items: flex-start;
+  }
 }

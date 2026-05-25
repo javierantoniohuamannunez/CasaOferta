@@ -1,18 +1,29 @@
 import "./header.css";
 import Buscador from "./Buscador";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import Notificaciones from "../notificaciones/Notificaciones";
 
-const Header = ({ onBuscar }) => {
+const Header = () => {
   const token = localStorage.getItem("token");
-
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-
     navigate("/");
+  };
+
+  const irAInicio = () => {
+    navigate("/");
+
+    if (location.pathname === "/" && !location.search) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const irASeccion = (sectionId) => {
+    navigate(`/#${sectionId}`);
   };
 
   return (
@@ -23,7 +34,7 @@ const Header = ({ onBuscar }) => {
         </Link>
 
         <div className="header-search">
-          <Buscador onBuscar={onBuscar} />
+          <Buscador />
         </div>
 
         <div className="header-user">
@@ -54,15 +65,41 @@ const Header = ({ onBuscar }) => {
       </div>
 
       <nav className="nav">
-        <a href="#">Inicio</a>
+        <button type="button" className="nav-link" onClick={irAInicio}>
+          Inicio
+        </button>
 
-        <a href="#destacados">Top Juegos</a>
+        <button
+          type="button"
+          className="nav-link"
+          onClick={() => irASeccion("destacados")}
+        >
+          Top Juegos
+        </button>
 
-        <a href="#ofertas">Ofertas</a>
+        <button
+          type="button"
+          className="nav-link"
+          onClick={() => irASeccion("ofertas")}
+        >
+          Ofertas
+        </button>
 
-        <a href="#categorias">Categorías</a>
+        <button
+          type="button"
+          className="nav-link"
+          onClick={() => irASeccion("categorias")}
+        >
+          Categorias
+        </button>
 
-        <a href="#tiendas">Tiendas</a>
+        <button
+          type="button"
+          className="nav-link"
+          onClick={() => irASeccion("tiendas")}
+        >
+          Tiendas
+        </button>
       </nav>
     </header>
   );

@@ -1,140 +1,128 @@
-/* CONTENEDOR */
 .resultados-container {
-  padding: 30px;
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 44px) var(--page-padding) clamp(44px, 8vw, 72px);
 }
 
-/* TITULO */
-.titulo-seccion {
-  font-size: 24px;
-  margin-bottom: 25px;
+.resultados-container .titulo-seccion {
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  margin-bottom: 30px;
+  color: white;
+  font-weight: 900;
+  letter-spacing: -0.04em;
 }
 
-/* GRID */
-.grid-juegos {
+.resultados-container .grid-juegos {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
 }
 
-/* CARD */
-.hero-card {
-  background: #1e293b;
-
-  border-radius: 14px;
+.resultados-container .hero-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+  border-radius: 20px;
   overflow: hidden;
-
   cursor: pointer;
-
-  transition: 0.3s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.hero-card:hover {
-  transform: translateY(-5px) scale(1.02);
-
-  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+.resultados-container .hero-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.45);
 }
 
-/* IMAGEN */
-.hero-card img {
+.resultados-container .hero-card img {
   width: 100%;
-  height: 160px;
+  height: 180px;
   object-fit: cover;
 }
 
-/* TITULO JUEGO */
-.hero-card h2 {
-  font-size: 15px;
-  padding: 12px 12px 5px;
+.resultados-container .hero-card h2 {
+  font-size: 17px;
+  padding: 16px 16px 10px;
+  color: white;
+  line-height: 1.45;
+  min-height: 60px;
 }
 
-/* INFO */
-.info {
+.resultados-container .info {
   display: flex;
   align-items: center;
-  gap: 8px;
-
-  padding: 0 12px;
+  gap: 10px;
+  padding: 0 16px;
+  color: #94a3b8;
+  font-size: 14px;
 }
 
-/* METACRITIC */
-.metacritic {
+.resultados-container .metacritic {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  min-width: 32px;
-  height: 26px;
-
+  min-width: 34px;
+  height: 28px;
   padding: 0 6px;
-
-  border-radius: 6px;
-
+  border-radius: 8px;
   font-size: 12px;
-  font-weight: bold;
-
+  font-weight: 700;
   border: 2px solid transparent;
 }
 
-/* COLORES */
-.metacritic.alto {
+.resultados-container .metacritic.alto {
   color: #22c55e;
   border-color: #22c55e;
   background: rgba(34, 197, 94, 0.1);
 }
 
-.metacritic.medio {
+.resultados-container .metacritic.medio {
   color: #facc15;
   border-color: #facc15;
   background: rgba(250, 204, 21, 0.1);
 }
 
-.metacritic.bajo {
+.resultados-container .metacritic.bajo {
   color: #ef4444;
   border-color: #ef4444;
   background: rgba(239, 68, 68, 0.1);
 }
 
-/* PLATAFORMAS */
-.plataformas {
+.resultados-container .plataformas {
   display: flex;
   gap: 12px;
-
-  padding: 14px 12px 16px;
+  flex-wrap: wrap;
+  padding: 18px 16px 18px;
+  margin-top: auto;
 }
 
-.plataformas span {
+.resultados-container .plataformas span {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
   color: #94a3b8;
-  font-size: 18px;
-
-  transition: 0.2s;
+  font-size: 17px;
+  transition: 0.2s ease;
 }
 
-.plataformas span:hover {
+.resultados-container .plataformas span:hover {
   color: white;
-  transform: scale(1.2);
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
 }
 
-/* NO RESULTADOS */
 .no-resultados {
-  padding: 20px;
+  padding: 20px 0;
   color: #94a3b8;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1400px) {
-  .grid-juegos {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
-  .grid-juegos {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 600px) {
-  .grid-juegos {
+@media (max-width: 560px) {
+  .resultados-container .grid-juegos {
     grid-template-columns: 1fr;
   }
 }
