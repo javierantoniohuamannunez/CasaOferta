@@ -1,8 +1,8 @@
 # Manual de Usuario
 
-## Descripcion General
+## Descripcion
 
-CasaOferta es una plataforma para buscar videojuegos, ver ofertas por tienda, revisar historial de precios y gestionar favoritos y lista de deseo.
+CasaOferta es una pagina para buscar videojuegos ver ofertas por tienda, revisar historial de precios y gestionar favoritos y lista de deseo.
 
 ## Requisitos
 
@@ -18,18 +18,17 @@ CasaOferta es una plataforma para buscar videojuegos, ver ofertas por tienda, re
    - Juegos destacados
    - Buscador
 
-## Navegacion Principal
+## Navegacion 
 
 ### Buscador
 
-- Usa la barra superior para buscar un juego por nombre.
-- Al buscar, veras una lista de resultados.
-- Puedes entrar al detalle de cualquier juego haciendo clic en su tarjeta.
+- Buscar por nombre del juego
+- Puedes ver el detalle de cualquier juego haciendo clic al card del resultado
 
 ### Categorias
 
-- En la seccion `Categorias` puedes explorar juegos por genero.
-- Al entrar en una categoria, veras los juegos relacionados.
+- En la seccion `Categorias` puedes filtrar juegos por su genero
+- Al entrar veras los juegos relacionados
 
 ### Ofertas Destacadas
 
@@ -40,7 +39,7 @@ CasaOferta es una plataforma para buscar videojuegos, ver ofertas por tienda, re
 
 ### Juegos Destacados
 
-- En `Juegos destacados` se muestran titulos populares o mejor valorados.
+- En `Juegos destacados` se muestran juegos mas populares o mejores valorados
 - Desde ahi puedes abrir el detalle completo del juego.
 
 ## Detalle de Juego
@@ -70,11 +69,6 @@ En la vista de detalle de oferta puedes:
 - Ver historial de precios.
 - Revisar otras ofertas disponibles para el mismo juego.
 - Abrir la oferta en la tienda externa.
-
-### Acciones disponibles
-
-- `Corazon`: agrega o quita el juego en favoritos si la integracion lo permite.
-- `Campana`: agrega o quita la oferta de la lista de deseo.
 
 ## Login y Registro
 
@@ -128,22 +122,22 @@ La lista de deseo sirve para guardar juegos u ofertas para seguimiento de precio
 3. Pulsa el icono de la campana.
 4. El elemento quedara guardado en tu lista de deseo.
 
-## Historial de Precios
+## Historial de Preciose
 
 - En detalles de juego y oferta puedes consultar la evolucion del precio.
-- Si el proveedor externo no devuelve historial, se mostrara un mensaje informativo.
+- Si el proveedor externo no devuelve historial, se mostrara un mensaje
 
-## Problemas Comunes
+## Posibles Problemas
 
 ### No puedo guardar favoritos o alertas
 
-- Verifica que has iniciado sesion.
-- Comprueba que el backend esta en ejecucion.
-- Revisa que el token de autenticacion siga siendo valido.
+- Revisar que has iniciado sesion
+- Comprueba que el backend esta en ejecucion
+- Revisa que el token de autenticacion siga siendo valido
 
 ### No aparecen ofertas
 
-- Puede que no haya datos disponibles desde el proveedor externo.
+- Puede que no haya datos disponibles desde la API
 - Puede que el juego o la tienda no tengan ofertas activas en ese momento.
 
 ### No aparece el historial de precios
@@ -157,7 +151,7 @@ La lista de deseo sirve para guardar juegos u ofertas para seguimiento de precio
 - Guarda juegos en favoritos si quieres volver a ellos luego.
 - Usa la campana para hacer seguimiento de precios.
 
-## Flujo de Uso Recomendado
+## Flujo de Uso
 
 1. Buscar o explorar un juego.
 2. Abrir su detalle.
