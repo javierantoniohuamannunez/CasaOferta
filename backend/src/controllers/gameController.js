@@ -1,5 +1,12 @@
 const rawgService = require("../services/rawgService");
 const itadService = require("../services/itadService");
+const { CategoriaHome, JuegoDestacado } = require("../models");
+const {
+  actualizarCategorias,
+} = require("../services/cacheCategoriasService");
+const {
+  actualizarDestacados,
+} = require("../services/cacheDestacadosService");
 
 const respuestaSinOfertas = (juego) => ({
   juego: {
@@ -53,7 +60,19 @@ const getJuegoPorId = async (req, res, next) => {
 
 const getTopGames = async (req, res, next) => {
   try {
-    const juegos = await rawgService.obtenerJuegosTop();
+    let juegos = await JuegoDestacado.findAll({
+      order: [["id", "ASC"]],
+      limit: 20,
+    });
+
+    if (juegos.length === 0) {
+      await actualizarDestacados();
+
+      juegos = await JuegoDestacado.findAll({
+        order: [["id", "ASC"]],
+        limit: 20,
+      });
+    }
 
     const juegosConPrecio = await Promise.all(
       juegos.map(async (juego) => {
@@ -62,7 +81,12 @@ const getTopGames = async (req, res, next) => {
         );
 
         return {
-          ...juego,
+          id: juego.juegoId,
+          nombre: juego.nombre,
+          imagen: juego.imagen,
+          rating: juego.rating,
+          metacritic: juego.metacritic,
+          plataformas: juego.plataformas || [],
           ...oferta,
         };
       }),
@@ -96,12 +120,25 @@ const getJuegosPorGenero = async (req, res, next) => {
 
 const getCategorias = async (req, res, next) => {
   try {
-    const categorias = await rawgService.obtenerCategorias();
+    let categorias = await CategoriaHome.findAll({
+      order: [["id", "ASC"]],
+      limit: 10,
+    });
 
-    const formateados = categorias.slice(0, 10).map((c) => ({
+    if (categorias.length === 0) {
+      await actualizarCategorias();
+
+      categorias = await CategoriaHome.findAll({
+        order: [["id", "ASC"]],
+        limit: 10,
+      });
+    }
+
+    const formateados = categorias.map((c) => ({
       id: c.id,
-      nombre: c.name,
-      imagen: c.image_background,
+      nombre: c.nombre,
+      slug: c.slug,
+      imagen: c.imagen,
     }));
 
     res.json(formateados);

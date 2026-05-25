@@ -4,6 +4,9 @@ const OfertaHome = require("./OfertaHome");
 const OfertaTienda = require("./OfertaTienda");
 const Alerta = require("./Alerta");
 const Notificacion = require("./Notificacion");
+const CategoriaHome = require("./CategoriasHome");
+const JuegoDestacado = require("./JuegosDestacados");
+
 Usuario.hasMany(Favorito, {
   foreignKey: "usuarioId",
 });
@@ -31,4 +34,6 @@ module.exports = {
   OfertaTienda,
   Alerta,
   Notificacion,
+  CategoriaHome,
+  JuegoDestacado,
 };

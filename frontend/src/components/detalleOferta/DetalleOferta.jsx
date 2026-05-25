@@ -87,8 +87,7 @@ const DetalleOferta = () => {
             <h1>{juego.nombre}</h1>
 
             <p className="detalle-oferta-subtitle">
-              Vista dedicada para ofertas cacheadas desde ITAD, con precio
-              actual, mejor oferta disponible e historial reciente.
+              Oferta de iTad, juego de {juego.plataforma} sin descripcion
             </p>
 
             <div className="detalle-oferta-pricebox">
