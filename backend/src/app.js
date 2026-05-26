@@ -66,16 +66,16 @@ sequelize
     // generar cache completa
     console.log("Generando cache inicial...");
 
-    // await tiendasService.obtenerTiendas();
-    // await actualizarCategorias();
-    // await actualizarDestacados();
+    await tiendasService.obtenerTiendas();
+    await actualizarCategorias();
+    await actualizarDestacados();
 
-    // console.log("Cache generada");
+   console.log("Cache generada");
     //limitarllamadasAPIS;
 
-    // iniciarCronOfertas();
-    // iniciarCronCategorias();
-    // iniciarCronDestacados();
+    iniciarCronOfertas();
+    iniciarCronCategorias();
+    iniciarCronDestacados();
 
     app.listen(PORT, "0.0.0.0", () => {
       console.log(`Servidor funcionando en el puerto ${PORT}`);

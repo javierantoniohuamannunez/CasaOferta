@@ -5,7 +5,7 @@ const { Alerta, Usuario, OfertaTienda, Notificacion } = require("../models");
 const { enviarCorreoOferta } = require("../services/emailService");
 
 // revisar cada hora
-cron.schedule("0 * * * *", async () => {
+cron.schedule("0 3 * * *", async () => {
   console.log("Revisando wishlist...");
 
   try {
