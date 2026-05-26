@@ -66,11 +66,11 @@ sequelize
     // generar cache completa
     console.log("Generando cache inicial...");
 
-    await tiendasService.obtenerTiendas();
-    await actualizarCategorias();
-    await actualizarDestacados();
+    // await tiendasService.obtenerTiendas();
+    // await actualizarCategorias();
+    // await actualizarDestacados();
 
-    console.log("Cache generada");
+    // console.log("Cache generada");
     //limitarllamadasAPIS;
 
     // iniciarCronOfertas();
