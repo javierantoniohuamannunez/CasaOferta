@@ -10,8 +10,12 @@ const NotificacionesBell = () => {
   const [notificaciones, setNotificaciones] = useState([]);
 
   useEffect(() => {
-    cargarNotificaciones();
-  }, []);
+  const token = localStorage.getItem("token");
+
+  if (!token) return;
+
+  cargarNotificaciones();
+}, []);
 
   const cargarNotificaciones = async () => {
     try {
