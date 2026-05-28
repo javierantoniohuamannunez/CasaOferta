@@ -29,7 +29,6 @@ const authRoutes = require("./routes/authRoutes");
 const alertasRoutes = require("./routes/alertasRoutes");
 
 //test
-const { enviarCorreoOferta } = require("./services/emailService");
 
 // middlewares
 const notFound = require("../middlewares/notFound");
