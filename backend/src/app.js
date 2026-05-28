@@ -61,7 +61,7 @@ app.use(handleErrors);
 const PORT = process.env.PORT || 3000;
 
 sequelize
-  .sync({ force: false })
+  .sync({ force: true })
   .then(async () => {
     console.log("Base de datos conectada");
 
