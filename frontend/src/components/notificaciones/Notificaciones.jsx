@@ -17,16 +17,17 @@ const NotificacionesBell = () => {
   cargarNotificaciones();
 }, []);
 
-  const cargarNotificaciones = async () => {
-    try {
-      const data = await obtenerNotificaciones();
+const cargarNotificaciones = async () => {
+  try {
+    const data = await obtenerNotificaciones();
 
-      setNotificaciones(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    setNotificaciones(Array.isArray(data) ? data : []);
+  } catch (error) {
+    console.log(error);
 
+    setNotificaciones([]);
+  }
+};
   const unread = notificaciones.filter((n) => !n.leida).length;
 
   const handleLeida = async (id) => {
