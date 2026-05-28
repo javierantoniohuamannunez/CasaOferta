@@ -28,6 +28,36 @@ const favoritoRoutes = require("./routes/favoritosRoutes");
 const authRoutes = require("./routes/authRoutes");
 const alertasRoutes = require("./routes/alertasRoutes");
 
+//test
+const { enviarCorreoOferta } = require("./services/emailService");
+const { enviarCorreoOferta } = require("./services/emailService");
+
+app.get("/test-email", async (req, res) => {
+  try {
+    await enviarCorreoOferta(
+      "javierpro73@gmail.com",
+      "Cyberpunk 2077",
+      "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg",
+      9.99,
+      59.99,
+      80,
+      "Steam",
+      "https://store.steampowered.com/app/1091500/Cyberpunk_2077/",
+    );
+
+    res.json({
+      ok: true,
+      mensaje: "Correo enviado",
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      ok: false,
+      error: error.message,
+    });
+  }
+});
 // middlewares
 const notFound = require("../middlewares/notFound");
 const handleErrors = require("../middlewares/handleErrors");
@@ -70,7 +100,7 @@ sequelize
     await actualizarCategorias();
     await actualizarDestacados();
 
-   console.log("Cache generada");
+    console.log("Cache generada");
     //limitarllamadasAPIS;
 
     iniciarCronOfertas();
