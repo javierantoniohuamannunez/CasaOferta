@@ -4,8 +4,7 @@ const { Alerta, Usuario, OfertaTienda, Notificacion } = require("../models");
 
 const { enviarCorreoOferta } = require("../services/emailService");
 
-// revisar cada hora
-cron.schedule("0 3 * * *", async () => {
+cron.schedule("* * * * *", async () => {
   console.log("Revisando wishlist...");
 
   try {
@@ -35,7 +34,8 @@ cron.schedule("0 3 * * *", async () => {
       }
 
       // si bajo de precio y tiene descuento
-      if (oferta.precioActual < alerta.precioBase && oferta.descuento >= 10) {
+      // if (oferta.precioActual < alerta.precioBase && oferta.descuento >= 10) {
+      if(oferta){
         // enviar correo
         await enviarCorreoOferta(
           alerta.Usuario.email,
