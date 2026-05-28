@@ -2,7 +2,7 @@ import "./header.css";
 import Buscador from "./Buscador";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import Notificaciones from "../notificaciones/Notificaciones";
+// import Notificaciones from "../notificaciones/Notificaciones";
 
 const Header = () => {
   const token = localStorage.getItem("token");
@@ -40,7 +40,7 @@ const Header = () => {
         <div className="header-user">
           {token ? (
             <>
-              <Notificaciones />
+              {/* <Notificaciones /> */}
 
               <Link to="/perfil" className="perfil-link">
                 Perfil
