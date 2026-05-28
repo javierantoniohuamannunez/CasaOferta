@@ -10,12 +10,15 @@ router.get('/por-genero', getJuegosPorGenero);
 
 
 // rCheapShark
-router.get('/top', getTopGames);
+// router.get('/top', getTopGames);
 
 
 // iTAD
 router.get("/test-itad", testITAD);
 router.get("/test-precio", testPrecio);
+
+router.get("/ofertas", getTopGames);
+
 router.get("/:id/ofertas", getOfertasJuego);
 
 router.get('/', getGames);
